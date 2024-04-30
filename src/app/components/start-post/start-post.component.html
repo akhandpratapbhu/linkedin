@@ -1,0 +1,18 @@
+<div class="card bottomSpace">
+    <div class="card-body">
+       
+        <form class="d-flex">
+            <img src="../../../assets/img/download.jpg" class="card-img-top bordered-image" alt="image">
+            <input class="form-control me-2 " type="search" placeholder="Start the Post ..."  (click)="togglePopup()"
+                style="border-radius: 20px;" aria-label="Search">
+                <app-modal [isVisible]="showPopup"></app-modal>
+        </form>
+        <div class="d-flex justify-content-center">
+            <p class="setText" ><mat-icon style="color: aquamarine;">wallpaper</mat-icon> Photo</p>
+            <p class="setText" ><mat-icon style="color: aqua;">play_circle_filled</mat-icon> Video</p>
+            <p class="setText"><mat-icon  style="color: yellow;">event</mat-icon> Event</p>
+            <p class="setText" ><mat-icon style="color: red;">chat</mat-icon> Write Article</p>
+          </div>
+          
+    </div>
+</div>

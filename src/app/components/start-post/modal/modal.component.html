@@ -1,0 +1,60 @@
+<div class="popup-overlay" *ngIf="isVisible">
+    <div class="popup">
+
+        <div class="popup-content">
+            <!-- Add your popup content here -->
+            <div class="d-flex">
+                <h5>Create a post</h5>
+                <button (click)="closePopup()" class="close-btn right-side">&times;</button>
+            </div>
+            <hr>
+            <form  class="was-validated">
+                <div class="mb-3">
+                    <div class="d-flex">
+                        <img src="../../../assets/img/download.jpg" class="card-img-top bordered-image" alt="image">
+                        <div>
+                            <p style="margin-left: 20px;">Akhand</p>
+                            <div class="form-control "
+                                style="border-radius: 20px; width: 160px;height: 30px;margin-left: 5px;">
+                                <div class="languageIcon"> <mat-icon>language</mat-icon></div>
+                                <div class="setAnyOne">
+                                    <a class=" dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Anyone
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item" href="#">Akhand</a></li>
+                                        <li><a class="dropdown-item" href="#">Raj</a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <textarea class="form-control is-invalid" id="validationTextarea" style="margin-top:10px" #messageRef
+                        placeholder=" What do you want to talk about..." required></textarea>
+                    <div class="invalid-feedback">
+                        <p class="hashtag">Add hashtag</p>
+                    </div>
+                    <div class="d-flex">
+
+                        <p class="setText"><mat-icon>library_add</mat-icon></p>
+                        <p class="setText"><mat-icon>wallpaper</mat-icon></p>
+                        <p class="setText"><mat-icon>play_circle_filled</mat-icon></p>
+                        <p class="setText"> <mat-icon>event</mat-icon></p>
+                        <div class="setText">
+                            <div class="icon-container">
+                              <mat-icon>chat</mat-icon>
+                            </div>
+                            <div class="text-container">AnyOne</div>
+                          </div>
+                          
+                        <button class="setText" (click)="onPost(messageRef.value)"
+                            style="background-color: rgb(0, 119, 255);height: 40px;width: 70px; margin-left: 20px;color: aliceblue;">Post<mat-icon>send</mat-icon></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

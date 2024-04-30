@@ -1,0 +1,36 @@
+.menu-spacer {
+    flex: 1 1 auto;
+  }
+  .d-flex {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-icon-container {
+    position: relative;
+    margin-left: -30px; /* Adjust this value to position the icon as needed */
+  }
+  
+  .search-icon-container mat-icon {
+    position: absolute;
+    top: -6px;
+    right: -1px; /* Adjust this value to position the icon as needed */
+    cursor: pointer;
+  }
+  .bordered-image {
+    width: 30px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column; /* Set flex-direction to column for top to bottom layout */
+      align-items: center; /* Center items horizontally */
+      justify-content: center; /* Center items vertically */
+      height: 100px; /* Adjust height as needed */
+    }
+    
+    .nav-link {
+      text-decoration: none;
+      color: inherit;
+    }
+    

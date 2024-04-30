@@ -1,0 +1,58 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+ .right-side{
+    margin-left: 15rem;
+ } 
+  
+  .popup-content {
+    /* Add styles for popup content */
+    width: 27rem;
+  }
+  .bordered-image {
+    width: 30px;
+    }
+ .hashtag{
+    color: rgb(4, 0, 255);
+ }
+ .setText{
+    margin-left: 18px;
+    margin-top: 20px;
+    padding: 2px;
+}
+.setAnyOne{
+    margin-top: -31px;
+    margin-left: 45px;
+}
+.languageIcon{
+    margin-top: -4px;
+}
+.setText {
+    display: flex;
+    align-items: center;
+  }
+  
+  .icon-container {
+    margin-right: 10px; /* Adjust margin as needed */
+  }
+  
+  .text-container {
+    /* Add styles as needed */
+    margin-top: -12px;
+  }
+  

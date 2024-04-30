@@ -1,0 +1,22 @@
+.bordered-image {
+    width: 30px;
+}
+
+
+.setText {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    margin-top: 20px;
+    padding: 2px;
+    margin-bottom: 10px;
+
+}
+
+.setText mat-icon {
+    margin-right: 5px;
+
+}
+.card{
+    margin-bottom: 40px;
+}

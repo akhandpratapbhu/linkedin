@@ -1,0 +1,58 @@
+
+
+<div class="main">
+    <div *ngIf="loading" class="loader-overlay">
+        <p style="color: aliceblue;">loader running ...</p>
+        <mat-spinner></mat-spinner>
+      <!-- <mat-spinner mode="indeterminate" [diameter]="70"></mat-spinner> -->
+    </div>
+    <div class="logo">
+      <img src="../../../assets/img/OIP.jpg" alt="" />
+    </div>
+    <div class="right">
+      <div class="head1">Linkedin</div>
+      <div class="head2">Please Login To Your Account</div>
+  
+      <form [formGroup]="loginForm">
+        
+        <div class="form-field">
+          
+          <mat-icon class="icon">person</mat-icon>
+  
+          <input placeholder="Username" formControlName="tokenNo" autocomplete="off" required />
+       
+        </div>
+  
+        <div class="form-field">
+          <mat-icon class="icon">lock</mat-icon>
+          <input [type]="hide ? 'password' : 'text'" formControlName="password" placeholder="Password" autocomplete="off"
+            required />
+          <div style="margin-bottom: 4px;" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide" class="passwordToogle">
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </div>
+        </div>
+  
+        <div class="captcha">
+          <div class="c-left">
+            <div class="captcha-text">
+              <span>{{ captcha }}</span>
+            </div>
+  
+            <mat-icon (click)="generateCaptcha()">cached</mat-icon>
+          </div>
+          <input placeholder="Captcha Code" [(ngModel)]="captchaInp" [ngModelOptions]="{standalone: true}"
+            class="captchaField" />
+        </div>
+        
+        <button class="submit" mat-raised-button color="warn" (click)="onSubmit()" [disabled]="loading">
+          <span *ngIf="loading">Logging in...</span>
+        
+          <span *ngIf="!loading">Login</span>
+        </button>
+      </form>
+  
+        <p (click)="NavigateToRegister()" style="cursor: pointer; color: rgb(0, 60, 255);">Register new user to LinkedIn</p>
+      
+          </div>
+  </div>

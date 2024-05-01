@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Original+Surfer&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+/* Your existing styles */
+.main {
+  display: flex;
+  justify-content: flex-end;
+  height: 100vh;
+  padding: 0vh 10vw;
+  align-items: center;
+  position: relative;
+  font-family: 'Original Surfer', sans-serif;
+}
+
+.loader-overlay {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 9999; /* Ensure the loader is on top of other content */
+}
+  .main::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(../../../assets/img/loginbg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: blur(1px); /* Adjust the blur amount */
+    opacity: 0.98; /* Adjust the opacity */
+    z-index: -1;
+  }
+  .main:after {
+    background: rgba(0,0,0,0.4);
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    top: 0;
+    content: "";
+    width: 100%;
+  }
+
+.right {
+ 
+  z-index: 999999;
+  background: rgba(255,255,255,0.8);
+  padding: 50px;
+  border-radius: 20px;
+}
+
+  .main .left {
+    width: 30%;
+    padding: 40px;
+    margin-left: 40px;
+    background-size: cover;
+  }
+  .main .left img {
+    width: 100%;
+    margin: auto;
+  }
+  .main .right {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+    .main .right .head1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 38px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      color: #000;
+    }
+    .main .right .head2 {
+      color: #000;
+      text-align: center;
+      font-size: 24px;
+      font-family: 'Roboto', sans-serif;
+      margin-bottom: 25px;
+      color: #000;
+    }
+  .main .right form {
+    display: flex;
+    flex-direction: column;
+  }
+  .main .right .form-field {
+    width: 320px;
+    height: 40px;
+    background-color: #fff;
+    margin: 3px 12px;
+    position: relative;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+    align-items: center;
+    overflow: hidden;
+    background: #fff;
+  }
+    .main .right .form-field input {
+      height: 100%;
+      width: 100%;
+      padding: 0px;
+      margin: 0px;
+      padding-left: 30px;
+      border: none;
+      font-size: 16px;
+    }
+  .main .right .form-field input::placeholder {
+    color: #888;
+    font-family: "Poppins";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+  }
+  .main .right .form-field input:focus-visible {
+    outline: none;
+  }
+  .main .right .form-field .passwordToogle {
+    position: absolute;
+    right: 8px;
+    font-size: 20px;
+    bottom: -6px;
+    color: gray;
+  }
+  .main .right .form-field .icon {
+    position: absolute;
+    left: 6px;
+    top: 9px;
+    font-size: 20px;
+    color: #029e02;
+  }
+  .main .right .captcha {
+    display: flex;
+    justify-content: space-between;
+    margin: 12px;
+    margin-bottom: 15px;
+  }
+  .main .right .captcha .c-left {
+    display: flex;
+    align-items: center;
+  }
+  .main .right .captcha .c-left .captcha-text {
+    border-radius: 3px;
+    padding: 1px 7px;
+    border: 0.5px solid gray;
+    width: 120px;
+    background-image: url(../../../assets/img/captcha.jpg);
+    background-size: cover;
+    pointer-events: none;
+    user-select: none;
+  }
+  .main .right .captcha .c-left .captcha-text span {
+    display: block;
+    font-family: "Comic Sans MS", cursive;
+    font-size: 20px;
+    letter-spacing: 4px;
+    color: #f00;
+    text-shadow: -1px -1px 1px #000;
+    transform: rotate(-3deg);
+  }
+    .main .right .captcha .captchaField {
+      width: 150px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  .main .right .submit {
+    margin: 12px auto;
+    background: #008031;
+    color: white;
+    width: 60%;
+    height: 40px;
+    font-weight: bold;
+    padding: 5px auto;
+  }
+.main .logo {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  height: 80px;
+  z-index: 999;
+  pointer-events: none;
+}
+  .main .logo img {
+    height: 100%;
+  }
+  @media screen and (max-width: 900px) {
+    .logo {
+      display: none;
+    }
+  }
+.locked{
+  color: red;
+  font-size: 25px;
+  padding: 40px;
+}

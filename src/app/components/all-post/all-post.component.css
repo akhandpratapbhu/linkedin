@@ -20,3 +20,8 @@
 .card{
     margin-bottom: 15px;
 }
+.post-container {
+    height: 400px; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrollbar */
+  }
+  

@@ -17,9 +17,9 @@
         
         <div class="form-field">
           
-          <mat-icon class="icon">person</mat-icon>
+          <mat-icon class="icon">mail</mat-icon>
   
-          <input placeholder="Username" formControlName="tokenNo" autocomplete="off" required />
+          <input placeholder="Email ..." formControlName="email" autocomplete="off" required />
        
         </div>
   
@@ -33,7 +33,7 @@
         </div>
         </div>
   
-        <div class="captcha">
+        <!-- <div class="captcha">
           <div class="c-left">
             <div class="captcha-text">
               <span>{{ captcha }}</span>
@@ -43,8 +43,8 @@
           </div>
           <input placeholder="Captcha Code" [(ngModel)]="captchaInp" [ngModelOptions]="{standalone: true}"
             class="captchaField" />
-        </div>
-        
+        </div> -->
+        <div   id="your-recaptcha-container-id" class="g-recaptcha captcha" data-sitekey="6LfZJs4pAAAAADyW-fE1-nomT3WPIjNDF9ZMReWp"></div><br>  
         <button class="submit" mat-raised-button color="warn" (click)="onSubmit()" [disabled]="loading">
           <span *ngIf="loading">Logging in...</span>
         

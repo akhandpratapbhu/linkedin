@@ -37,7 +37,7 @@ export class SignUpComponent implements OnInit {
    
   ) {
     this.signUpForm = new FormGroup({
-      tokenNo: new FormControl('', [
+      username: new FormControl('', [
         Validators.required,
       ]),
       email: new FormControl('', [
@@ -49,7 +49,6 @@ export class SignUpComponent implements OnInit {
       password: new FormControl('', [Validators.required]),
     });
   }
-  
 
 
   ngOnInit(): void {
@@ -69,7 +68,7 @@ export class SignUpComponent implements OnInit {
     if (this.signUpForm.valid) {
 
       const userData = {
-       userid: (this.signUpForm.value.tokenNo),
+       username: (this.signUpForm.value.username),
        email: (this.signUpForm.value.email),
        phoneNumber: (this.signUpForm.value.phoneNumber),
        password:(this.signUpForm.value.password),
@@ -82,7 +81,7 @@ export class SignUpComponent implements OnInit {
           
           this.loading = false;
           this.toastr.success(res.message);
-          this.router.navigate(["/dashboard"]);
+          this.router.navigate([""]);
         
       },
         (error:any) => {

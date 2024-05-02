@@ -4,10 +4,10 @@
         <div class="col-lg-3"style="margin-top:-50px">
             <div class="card">
 
-                <div class="card-body">
+                <div class="card-body" [ngClass]="{'admin-background': role === 'admin\n'}">
                     <div><img src="../../../assets/img/download.jpg" class=" left-image" alt="...">
                     </div>
-                    <h5 class="card-title">Akhand</h5>
+                    <h5 class="card-title">{{userName}}</h5>
                     <p class="card-text">Full stack-developer</p>
                     <hr>
                     <div class="card-text">

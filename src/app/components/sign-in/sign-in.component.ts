@@ -4,17 +4,17 @@ import { Router } from '@angular/router';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth.service';
 import { MatIconModule } from '@angular/material/icon';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [ToastrModule,MatIconModule,ReactiveFormsModule,FormsModule,MatProgressSpinnerModule,CommonModule],
+  imports: [ToastrModule, MatIconModule, ReactiveFormsModule, FormsModule, MatProgressSpinnerModule, CommonModule],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
   providers: [
-    ToastrService,AuthService
+    ToastrService, AuthService
   ]
 })
 
@@ -25,21 +25,21 @@ export class SignInComponent implements OnInit {
   captcha = ''
   captchaInp = ''
   user = '';
-  userId!:string;
-  captchaToken!:string;
+  userId!: string;
+  captchaToken!: string;
   action = 'homepage';
 
   token!: undefined;
 
-  
+
   constructor(
     private router: Router,
     private toastr: ToastrService,
-    private authService:AuthService
-   
+    private authService: AuthService
+
   ) {
     this.loginForm = new FormGroup({
-      tokenNo: new FormControl('', [
+      email: new FormControl('', [
         Validators.required,
       ]),
       password: new FormControl('', [Validators.required]),
@@ -47,55 +47,62 @@ export class SignInComponent implements OnInit {
   }
 
 
-
+  recaptchaWidgetId: number | undefined;
   ngOnInit(): void {
-  
-
+    this.recaptchaWidgetId = grecaptcha.render('your-recaptcha-container-id', {
+      'sitekey': '6LfZJs4pAAAAADyW-fE1-nomT3WPIjNDF9ZMReWp'
+    });
+    this.reloadRecaptcha();
     if (this.user) {
       this.router.navigate(['/dashboard']);
 
     }
-   this.generateCaptcha()
+    this.generateCaptcha()
   }
-  
+  reloadRecaptcha() {
+    // Reset reCAPTCHA widget
+    grecaptcha.reset(this.recaptchaWidgetId);
+  }
   onSubmit(): void {
     this.loading = true;
-     if(!this.captchaInp){
-     this.toastr.warning("Please Enter The Captcha");
-      this.generateCaptcha();
-      this.loading = false;
+    const reCaptchaResponse = grecaptcha.getResponse();
 
-      return;
-    }
-    else if (this.captcha !== this.captchaInp) {
-      this.toastr.error("Invalid Captcha");
-      this.generateCaptcha();
-      this.loading = false;
+    //  if(!this.captchaInp){
+    //  this.toastr.warning("Please Enter The Captcha");
+    //   this.generateCaptcha();
+    //   this.loading = false;
 
-       return;
-     }
-  // const sanitizedInput = this.captchaInp.replace(/\s/g, '');
+    //   return;
+    // }
+    // else if (this.captcha !== this.captchaInp) {
+    //   this.toastr.error("Invalid Captcha");
+    //   this.generateCaptcha();
+    //   this.loading = false;
+
+    //    return;
+    //  }
+    // const sanitizedInput = this.captchaInp.replace(/\s/g, '');
     if (this.loginForm.valid) {
 
       const userData = {
-       userid: (this.loginForm.value.tokenNo),
-       password:(this.loginForm.value.password),
-       
+        email: (this.loginForm.value.email),
+        password: (this.loginForm.value.password),
+        captcha:reCaptchaResponse
       }
 
 
       this.authService.signIn(userData).subscribe((res: any) => {
-        console.log("res",res);
-          
-          this.loading = false;
-          this.toastr.success(res.message);
-          this.router.navigate(["/dashboard"]);
-        
+        console.log("res", res);
+         localStorage.setItem('token',res.token)
+        this.loading = false;
+        this.toastr.success("login successfully");
+        this.router.navigate(["dashboard"]);
+
       },
-        (error:any) => {
-          console.log("error",error);
-          
-          this.toastr.error(error.error);
+        (error: any) => {
+          console.log("error", error);
+
+          this.toastr.error(error.message);
           this.loading = false;
           this.generateCaptcha()
 
@@ -110,7 +117,7 @@ export class SignInComponent implements OnInit {
     }
 
   }
-  NavigateToRegister(){
+  NavigateToRegister() {
     this.router.navigate(["/register"]);
   }
   generateCaptcha(length = 6) {

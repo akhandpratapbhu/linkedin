@@ -12,5 +12,12 @@
 .card-text{
   display: flex;
 }
+.admin-background {
+
+  background-image: url(../../../assets/img/pngtree-gold-color-award-ribbon-batch-logo-icon-vector-graphic-designing-for-png-image_7107908.png);
+  background-size: 80px 80px; /* Adjust the size as per your requirement */
+  background-repeat: no-repeat;
+  background-position: top right; 
+}
 
      

@@ -6,16 +6,19 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
+  isLoggedIn(): boolean {
 
-  signIn(payload:any){
-    console.log("payload",payload);
-    
-   return this.http.post('http://localhost:3000/api/feed',payload)
+    return !!localStorage.getItem('token');
   }
-  signUp(payload:any){
-    console.log("payload",payload);
-    
-   return this.http.post('http://localhost:3000/api/feed',payload)
+  signIn(payload: any) {
+    console.log("payload", payload);
+
+    return this.http.post('http://localhost:3000/api/auth/login', payload)
+  }
+  signUp(payload: any) {
+    console.log("payload", payload);
+
+    return this.http.post('http://localhost:3000/api/auth/register', payload)
   }
 }

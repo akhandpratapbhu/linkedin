@@ -20,4 +20,6 @@
   background-position: top right; 
 }
 
-     
+::ng-deep .card{
+  position: static!important;
+ }    

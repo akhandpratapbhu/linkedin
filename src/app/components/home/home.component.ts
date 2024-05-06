@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { StartPostComponent } from '../start-post/start-post.component';
 import { AdvertisingComponent } from '../advertising/advertising.component';

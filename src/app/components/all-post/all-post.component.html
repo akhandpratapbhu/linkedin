@@ -1,6 +1,7 @@
 
 <div  class="post-container">
-    @for (post of allPost; track post.id) {
+  this is the length   {{allPost.length}}
+    @for (post of allPost.slice().reverse(); track post.id) {
         <div class="card ">
             <div class="card-body">
                 <form class="d-flex">

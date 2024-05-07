@@ -26,4 +26,23 @@ export class PostService {
     
     return this.http.post('http://localhost:3000/api/feed',payload,httpOptions)
    }
+   findPostById(id:string){
+   
+     const httpOptions = {
+       headers: new HttpHeaders({
+         'Authorization': 'Bearer ' + this.token
+       })
+     };
+     return this.http.get(`http://localhost:3000/api/feed/${id}`,httpOptions)
+    }
+   editPost(id:string,body:any){
+   // http://localhost:3000/api/feed/7
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + this.token
+      })
+    };
+    
+    return this.http.put(`http://localhost:3000/api/feed/${id}`,body,httpOptions)
+   }
 }

@@ -24,4 +24,10 @@
     height: 400px; /* Set a fixed height */
     overflow-y: auto; /* Enable vertical scrollbar */
   }
-  
+  .icon-group {
+    display: flex;
+    align-items: center;
+}
+.setUsername{
+    margin-right:28rem;
+}

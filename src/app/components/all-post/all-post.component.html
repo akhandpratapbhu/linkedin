@@ -1,13 +1,16 @@
 
 <div  class="post-container">
-  this is the length   {{allPost.length}}
+
     @for (post of allPost.slice().reverse(); track post.id) {
         <div class="card ">
             <div class="card-body">
-                <form class="d-flex">
+                <form class="d-flex  justify-content-between">
                     <img src="../../../assets/img/download.jpg" class="card-img-top bordered-image" alt="image">
-                    <h5 class="card-title">{{userName}}</h5>
-                   
+                    <h5 class="card-title setUsername">{{userName}}</h5>
+                    <div class="icon-group">
+                        <mat-icon style="color: aqua;"(click)="editPost(post.id)">edit</mat-icon>
+                        <mat-icon style="color: brown;"(click)="deletePost(post.id)">delete_forever</mat-icon>
+                    </div>
                 </form>
                 <p class="card-text"style="margin-left: 30px;
                 margin-top: -9px;">Full stack-developer</p>

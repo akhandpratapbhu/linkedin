@@ -9,18 +9,18 @@ import { jwtDecode } from 'jwt-decode';
   imports: [MatIconModule],
   templateUrl: './all-post.component.html',
   styleUrl: './all-post.component.css',
-  providers:[]
-  
+  providers: []
+
 })
 export class AllPostComponent implements OnInit {
   token: string = '';
-  userName:string='';
-  allPost:any=[];
-  constructor(private postService:PostService,private cdr: ChangeDetectorRef){
+  userName: string = '';
+  allPost: any = [];
+  constructor(private postService: PostService, private cdr: ChangeDetectorRef) {
 
   }
   ngOnInit(): void {
-   
+
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode(token);
@@ -28,21 +28,33 @@ export class AllPostComponent implements OnInit {
     } else {
       console.error('Token not found in localStorage');
     }
-  // this.loadPosts();
-   this.postService.update.subscribe({
-    next : (data:boolean)=>{
-      console.log(data)
-      
-      this.loadPosts()
-    }
-   })
+    // this.loadPosts();
+    this.postService.update.subscribe({
+      next: (data: boolean) => {
+        console.log(data)
+
+        this.loadPosts()
+      }
+    })
   }
   loadPosts(): void {
     this.postService.getPost().subscribe(res => {
       this.allPost = res;
       this.cdr.detectChanges(); // Trigger change detection
       console.log(this.allPost);
-      
+
     });
+  }
+  editPost(id: string) {
+    console.log("edit", id);
+    this.postService.findPostById(id).subscribe(res => {
+      console.log("res", res);
+
+    })
+
+  }
+  deletePost(id: string) {
+    console.log("delete", id);
+
   }
 }

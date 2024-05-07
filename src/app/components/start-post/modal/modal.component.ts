@@ -1,37 +1,54 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon'
 import { PostService } from '../../../services/post.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
-import { AllPostComponent } from '../../all-post/all-post.component';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule,AllPostComponent],
+  imports: [CommonModule, FormsModule, MatIconModule,MatDialogModule],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css',
-  providers:[AllPostComponent]
+
 })
 export class ModalComponent {
-  @Input() isVisible: boolean = false;
-  constructor(private postService: PostService, private toastr: ToastrService, private router: Router,private allPostComponent:AllPostComponent) {
+  datamessage: string = "";
+  id:any
+  constructor(private postService: PostService, private toastr: ToastrService,
+    public dialogRef: MatDialogRef<ModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data:any
+  ) {
+console.log(data);
+if(data){
+  this.datamessage=data.message;
+  this.id=data.id;
+}
+
 
   }
   closePopup() {
-    this.isVisible = false;
-  }
-  onPost(message: string) {
+    this.dialogRef.close();
+   }
+  onPost() {
     const postMessage = {
-      body: message
+      body: this.datamessage
     }
     console.log("form post", postMessage);
-    this.postService.feedPost(postMessage).subscribe(res => {
-      this.toastr.success("message post successfully");
-     // this.router.navigate(['dashboard'])
-     this.postService.update.next(true)
-     this.isVisible = false;
-    });
+    if(!this.id){
+      this.postService.feedPost(postMessage).subscribe(res => {
+        this.toastr.success("message post successfully");
+       this.postService.update.next(true)
+       this.dialogRef.close();
+      });
+    }else{
+      this.postService.editPost(this.id,postMessage).subscribe(res => {
+        this.toastr.success("message updated successfully");
+       this.postService.update.next(true)
+       this.dialogRef.close();
+      });
+    }
+  
   }
 }

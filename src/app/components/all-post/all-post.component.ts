@@ -2,21 +2,25 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PostService } from '../../services/post.service';
 import { MatIconModule } from '@angular/material/icon';
 import { jwtDecode } from 'jwt-decode';
+import {
+  MatDialog,
+} from '@angular/material/dialog';
+import { ModalComponent } from '../start-post/modal/modal.component';
 
 @Component({
   selector: 'app-all-post',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, ModalComponent],
   templateUrl: './all-post.component.html',
   styleUrl: './all-post.component.css',
-  providers: []
 
 })
 export class AllPostComponent implements OnInit {
   token: string = '';
   userName: string = '';
   allPost: any = [];
-  constructor(private postService: PostService, private cdr: ChangeDetectorRef) {
+  message: any;
+  constructor(private postService: PostService, private cdr: ChangeDetectorRef, public dialog: MatDialog) {
 
   }
   ngOnInit(): void {
@@ -46,10 +50,10 @@ export class AllPostComponent implements OnInit {
     });
   }
   editPost(id: string) {
-    console.log("edit", id);
-    this.postService.findPostById(id).subscribe(res => {
-      console.log("res", res);
-
+    
+   this.postService.findPostById(id).subscribe((res:any) => {
+      this.message = res[0]?.body; 
+     this. openDialog(id);
     })
 
   }
@@ -57,4 +61,17 @@ export class AllPostComponent implements OnInit {
     console.log("delete", id);
 
   }
+  openDialog(id: string) {
+   
+    console.log(this.message );
+    this.dialog.open(ModalComponent, {
+      data:{message:this.message,id:id},
+      width: '350px',
+      height: '250px'
+    }).afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 }
+
+

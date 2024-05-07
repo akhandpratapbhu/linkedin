@@ -1,4 +1,4 @@
-<div class="popup-overlay" *ngIf="isVisible">
+<div class="popup-overlay" >
     <div class="popup">
 
         <div class="popup-content">
@@ -32,8 +32,8 @@
                         </div>
                     </div>
 
-                    <textarea class="form-control is-invalid" id="validationTextarea" style="margin-top:10px" #messageRef
-                        placeholder=" What do you want to talk about..." required></textarea>
+                    <textarea class="form-control is-invalid" id="validationTextarea" style="margin-top:10px" 
+                        placeholder=" What do you want to talk about..." required  [(ngModel)]="datamessage"name="datamessage"></textarea>
                     <div class="invalid-feedback">
                         <p class="hashtag">Add hashtag</p>
                     </div>
@@ -50,7 +50,7 @@
                             <div class="text-container">AnyOne</div>
                           </div>
                           
-                        <button class="setText" (click)="onPost(messageRef.value)"
+                        <button class="setText" (click)="onPost()"
                             style="background-color: rgb(0, 119, 255);height: 40px;width: 70px; margin-left: 20px;color: aliceblue;">Post<mat-icon>send</mat-icon></button>
                     </div>
                 </div>

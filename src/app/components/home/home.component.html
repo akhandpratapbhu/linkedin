@@ -2,31 +2,7 @@
 <div class="container">
     <div class="row" >
         <div class="col-lg-3"style="margin-top:-50px">
-            <div class="card">
-
-                <div class="card-body" [ngClass]="{'admin-background': role === 'admin'}">
-                    <div><img src="../../../assets/img/download.jpg" class=" left-image" alt="...">
-                    </div>
-                    <h5 class="card-title">{{userName}}</h5>
-                    <p class="card-text">Full stack-developer</p>
-                    <hr>
-                    <div class="card-text">
-                        <div class="textfield">
-                            who viewed your profile :
-                        </div>
-                        <div class="numberfield" style="color:blue; margin-right:5px"><span>746</span>
-                        </div>
-                    </div>
-                    <div class="card-text">
-                        <div class="textfield">
-                            connection :
-                        </div>
-                        <div class="numberfield" style="color:green;margin-right:5px"><span>500</span>
-                        </div> 
-                    </div>
-                    <p class="card-text">Manage your network</p>
-                </div>
-            </div>
+           <app-profile-summary></app-profile-summary>
         </div>
         <div class="col-lg-6"style="margin-top:-50px">
             <app-start-post></app-start-post>

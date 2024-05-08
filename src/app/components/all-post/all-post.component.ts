@@ -59,11 +59,15 @@ export class AllPostComponent implements OnInit {
 
   }
   deletePost(id: string) {
-    console.log("delete", id);
-    this.postService.deletePostById(id).subscribe((res:any) => {
+    
+    this.postService.deletePostById(id).subscribe({
+      next:(res:any) => {
       console.log(res);
+      this.toastr.success("message deleted successfully");
       this.postService.update.next(true)
-    })
+    },error:error=>{
+      this.toastr.error("message error occured",error.message);
+    }})
   }
   deleteDialog(id: string) {
    
@@ -75,7 +79,6 @@ export class AllPostComponent implements OnInit {
      
       if(result){
        this.deletePost(id);
-       this.toastr.success("message deleted successfully");
       }else{
         this.toastr.warning('Delete canceled');
       }

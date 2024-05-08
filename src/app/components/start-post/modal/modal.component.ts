@@ -37,17 +37,30 @@ export class ModalComponent {
     }
     console.log("form post", postMessage);
     if (!this.id) {
-      this.postService.feedPost(postMessage).subscribe(res => {
-        this.toastr.success("message post successfully");
-        this.postService.update.next(true)
-        this.dialogRef.close();
+      this.postService.feedPost(postMessage).subscribe({
+        next: (res) => {
+          // Success case
+          this.toastr.success("Message posted successfully");
+          this.postService.update.next(true);
+          this.dialogRef.close();
+        },
+        error: (error) => {
+          // Error case
+          console.error("An error occurred while posting the message:", error);
+          this.toastr.error("Failed to post message. Please try again later.",error.message);
+        }
       });
+      
     } else {
-      this.postService.editPost(this.id, postMessage).subscribe(res => {
+      this.postService.editPost(this.id, postMessage).subscribe({
+        next:res => {
         this.toastr.success("message updated successfully");
         this.postService.update.next(true)
         this.dialogRef.close();
-      });
+      },error:error=>{
+        console.error("An error occurred while updating the message:", error);
+        this.toastr.error("Failed to update message. Please try again later.",error.message);
+      }});
     }
 
   }

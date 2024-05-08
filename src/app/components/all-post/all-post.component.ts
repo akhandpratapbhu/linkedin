@@ -6,6 +6,8 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 import { ModalComponent } from '../start-post/modal/modal.component';
+import { DeleteComfimationComponent } from '../shared/delete-comfimation/delete-comfimation.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-all-post',
@@ -20,7 +22,7 @@ export class AllPostComponent implements OnInit {
   userName: string = '';
   allPost: any = [];
   message: any;
-  constructor(private postService: PostService, private cdr: ChangeDetectorRef, public dialog: MatDialog) {
+  constructor(private postService: PostService, public dialog: MatDialog, private toastr: ToastrService) {
 
   }
   ngOnInit(): void {
@@ -32,7 +34,7 @@ export class AllPostComponent implements OnInit {
     } else {
       console.error('Token not found in localStorage');
     }
-    // this.loadPosts();
+  
     this.postService.update.subscribe({
       next: (data: boolean) => {
         console.log(data)
@@ -44,7 +46,6 @@ export class AllPostComponent implements OnInit {
   loadPosts(): void {
     this.postService.getPost().subscribe(res => {
       this.allPost = res;
-      this.cdr.detectChanges(); // Trigger change detection
       console.log(this.allPost);
 
     });
@@ -59,7 +60,26 @@ export class AllPostComponent implements OnInit {
   }
   deletePost(id: string) {
     console.log("delete", id);
-
+    this.postService.deletePostById(id).subscribe((res:any) => {
+      console.log(res);
+      this.postService.update.next(true)
+    })
+  }
+  deleteDialog(id: string) {
+   
+    this.dialog.open(DeleteComfimationComponent, {
+      data:{id:id},
+      width: '350px',
+      height: '250px'
+    }).afterClosed().subscribe(result => {
+     
+      if(result){
+       this.deletePost(id);
+       this.toastr.success("message deleted successfully");
+      }else{
+        this.toastr.warning('Delete canceled');
+      }
+    });
   }
   openDialog(id: string) {
    

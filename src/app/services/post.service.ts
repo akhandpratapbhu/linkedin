@@ -45,4 +45,13 @@ export class PostService {
     
     return this.http.put(`http://localhost:3000/api/feed/${id}`,body,httpOptions)
    }
+   deletePostById(id:string){
+   
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + this.token
+      })
+    };
+    return this.http.delete(`http://localhost:3000/api/feed/${id}`,httpOptions)
+   }
 }

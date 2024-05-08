@@ -8,47 +8,47 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule,MatDialogModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatDialogModule],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css',
 
 })
 export class ModalComponent {
   datamessage: string = "";
-  id:any
+  id: any
   constructor(private postService: PostService, private toastr: ToastrService,
     public dialogRef: MatDialogRef<ModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-console.log(data);
-if(data){
-  this.datamessage=data.message;
-  this.id=data.id;
-}
+
+    if (data) {
+      this.datamessage = data.message;
+      this.id = data.id;
+    }
 
 
   }
   closePopup() {
     this.dialogRef.close();
-   }
+  }
   onPost() {
     const postMessage = {
       body: this.datamessage
     }
     console.log("form post", postMessage);
-    if(!this.id){
+    if (!this.id) {
       this.postService.feedPost(postMessage).subscribe(res => {
         this.toastr.success("message post successfully");
-       this.postService.update.next(true)
-       this.dialogRef.close();
+        this.postService.update.next(true)
+        this.dialogRef.close();
       });
-    }else{
-      this.postService.editPost(this.id,postMessage).subscribe(res => {
+    } else {
+      this.postService.editPost(this.id, postMessage).subscribe(res => {
         this.toastr.success("message updated successfully");
-       this.postService.update.next(true)
-       this.dialogRef.close();
+        this.postService.update.next(true)
+        this.dialogRef.close();
       });
     }
-  
+
   }
 }

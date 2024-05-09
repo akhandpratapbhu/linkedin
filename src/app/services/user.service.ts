@@ -13,7 +13,7 @@ export class UserService {
   }
 
   uploadUserImage(body:any){
-    // http://localhost:3000/api/feed/7
+
      const httpOptions = {
        headers: new HttpHeaders({
          'Authorization': 'Bearer ' + this.token
@@ -21,5 +21,13 @@ export class UserService {
      };
      
      return this.http.post(`http://localhost:3000/api/user/upload`,body,httpOptions)
+    }
+    getProfileImageUrl(){
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': 'Bearer ' + this.token
+        })
+      };
+      return this.http.get(`http://localhost:3000/api/user/image/4`)
     }
 }

@@ -30,11 +30,11 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  SignOut(): void {
+  SignOut() {
 
     console.log('Signing out...');
     localStorage.clear();
     this.toastr.success("user login out successfully...");
-    this.router.navigate(["dashboard"]);
+    this.router.navigate([""]);
   }
 }

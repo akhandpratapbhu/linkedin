@@ -16,6 +16,7 @@ export class ProfileSummaryComponent {
   token: string = '';
   userName:string='';
   role:string='';
+  imageUrl:string | undefined;
   form!:FormGroup
   constructor(private fb: FormBuilder,private userService:UserService,private toastr: ToastrService,) {
     this.form = this.fb.group({
@@ -34,11 +35,12 @@ export class ProfileSummaryComponent {
     } else {
       console.error('Token not found in localStorage');
     }
+    this.loadProfileImage();
   }
   onfileselect(event:Event){
    // const file:File=(event.target as HTMLInputElement).files;
    const file = (event.target as HTMLInputElement).files?.[0];
-   console.log(file);
+  // console.log(file);
    
    if (file) {
      // Check file type
@@ -57,24 +59,39 @@ export class ProfileSummaryComponent {
        return;
      }
 this.form.patchValue({
-  image:file.name
+  image:file
 })
     
   }
   this.updateProfileImage()
 }
 updateProfileImage(){
-    console.log(this.form.value);
-    
-    this.userService.uploadUserImage(this.form.value).subscribe({
+   // console.log(this.form.value);
+   const formData = new FormData();
+    formData.append('file', this.form.get('image')?.value);
+   //console.log(formData);
+  
+    this.userService.uploadUserImage(formData).subscribe({
       next:(res:any) => {
       console.log(res);
       this.toastr.success("uploaded image successfully");
+      this.loadProfileImage();
       this.userService.update.next(true)
+
     },error:error=>{
       this.toastr.error("message error occured",error.message);
     }})
   
+}
+loadProfileImage(): void {
+  this.userService.getProfileImageUrl().subscribe(
+    (imageUrl:any) => { 
+      this.imageUrl = 'http://localhost:3000/api/user/image/4';
+    },
+    (error) => {
+      console.error('Error loading profile image:', error);
+    }
+  );
 }
 getErrorMessage(controlName: string): string {
   const control = this.form.get(controlName);

@@ -3,7 +3,7 @@
     <div class="card-body" [ngClass]="{'admin-background': role === 'admin'}">
         <div>
             <input type="file" #fileUpload (change)="onfileselect($event)" style="display: none;"/>
-            <img src="../../../assets/img/download.jpg"  (click)="fileUpload.click()"style="cursor:pointer" class=" left-image" alt="...">
+            <img [src]="imageUrl" alt="Profile Image"  (click)="fileUpload.click()"style="cursor:pointer" class=" left-image" alt="...">
             <div class="error">
                 {{ getErrorMessage("image") }}
               </div>

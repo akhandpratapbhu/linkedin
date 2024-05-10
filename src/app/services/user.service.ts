@@ -30,4 +30,12 @@ export class UserService {
       };
       return this.http.get(`http://localhost:3000/api/user/image/4`)
     }
+    getDefaultfullImagePath(){
+      return 'http://localhost:3000/api/feed/image/download.png'
+    }
+    getfullImagePath(imageName:any){
+      console.log(imageName);
+      
+      return `http://localhost:3000/api/feed/image/${imageName}`
+    }
 }

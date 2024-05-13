@@ -1,12 +1,14 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  constructor(private http: HttpClient) { }
+  token: string | null;
+  constructor(private http: HttpClient) { 
+    this.token = localStorage.getItem('token');
+  }
   isLoggedIn(): boolean {
 
     return !!localStorage.getItem('token');
@@ -21,4 +23,7 @@ export class AuthService {
 
     return this.http.post('http://localhost:3000/api/auth/register', payload)
   }
+
+ 
+  
 }

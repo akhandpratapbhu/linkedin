@@ -4,16 +4,16 @@
         <div class="popup-content">
             <!-- Add your popup content here -->
             <div class="d-flex">
-                <h5>Create a post</h5>
+                <h5>{{changeHeaderName}}</h5>
                 <button (click)="closePopup()" class="close-btn right-side">&times;</button>
             </div>
             <hr>
             <form  class="was-validated">
                 <div class="mb-3">
                     <div class="d-flex">
-                        <img src="../../../assets/img/download.jpg" class="card-img-top bordered-image" alt="image">
+                        <img [src]="imageUrl" class="card-img-top bordered-image" alt="image">
                         <div>
-                            <p style="margin-left: 20px;">Akhand</p>
+                            <p style="margin-left: 20px;">{{userName}}</p>
                             <div class="form-control "
                                 style="border-radius: 20px; width: 160px;height: 30px;margin-left: 5px;">
                                 <div class="languageIcon"> <mat-icon>language</mat-icon></div>

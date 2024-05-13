@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -8,8 +9,14 @@ import { BehaviorSubject } from 'rxjs';
 export class UserService {
   update : BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true) 
   token: string | null;
+  id:any;
   constructor(private http:HttpClient,) { 
     this.token = localStorage.getItem('token');
+    
+    if (this.token) {
+      const decoded = jwtDecode(this.token);
+      this.id = (decoded as any).id;
+    }
   }
 
   uploadUserImage(body:any){
@@ -28,13 +35,21 @@ export class UserService {
           'Authorization': 'Bearer ' + this.token
         })
       };
-      return this.http.get(`http://localhost:3000/api/user/image/4`)
+      return this.http.get(`http://localhost:3000/api/user/image/${this.id}`)
+    }
+    
+    getProfileImageName(){
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': 'Bearer ' + this.token
+        })
+      };
+      return this.http.get(`http://localhost:3000/api/user/image-name/${this.id}`,httpOptions)
     }
     getDefaultfullImagePath(){
-      return 'http://localhost:3000/api/feed/image/download.png'
+      return 'http://localhost:3000/api/feed/image/user.png'
     }
     getfullImagePath(imageName:any){
-      console.log(imageName);
       
       return `http://localhost:3000/api/feed/image/${imageName}`
     }

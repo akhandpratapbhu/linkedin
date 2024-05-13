@@ -5,11 +5,18 @@
         <div class="card ">
             <div class="card-body">
                 <form class="d-flex  justify-content-between">
-                    <img src="../../../assets/img/download.jpg" class="card-img-top bordered-image" alt="image">
-                    <h5 class="card-title setUsername">{{userName}}</h5>
-                    <div class="icon-group">
-                        <mat-icon style="color: aqua;"(click)="editPost(post.id)">edit</mat-icon>
-                        <mat-icon style="color: brown;"(click)="deleteDialog(post.id)">delete_forever</mat-icon>
+                    <img [src]="post.author.image ? 'http://localhost:3000/api/feed/image/' + post.author.image : 'http://localhost:3000/api/feed/image/user.png'" class="card-img-top bordered-image" alt="image">
+                    <h5 class="card-title setUsername">{{post.author.username}}</h5>
+                    <div class="icon-group" >
+                        @if(( post.author.role==role&& role!=='admin'&& post.author.id==id)){
+                            <mat-icon style="color: aqua;"(click)="editPost(post.id)">edit</mat-icon>
+                            <mat-icon style="color: brown;"(click)="deleteDialog(post.id)">delete_forever</mat-icon>
+                        }
+                        @if((  role=='admin')){
+                            <mat-icon style="color: aqua;"(click)="editPost(post.id)">edit</mat-icon>
+                            <mat-icon style="color: brown;"(click)="deleteDialog(post.id)">delete_forever</mat-icon>
+                        }
+                       
                     </div>
                 </form>
                 <p class="card-text"style="margin-left: 30px;

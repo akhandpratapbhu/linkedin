@@ -39,14 +39,20 @@
           <a class="nav-link" href="#">Notification</a>
         </li>
         <li class="nav-item dropdown">
-          <img src="../../../assets/img/download.jpg" class="card-img-top bordered-image" alt="image">
+          <img [src]="imageUrl" class="card-img-top bordered-image" alt="image">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{userName}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Image :Akhand</a></li>
+            <li><a class="dropdown-item" href="#">
+              <form class="d-flex">
+                <img [src]="imageUrl" class="card-img-top bordered-image" alt="image">
+              <span>Akhand</span>
+                  
+            </form>
+            </a></li>
             <li><a class="dropdown-item" href="#">Full-stack-developer</a></li>
-            <li><button >View Profile</button></li>
+            <li><button style="width: 200px;color: aqua; border-color: aquamarine;" >View Profile</button></li>
             <li><a class="dropdown-item" href="#">Account</a></li>
             <li><a class="dropdown-item" href="#">Setting and Privacy</a></li>
             <li><a class="dropdown-item" href="#">Help</a></li>

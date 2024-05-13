@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { jwtDecode } from 'jwt-decode';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../services/auth.service';
+import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-profile-summary',
@@ -16,10 +18,13 @@ export class ProfileSummaryComponent {
   token: string = '';
   userName: string = '';
   role: string = '';
-  imageUrl: string | undefined;
+  imageUrl: any;
   img!: string
   form!: FormGroup
-  constructor(private fb: FormBuilder, private userService: UserService, private toastr: ToastrService,) {
+  image: any;
+  
+  constructor(private fb: FormBuilder, private userService: UserService, private toastr: ToastrService,
+     private postService: PostService) {
     this.form = this.fb.group({
 
       image: [File, Validators.required],
@@ -32,12 +37,37 @@ export class ProfileSummaryComponent {
       this.role = (decoded as any).role;
       this.userName = (decoded as any).username;
 
-
     } else {
       console.error('Token not found in localStorage');
     }
-    this.loadProfileImage();
+    //  this.profilePicture();
+     this.loadProfileImage();
+    this.postService.imageUrl.subscribe(imageUrl => {
+      // Handle the emitted imageUrl here
+      if(imageUrl){
+        this.imageUrl = imageUrl;
+        console.log("this.imageUrl",this.imageUrl);
+      } 
+        else {
+          this.imageUrl = this.userService.getDefaultfullImagePath()
+        
+      }
+
+    });
+
   }
+  // profilePicture() {
+  //   this.userService.getProfileImageName().subscribe(res => {
+  //     if (res) {
+  //       this.image = res;
+  //       this.imageUrl = this.userService.getfullImagePath(this.image.image)
+
+  //     } else {
+  //       const defaultImgPath = 'user.png'
+  //       this.userService.uploadUserImage(defaultImgPath).subscribe()
+  //     }
+  //   })
+  // }
   onfileselect(event: Event) {
     // const file:File=(event.target as HTMLInputElement).files;
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -74,7 +104,6 @@ export class ProfileSummaryComponent {
 
     this.userService.uploadUserImage(formData).subscribe({
       next: (res: any) => {
-        console.log(res.img);
         this.img = res.img;
         this.toastr.success("uploaded image successfully");
 

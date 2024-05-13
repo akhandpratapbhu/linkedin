@@ -5,6 +5,8 @@ import { MatIconModule } from '@angular/material/icon'
 import { PostService } from '../../../services/post.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { UserService } from '../../../services/user.service';
+import { jwtDecode } from 'jwt-decode';
 @Component({
   selector: 'app-modal',
   standalone: true,
@@ -16,16 +18,39 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 export class ModalComponent {
   datamessage: string = "";
   id: any
-  constructor(private postService: PostService, private toastr: ToastrService,
+  userName!:string
+  imageUrl!:string;
+  changeHeaderName='Create a Post'
+  constructor(private postService: PostService, private toastr: ToastrService,private userService: UserService,
     public dialogRef: MatDialogRef<ModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded = jwtDecode(token);
+      this.userName = (decoded as any).username;
 
+    } else {
+      console.error('Token not found in localStorage');
+    }
     if (data) {
       this.datamessage = data.message;
       this.id = data.id;
+      this.userName=data.username
+      this.changeHeaderName='Update a Post'
     }
+    this.postService.imageUrl.subscribe(imageUrl => {
+      // Handle the emitted imageUrl here
+      if(imageUrl){
+        this.imageUrl = imageUrl;
+        console.log("this.imageUrl",this.imageUrl);
+      } 
+        else {
+          this.imageUrl = this.userService.getDefaultfullImagePath()
+        
+      }
 
+    });
 
   }
   closePopup() {

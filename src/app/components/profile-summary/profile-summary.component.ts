@@ -100,7 +100,7 @@ export class ProfileSummaryComponent {
     // console.log(this.form.value);
     const formData = new FormData();
     formData.append('file', this.form.get('image')?.value);
-    //console.log(formData);
+    console.log(this.form.get('image')?.value);
 
     this.userService.uploadUserImage(formData).subscribe({
       next: (res: any) => {

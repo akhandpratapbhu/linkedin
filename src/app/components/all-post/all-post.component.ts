@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-all-post',
   standalone: true,
-  imports: [MatIconModule, ModalComponent,CommonModule],
+  imports: [MatIconModule, ModalComponent, CommonModule],
   templateUrl: './all-post.component.html',
   styleUrl: './all-post.component.css',
 
@@ -24,10 +24,11 @@ export class AllPostComponent implements OnInit {
   userName: string = '';
   allPost: any = [];
   message: any;
-  imageUrl:any;
-  id:any;
-  role:any;
-  constructor(private postService: PostService,private userService:UserService ,public dialog: MatDialog, private toastr: ToastrService) {
+  imageUrl: any;
+  id: any;
+  role: any;
+  img: any
+  constructor(private postService: PostService, private userService: UserService, public dialog: MatDialog, private toastr: ToastrService) {
 
   }
   ngOnInit(): void {
@@ -36,22 +37,22 @@ export class AllPostComponent implements OnInit {
     if (token) {
       const decoded = jwtDecode(token);
       this.userName = (decoded as any).username;
-      this.id=(decoded as any).id
-      this.role=(decoded as any).role
+      this.id = (decoded as any).id
+      this.role = (decoded as any).role
       console.log(this.role);
-      
+
     } else {
       console.error('Token not found in localStorage');
     }
     this.postService.imageUrl.subscribe(imageUrl => {
       // Handle the emitted imageUrl here
-      if(imageUrl){
+      if (imageUrl) {
         this.imageUrl = imageUrl;
-        console.log("this.imageUrl",this.imageUrl);
-      } 
-        else {
-          this.imageUrl = this.userService.getDefaultfullImagePath()
-        
+        console.log("this.imageUrl", this.imageUrl);
+      }
+      else {
+        this.imageUrl = this.userService.getDefaultfullImagePath()
+
       }
 
     });
@@ -63,53 +64,102 @@ export class AllPostComponent implements OnInit {
       }
     })
   }
-  loadPosts(): void {
-    
-    
+  loadPosts() {
     this.postService.getPost().subscribe(res => {
       this.allPost = res;
+      console.log(this.allPost);
 
+      this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; }) => {
+        if (post.image) {
+            // Check if the image URL ends with a common image extension
+            const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+            const isImage = imageExtensions.some(ext => post.image.toLowerCase().endsWith(ext));
+    
+            // Check if the image URL ends with a common video extension
+            const videoExtensions = ['.mp4', '.avi', '.mov', '.mkv'];
+            const isVideo = videoExtensions.some(ext => post.image.toLowerCase().endsWith(ext));
+    
+            if (isImage) {
+                // It's an image
+                console.log('This is an image:', post.image);
+                post.isImage = true;
+                post.isVideo = false;
+                // You can then proceed with loading/displaying the image
+            } else if (isVideo) {
+                // It's a video
+                console.log('This is a video:', post.image);
+                post.isImage = false;
+                post.isVideo = true;
+                // You can then proceed with loading/displaying the video
+            } else {
+                // It's neither an image nor a video
+                console.log('This is neither an image nor a video:', post.image);
+                post.isImage = false;
+                post.isVideo = false;
+                // Handle accordingly
+            }
+            console.log(post.image);
+            post.imageUrl = this.loadfeedImage(post.image);
+            console.log("post.imageUrl", post.imageUrl);
+        }
+    });
+    
     });
   }
+  loadfeedImage(image: string) {
+    if (image) {
+      return this.userService.getfullImagePath(image)
+    }
+    else {
+      return this.imageUrl = this.userService.getDefaultfullImagePath()
+    }
+
+  }
+  // Method to convert base64 string to image URL
+  base64ToImageUrl(base64String: string) {
+
+    return base64String;
+  }
   editPost(id: string) {
-    
-   this.postService.findPostById(id).subscribe((res:any) => {
-      this.message = res[0]?.body; 
-     this. openDialog(id);
+
+    this.postService.findPostById(id).subscribe((res: any) => {
+      this.message = res[0]?.body;
+      this.openDialog(id);
     })
 
   }
   deletePost(id: string) {
-    
+
     this.postService.deletePostById(id).subscribe({
-      next:(res:any) => {
-      console.log(res);
-      this.toastr.success("message deleted successfully");
-      this.postService.update.next(true)
-    },error:error=>{
-      this.toastr.error("message error occured",error.message);
-    }})
+      next: (res: any) => {
+        console.log(res);
+        this.toastr.success("message deleted successfully");
+        this.postService.update.next(true)
+      }, error: error => {
+        this.toastr.error("message error occured", error.message);
+      }
+    })
   }
   deleteDialog(id: string) {
-   
+
     this.dialog.open(DeleteComfimationComponent, {
-      data:{id:id},
+      data: { id: id },
       width: '350px',
       height: '250px'
     }).afterClosed().subscribe(result => {
-     
-      if(result){
-       this.deletePost(id);
-      }else{
+
+      if (result) {
+        this.deletePost(id);
+      } else {
         this.toastr.warning('Delete canceled');
       }
     });
   }
   openDialog(id: string) {
-   
-    console.log(this.message );
+
+    console.log(this.message);
     this.dialog.open(ModalComponent, {
-      data:{message:this.message,id:id,username:this.userName},
+      data: { message: this.message, id: id, username: this.userName },
       width: '350px',
       height: '250px'
     }).afterClosed().subscribe(result => {

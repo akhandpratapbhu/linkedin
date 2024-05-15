@@ -31,3 +31,9 @@
 .setUsername{
     margin-right:28rem;
 }
+.image-container {
+    display: flex;
+    justify-content: center; /* Centers the image horizontally */
+    width: 100%;
+    margin-top: 10px;
+  }

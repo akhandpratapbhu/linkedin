@@ -55,4 +55,22 @@
     /* Add styles as needed */
     margin-top: -12px;
   }
+   .left-image {
+    width: 200px;  /* Adjust as needed */
+    height: 150px; /* Adjust as needed */
+    border-radius: 10%; /* Optional: to make the image circular */
+     margin-top: 10px;
+     align-content: center;
+  } 
+  
+  .error {
+    color: red;
+    margin-top: 10px;
+  }
+  .image-container {
+    display: flex;
+    justify-content: center; /* Centers the image horizontally */
+    width: 100%;
+    margin-top: 10px;
+  }
   

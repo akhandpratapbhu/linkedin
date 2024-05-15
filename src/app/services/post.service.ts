@@ -37,7 +37,7 @@ export class PostService {
       })
     };
 
-    return this.http.post('http://localhost:3000/api/feed', payload, httpOptions)
+    return this.http.post('http://localhost:3000/api/feed',payload ,httpOptions)
   }
   findPostById(id: string) {
 

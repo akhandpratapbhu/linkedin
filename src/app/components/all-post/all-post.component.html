@@ -3,7 +3,8 @@
 
     @for (post of allPost.slice().reverse(); track post.id) {
         <div class="card ">
-            <div class="card-body">
+            <div class="card-body" [routerLink]="['/dashboard', post.author.id]">
+
                 <form class="d-flex  justify-content-between">
                     <img [src]="post.author.image ? 'http://localhost:3000/api/feed/image/' + post.author.image : 'http://localhost:3000/api/feed/image/user.png'" class="card-img-top bordered-image" alt="image">
                     <h5 class="card-title setUsername">{{post.author.username}}</h5>

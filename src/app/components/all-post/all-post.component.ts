@@ -10,11 +10,13 @@ import { DeleteComfimationComponent } from '../shared/delete-comfimation/delete-
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
+import { ConnectionProfileComponent } from '../connection-profile/connection-profile.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-all-post',
   standalone: true,
-  imports: [MatIconModule, ModalComponent, CommonModule],
+  imports: [MatIconModule, ModalComponent, CommonModule,ConnectionProfileComponent,RouterModule],
   templateUrl: './all-post.component.html',
   styleUrl: './all-post.component.css',
 
@@ -39,7 +41,6 @@ export class AllPostComponent implements OnInit {
       this.userName = (decoded as any).username;
       this.id = (decoded as any).id
       this.role = (decoded as any).role
-      console.log(this.role);
 
     } else {
       console.error('Token not found in localStorage');
@@ -48,7 +49,7 @@ export class AllPostComponent implements OnInit {
       // Handle the emitted imageUrl here
       if (imageUrl) {
         this.imageUrl = imageUrl;
-        console.log("this.imageUrl", this.imageUrl);
+      
       }
       else {
         this.imageUrl = this.userService.getDefaultfullImagePath()
@@ -58,8 +59,6 @@ export class AllPostComponent implements OnInit {
     });
     this.postService.update.subscribe({
       next: (data: boolean) => {
-        console.log(data)
-
         this.loadPosts()
       }
     })
@@ -72,7 +71,7 @@ export class AllPostComponent implements OnInit {
       this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; }) => {
         if (post.image) {
             // Check if the image URL ends with a common image extension
-            const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+            const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif','.webp'];
             const isImage = imageExtensions.some(ext => post.image.toLowerCase().endsWith(ext));
     
             // Check if the image URL ends with a common video extension

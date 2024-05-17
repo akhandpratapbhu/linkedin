@@ -5,10 +5,13 @@ import { jwtDecode } from 'jwt-decode';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
 import { PostService } from '../../services/post.service';
+import { FriendRequestComponent } from '../friend-request/friend-request.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ConnectionProfileService } from '../../services/connection-profile.service';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule,FriendRequestComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -16,11 +19,15 @@ export class HeaderComponent implements OnInit {
   imageUrl!:string;
   token: string = '';
   userName:string='';
+  AllGetfriendRequest:any
+  gettotalfriendRequest:number=0;
   constructor(
     private router: Router,
     private toastr: ToastrService,
     private userService: UserService,
-    private postService: PostService
+    private postService: PostService,
+    private connectionProfileService:ConnectionProfileService,
+    public dialog: MatDialog,
   ) { }
   ngOnInit(): void {
     const token = localStorage.getItem('token');
@@ -42,8 +49,30 @@ export class HeaderComponent implements OnInit {
       }
 
     });
+    this.ReceiveFriendRequest();
   }
-
+  ReceiveFriendRequest(){
+    this.connectionProfileService.getFriendRequest().subscribe(res=>{
+   
+      this.AllGetfriendRequest=res
+      console.log(this.AllGetfriendRequest);
+        this.gettotalfriendRequest= this.AllGetfriendRequest.length;
+        // Access the image property from the first object
+        console.log("this.friendRequestStatus", this.gettotalfriendRequest);
+    
+      
+    })
+  }
+  openDialogBox(): void { 
+    this.dialog.open(FriendRequestComponent, {
+    
+     width: '450px',
+     height: 'auto',
+     data:this.AllGetfriendRequest,
+   }).afterClosed().subscribe(result => {
+     console.log('The dialog was closed');
+   });
+ }
 
   SignOut() {
 

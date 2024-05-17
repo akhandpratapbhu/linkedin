@@ -17,13 +17,15 @@ export class ConnectionProfileComponent {
   data = {}
   imagePath!: string
   userName!:string
+  friendRequestStatus!:any;
+  getfriendRequestStatus!:any;
   constructor(private userService: UserService, private connectionProfile: ConnectionProfileService, private route: ActivatedRoute) {
 
   }
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.authorId = params.get('id'); // The 'id' here should match the parameter in your route definition
-      console.log('Author ID:', this.authorId);
+      console.log('Author ID:', this.authorId,"friendRequestStatus",this.friendRequestStatus);
     });
     this.getConnectionUserProfile(this.authorId)
     this.getFriendRequestStatus(this.authorId)
@@ -47,13 +49,17 @@ export class ConnectionProfileComponent {
   getFriendRequestStatus(id:any){
     this.connectionProfile.getFriendRequestStatus(id).subscribe(res=>{
       console.log(res);
-      
+      this.getfriendRequestStatus=res
+        this.friendRequestStatus= this.getfriendRequestStatus.status
+        // Access the image property from the first object
+        console.log("this.friendRequestStatus", this.friendRequestStatus);
+        
     })
   }
   addUser(){
     this.connectionProfile.addConnectionUser(this.authorId).subscribe(res=>{
       console.log(res);
-      
+     
     })
   }
 }

@@ -34,4 +34,22 @@ export class ConnectionProfileService {
     };
     return this.http.post(`http://localhost:3000/api/user/friend-request/send/${id}`,{},httpOptions)
   }
+  getFriendRequest(){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + this.token
+      })
+    };
+    return this.http.get(`http://localhost:3000/api/user/friend-request/me/:recieved-requests`,httpOptions)
+  }
+  responseToFriendRequest(id:number,statusResponse:any){
+    console.log(id,statusResponse);
+    
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + this.token
+      })
+    };
+    return this.http.put(`http://localhost:3000/api/user/friend-request/response/${id}`,statusResponse,httpOptions)
+  }
 }

@@ -21,7 +21,7 @@
                         card's content.</p>
                     <!-- <button (click)="addUser()" class="btn btn-primary"  [disabled]="friendRequestStatus">connect</button> -->
                     <button (click)="addUser()" class="btn btn-primary" [disabled]="friendRequestStatus === 'pending'">
-                        {{ friendRequestStatus ? friendRequestStatus : 'Connect' }}
+                        {{ friendRequestStatus!=='Not requested' ? friendRequestStatus : 'Connect' }}
                     </button>
 
                     <button class="custom-button message-button">Message</button>

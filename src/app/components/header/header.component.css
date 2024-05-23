@@ -13,7 +13,7 @@
   
   .search-icon-container mat-icon {
     position: absolute;
-    top: -6px;
+    top: -26px;
     right: -1px; /* Adjust this value to position the icon as needed */
     cursor: pointer;
   }
@@ -107,5 +107,20 @@
       justify-content: center; /* Centers the image horizontally */
       width: 100%;
       margin-top: 10px;
+    }
+    
+
+    ::ng-deep .mat-mdc-text-field-wrapper {
+      height: 44px !important;
+      border-radius: 12px !important;
+      background-color: white !important;
+      color: aqua !important;
+      box-shadow: 0 2px 4px rgba(37, 37, 37, 0.2); /* Example box shadow */
+    }
+    ::ng-deep  .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+       color: green !important; 
+  }
+    .example-full-width {
+      width: 100%;
     }
     

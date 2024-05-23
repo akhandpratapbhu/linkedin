@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-all-post',
   standalone: true,
-  imports: [MatIconModule, ModalComponent, CommonModule,ConnectionProfileComponent,RouterModule],
+  imports: [MatIconModule, ModalComponent, CommonModule, ConnectionProfileComponent, RouterModule],
   templateUrl: './all-post.component.html',
   styleUrl: './all-post.component.css',
 
@@ -30,7 +30,8 @@ export class AllPostComponent implements OnInit {
   id: any;
   role: any;
   img: any
-  constructor(private postService: PostService, private userService: UserService, public dialog: MatDialog, private toastr: ToastrService) {
+  constructor(private postService: PostService, private userService: UserService,
+     public dialog: MatDialog, private toastr: ToastrService) {
 
   }
   ngOnInit(): void {
@@ -49,7 +50,7 @@ export class AllPostComponent implements OnInit {
       // Handle the emitted imageUrl here
       if (imageUrl) {
         this.imageUrl = imageUrl;
-      
+
       }
       else {
         this.imageUrl = this.userService.getDefaultfullImagePath()
@@ -66,43 +67,42 @@ export class AllPostComponent implements OnInit {
   loadPosts() {
     this.postService.getPost().subscribe(res => {
       this.allPost = res;
-      console.log(this.allPost);
 
       this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; }) => {
         if (post.image) {
-            // Check if the image URL ends with a common image extension
-            const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif','.webp'];
-            const isImage = imageExtensions.some(ext => post.image.toLowerCase().endsWith(ext));
-    
-            // Check if the image URL ends with a common video extension
-            const videoExtensions = ['.mp4', '.avi', '.mov', '.mkv'];
-            const isVideo = videoExtensions.some(ext => post.image.toLowerCase().endsWith(ext));
-    
-            if (isImage) {
-                // It's an image
-                console.log('This is an image:', post.image);
-                post.isImage = true;
-                post.isVideo = false;
-                // You can then proceed with loading/displaying the image
-            } else if (isVideo) {
-                // It's a video
-                console.log('This is a video:', post.image);
-                post.isImage = false;
-                post.isVideo = true;
-                // You can then proceed with loading/displaying the video
-            } else {
-                // It's neither an image nor a video
-                console.log('This is neither an image nor a video:', post.image);
-                post.isImage = false;
-                post.isVideo = false;
-                // Handle accordingly
-            }
-            console.log(post.image);
-            post.imageUrl = this.loadfeedImage(post.image);
-            console.log("post.imageUrl", post.imageUrl);
+          // Check if the image URL ends with a common image extension
+          const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+          const isImage = imageExtensions.some(ext => post.image.toLowerCase().endsWith(ext));
+
+          // Check if the image URL ends with a common video extension
+          const videoExtensions = ['.mp4', '.avi', '.mov', '.mkv'];
+          const isVideo = videoExtensions.some(ext => post.image.toLowerCase().endsWith(ext));
+
+          if (isImage) {
+            // It's an image
+
+            post.isImage = true;
+            post.isVideo = false;
+            // You can then proceed with loading/displaying the image
+          } else if (isVideo) {
+            // It's a video
+
+            post.isImage = false;
+            post.isVideo = true;
+            // You can then proceed with loading/displaying the video
+          } else {
+            // It's neither an image nor a video
+
+            post.isImage = false;
+            post.isVideo = false;
+            // Handle accordingly
+          }
+
+          post.imageUrl = this.loadfeedImage(post.image);
+
         }
-    });
-    
+      });
+
     });
   }
   loadfeedImage(image: string) {
@@ -131,7 +131,7 @@ export class AllPostComponent implements OnInit {
 
     this.postService.deletePostById(id).subscribe({
       next: (res: any) => {
-        console.log(res);
+
         this.toastr.success("message deleted successfully");
         this.postService.update.next(true)
       }, error: error => {
@@ -156,7 +156,7 @@ export class AllPostComponent implements OnInit {
   }
   openDialog(id: string) {
 
-    console.log(this.message);
+
     this.dialog.open(ModalComponent, {
       data: { message: this.message, id: id, username: this.userName },
       width: '350px',

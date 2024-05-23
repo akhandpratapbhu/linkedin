@@ -1,0 +1,84 @@
+.custom-button {
+    border: 2px solid; /* General border style */
+   /* Set the border radius */
+    margin: 4px; /* Add margin to create space between buttons */
+    padding: 8px 16px; /* Add padding for better appearance */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    font-size: 16px; /* Optional: Adjust font size */
+  }
+  
+  /* Specific styles for the Message button */
+  .message-button {
+    border-color: aquamarine;
+    border-radius: 10px; 
+  }
+  
+  /* Specific styles for the More button */
+  .more-button {
+    border-color: aqua;
+    border-radius: 20px; 
+  }
+  .btn-primary {
+    border-radius: 20px; 
+}
+.image-container {
+    position: relative; /* This allows the positioning of the corner image relative to the container */
+    width: 100%; /* Adjust as needed */
+    height: 35vh; /* Adjust as needed */
+    background: url('../../../assets/img/morskie-oko-tatry_1204-510.avif') no-repeat center center;
+    background-size: cover; 
+}  
+.corner-image{
+    width: 150px;
+    height: 150px;
+    border-radius: 60px;
+    margin-top: 9rem;
+    margin-left: 10px;
+}
+
+
+/* Allpost css */
+
+.bordered-image {
+    width: 30px;
+}
+
+
+.setText {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    margin-top: 20px;
+    padding: 2px;
+    margin-bottom: 10px;
+
+}
+
+.setText mat-icon {
+    margin-right: 5px;
+
+}
+.card{
+    margin-bottom: 15px;
+}
+.post-container {
+    
+    overflow-y: auto; /* Enable vertical scrollbar */
+
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+  }
+  .icon-group {
+    display: flex;
+    align-items: center;
+}
+.setUsername{
+    margin-right:28rem;
+}
+.image-contain {
+    display: flex;
+    justify-content: center; /* Centers the image horizontally */
+    width: 100%;
+    margin-top: 10px;
+  }

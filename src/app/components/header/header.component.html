@@ -3,18 +3,30 @@
   <div class="container-fluid">
     <img src="../../../assets/img/OIP.jpg" class="card-img-top bordered-image" alt="image"style="margin-left: 8px;margin-right:10px ;">
     <a class="navbar-brand" href="#">Linkedin</a>
-    <form class="d-flex">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <div class="search-icon-container">
-        <mat-icon>search</mat-icon>
-      </div>
-    </form>
+    
+     <form class="d-flex">
+      <mat-form-field class="example-full-width">
+        <mat-label>username</mat-label>
+        <input type="text"
+               placeholder="Search..."
+               matInput
+               [formControl]="myControl"
+               [matAutocomplete]="auto"
+               [(ngModel)]="searchQuery" (input)="onSearch()">
+               <div class="search-icon-container">
+                <mat-icon>search</mat-icon>
+              </div>
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"  (optionSelected)="onOptionSelected($event.option.value)">
+          @for (user of filteredOptions | async; track user) {
+            <mat-option [value]="user">{{user}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </form> 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-     
-      
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">`
 
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
@@ -23,7 +35,7 @@
           </a>
         </li>
         
-        <li class="nav-item"  (click)="openDialogBox()">
+        <li class="nav-item" (click)="checkAndOpenDialogBox()">
           <span style="margin-bottom: -18px;margin-left: 26px;color: white;border-radius: 30px;background-color: red;padding-left: 4px;width: 20px;align-items: center;">{{gettotalfriendRequest}}</span>
           <mat-icon>group</mat-icon>
           <h5 class="nav-link" >My Network</h5>

@@ -18,7 +18,15 @@ export class UserService {
       this.id = (decoded as any).id;
     }
   }
-
+  getUserByUserName(name:string){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + this.token
+      })
+    };
+    return this.http.get(`http://localhost:3000/api/user/search/${name}`)
+  }
+  
   uploadUserImage(body:any){
 
      const httpOptions = {

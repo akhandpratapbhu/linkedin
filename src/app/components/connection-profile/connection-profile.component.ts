@@ -59,7 +59,8 @@ export class ConnectionProfileComponent {
   addUser(){
     this.connectionProfile.addConnectionUser(this.authorId).subscribe(res=>{
       console.log(res);
-     
+      this.getfriendRequestStatus=res
+        this.friendRequestStatus= this.getfriendRequestStatus.status
     })
   }
 }

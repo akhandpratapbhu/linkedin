@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
@@ -14,11 +14,12 @@ import { Observable, map, of, startWith } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ChatComponent } from '../chat/chat.component';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatIconModule, FriendRequestComponent, CommonModule,
-    FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, AsyncPipe],
+  imports: [MatIconModule, FriendRequestComponent, CommonModule,RouterModule,
+    FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, AsyncPipe,ChatComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -101,7 +102,9 @@ export class HeaderComponent implements OnInit {
       this.router.navigate([`searchUserProfile/${selectedValue}`])
     
   }
-  
+  chatDialogBox(){
+    this.router.navigate(['chat'])
+  }
 
 
   loadFriendRequests() {

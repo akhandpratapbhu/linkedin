@@ -1,0 +1,117 @@
+<p>Now chat to users</p>
+
+<div class="container-fluid">
+
+    <div class="row">
+  
+      <div class="col-4">
+  
+        <div class="user-list-card">
+          <div class="user-card"
+          *ngFor="let user of users"
+               (click)="selectUserHandler(user.username)"
+          >
+          <img [src]="user.image ? 'http://localhost:3000/api/feed/image/' + user.image : 'http://localhost:3000/api/feed/image/user.png'"
+                 [alt]="user"
+                 class="avatar"
+            />
+            <p class="username">{{user.username}}</p>
+  
+          </div>
+        </div>
+  
+      </div>
+      <div class="col-8">
+  
+        <div class="chat-container">
+          <ng-container *ngIf="selectedUser">
+            <div class="chat-header">
+  
+              <img [src]="selectedUser.image ? 'http://localhost:3000/api/feed/image/' + selectedUser.image : 'http://localhost:3000/api/feed/image/user.png'"
+                 [alt]="selectedUser.username"
+                 class="avatar"
+            />
+              <p class="username">{{selectedUser.username}}</p>
+  
+            </div>
+  
+            <div class="chat-body">
+              <div *ngFor="let item of messages"
+             
+              >
+                <p class="message-container">{{ item.content }}</p>
+              </div>
+            </div>
+  
+            <div class="chat-footer">
+  
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="form-group mb-0">
+                    <input type="text"
+                           placeholder="Type a message"
+                           class="form-control"
+                           [(ngModel)]="newMessage"
+                           (keyup)="$event.keyCode === 13 && sendMessage()"
+                    />
+                  </div>
+                </div>
+  
+                <div class="col-md-2 text-center align-self-center">
+                  <button class="btn btn-primary btn-sm px-3"
+                          (click)="sendMessage()">Send
+                  </button>
+                </div>
+              </div>
+  
+            </div>
+          </ng-container>
+        </div>
+  
+      </div>
+  
+    </div>
+  
+  </div>
+  
+  <!-- <ng-template #popup let-d="dismiss">
+  
+    <div class="modal-header">
+      <h4 class="modal-title">Login</h4>
+    </div>
+  
+    <div class="modal-body">
+  
+      <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-4">
+  
+          <div class="form-group">
+            <input type="number"
+                   placeholder="Enter your phone number"
+                   class="form-control"
+                   [(ngModel)]="phone"
+            />
+          </div>
+  
+        </div>
+        <div class="col-4">
+        </div>
+      </div>
+  
+    </div>
+  
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-primary" (click)="login(d)">Login</button>
+    </div>
+  
+  </ng-template>  -->
+  
+<!-- <h1>chat</h1>
+   <div *ngFor="let message of messages">
+    <div> {{ message.content }}</div>
+  </div>
+  <input [(ngModel)]="newMessage" placeholder="Type a message">
+  <button (click)="sendMessage()">Send</button> -->
+  

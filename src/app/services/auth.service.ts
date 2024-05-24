@@ -23,7 +23,10 @@ export class AuthService {
 
     return this.http.post('http://localhost:3000/api/auth/register', payload)
   }
+  allUsers() {
 
+    return this.http.get('http://localhost:3000/api/user')
+  }
  
   
 }

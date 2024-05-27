@@ -156,7 +156,8 @@ export class HeaderComponent implements OnInit {
   SignOut() {
 
     console.log('Signing out...');
-    localStorage.clear();
+   // localStorage.clear();
+   localStorage.removeItem('token')
     this.toastr.success("user login out successfully...");
     this.router.navigate([""]);
   }

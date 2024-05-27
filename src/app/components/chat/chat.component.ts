@@ -178,14 +178,16 @@ import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
 import { jwtDecode } from 'jwt-decode';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CallingComponent } from '../calling/calling.component';
+import { MatIconModule } from '@angular/material/icon';
 
  @Component({
     selector: 'app-chat',
     standalone: true,
-    imports: [RouterOutlet,CommonModule,FormsModule ],
+    imports: [RouterOutlet,CommonModule,FormsModule,CallingComponent,MatIconModule ],
     templateUrl: './chat.component.html',
     styleUrl: './chat.component.css'
   })
@@ -196,7 +198,10 @@ export class ChatComponent implements OnInit {
   id!:string
   selectedUser:any
   currentUser='a2'
-  constructor(private chatService: ChatService, private authService: AuthService) {}
+  private storageArray:any []= [];
+  public Id!:string;
+  userName!:string;
+  constructor(private chatService: ChatService, private authService: AuthService,private route:Router) {}
 
   ngOnInit() {
     
@@ -204,6 +209,10 @@ export class ChatComponent implements OnInit {
     if (token) {
       const decoded = jwtDecode(token);
       this.id = (decoded as any).id;
+      
+      this.userName = (decoded as any).username;
+      console.log( this.id, this.userName);
+      
     } else {
       console.error('Token not found in localStorage');
     }
@@ -211,9 +220,21 @@ export class ChatComponent implements OnInit {
    return this.chatService.getMessage().subscribe((message) => {
       console.log("message", message);
       this.messages.push(message);
+      console.log( this.messages);
+      
+      if (this.Id) {
+                  setTimeout(() => {
+                    this.storageArray = this.chatService.getStorage();
+                    const storeIndex = this.storageArray
+                      .findIndex((storage) => storage.Id === this.Id);
+                    this.messages = this.storageArray[storeIndex].chats;
+                  }, 500);
+                }
     });
     
   }
+
+ 
   findAllUsers(){
     this.authService.allUsers().subscribe(res=>{
       this.users=res;
@@ -221,20 +242,75 @@ export class ChatComponent implements OnInit {
       
     })
   }
-  sendMessage() {
-    const message = {
-      content: this.newMessage,
-      senderId: this.id,
-      recipientId: this.selectedUser.id // Change this to dynamic recipient ID
-    };
-    console.log(message);
+  // sendMessage() {
+  //   const message = {
+  //     content: this.newMessage,
+  //     senderId: this.id,
+  //     recipientId: this.selectedUser.id // Change this to dynamic recipient ID
+  //   };
+  //   console.log(message);
     
-    this.chatService.sendMessage(message);
-    this.newMessage = '';
-  }
+  //   this.chatService.sendMessage(message);
+  //   this.newMessage = '';
+  // }
   selectUserHandler(user:string){
 const userName=user
 this.selectedUser = this.users.find((user: { username: any; })=>user.username===userName);
 console.log(this.selectedUser.id);
+this.Id = this.selectedUser.id;
+ 
+
+
+    this.messages = [];
+
+    this.storageArray = this.chatService.getStorage();
+    const storeIndex = this.storageArray
+      .findIndex((storage) => storage.Id === this.Id);
+
+    if (storeIndex > -1) {
+      this.messages = this.storageArray[storeIndex].chats;
+    }
+
+    this.join(this.userName, this.Id);
+  }
+
+  join(username: string, Id: string): void {
+    this.chatService.joinRoom({user: username, Id: Id});
+  }
+  sendMessage(): void {
+    this.chatService.sendMessage({
+      recipientId: this.selectedUser.id,
+      senderId: this.id,
+      content: this.newMessage
+    });
+   
+    this.storageArray = this.chatService.getStorage();
+    const storeIndex = this.storageArray
+      .findIndex((storage) => storage.Id === this.Id);
+
+    if (storeIndex > -1) {
+      this.storageArray[storeIndex].chats.push({
+        user: this.userName,
+        content: this.newMessage
+      });
+    } else {
+      const updateStorage = {
+        Id: this.Id,
+        chats: [{
+          user: this.userName,
+          content: this.newMessage
+        }]
+      };
+
+      this.storageArray.push(updateStorage);
+    }
+
+    this.chatService.setStorage(this.storageArray);
+    this.newMessage = '';
+  }
+  NavigateToCalling(){
+    this.route.navigate(['calling'])
   }
 }
+
+

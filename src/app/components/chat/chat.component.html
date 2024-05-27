@@ -1,5 +1,4 @@
 <p>Now chat to users</p>
-
 <div class="container-fluid">
 
     <div class="row">
@@ -26,18 +25,24 @@
         <div class="chat-container">
           <ng-container *ngIf="selectedUser">
             <div class="chat-header">
-  
-              <img [src]="selectedUser.image ? 'http://localhost:3000/api/feed/image/' + selectedUser.image : 'http://localhost:3000/api/feed/image/user.png'"
-                 [alt]="selectedUser.username"
-                 class="avatar"
-            />
-              <p class="username">{{selectedUser.username}}</p>
-  
+              <div class="user-info">
+                <img [src]="selectedUser.image ? 'http://localhost:3000/api/feed/image/' + selectedUser.image : 'http://localhost:3000/api/feed/image/user.png'"
+                     [alt]="selectedUser.username"
+                     class="avatar"
+                />
+                <p class="username">{{selectedUser.username}}</p>
+              </div>
+              <div class="same-user">
+              <div  style="color: aqua;"(click)="NavigateToCalling()"><mat-icon>phone</mat-icon>
+              </div>
+              <div style="color: aqua;"><mat-icon>video_call</mat-icon>
+              </div>
             </div>
-  
+          </div>
             <div class="chat-body">
               <div *ngFor="let item of messages"
-             
+              [ngClass]="{'same-user': item?.user === userName, '': true}"
+
               >
                 <p class="message-container">{{ item.content }}</p>
               </div>

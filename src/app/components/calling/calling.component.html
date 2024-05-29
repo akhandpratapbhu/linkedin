@@ -1,21 +1,21 @@
 <div>
     <h5>Voice Call</h5>
     
-    <!-- Video & screen share container -->
-    <span>PeerId: {{peerId}}</span>
-    <!-- <div style="width: 400px; height: 300px; border: 2px solid" id="remote-video"></div> -->
+     Video & screen share container 
+     
     <div  style="width: 300px; height: 250px; border: 2px solid" id="remote-video">
-        <img src="../../../assets/img/user.png"
-        alt="user"
-        class="avatar"
+      <img [src]=" this.imagePath"
+      alt="userImage"
+      class="avatar"
+ />
    />
-   <p class="username">Akhand</p>
+   <p class="username">{{ this.userName}}</p>
     </div> 
     <div *ngIf="ringing">Ringing...</div>
     <br>
     <div style="margin-top: 20px;">
-      <input type="text" placeholder="Peer Id" [(ngModel)]='peerIdShare' />
-      <button class="button" (click)="connectWithPeer()" *ngIf="!isInCall && !incomingCall" style="color: white;background-color: green;"><mat-icon>phone</mat-icon></button>
+     
+      <button class="button" (click)="connectWithPeer()" *ngIf="!isInCall && !incomingCall && !ringing" style="color: white;background-color: green;"><mat-icon>phone</mat-icon></button>
       <button class="button" (click)="screenShare()" *ngIf="isInCall">Screen share</button>
       <button class="button" *ngIf="incomingCall" (click)="answerCall()" style="color: white;background-color: green;"><mat-icon>settings_phone</mat-icon></button>
       <button class="button" *ngIf="incomingCall" (click)="declineCall()" style="color: white;background-color: red;"><mat-icon>call_end</mat-icon></button>

@@ -308,8 +308,14 @@ this.Id = this.selectedUser.id;
     this.chatService.setStorage(this.storageArray);
     this.newMessage = '';
   }
-  NavigateToCalling(){
-    this.route.navigate(['calling'])
+  NavigateToCalling(id:string){
+    console.log(id);
+    if(id){
+      this.route.navigate([`calling/${id}`])    
+    }
+    else{
+      this.route.navigate([`calling/${this.id}`])  
+    }
   }
 }
 

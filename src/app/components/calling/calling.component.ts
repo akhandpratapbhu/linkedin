@@ -5,19 +5,23 @@ import Peer from 'peerjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { jwtDecode } from 'jwt-decode';
+import { ActivatedRoute } from '@angular/router';
+import { ConnectionProfileService } from '../../services/connection-profile.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-calling',
   standalone: true,
-  imports: [CommonModule,FormsModule,MatIconModule],
+  imports: [CommonModule, FormsModule, MatIconModule],
   templateUrl: './calling.component.html',
   styleUrl: './calling.component.css'
 })
-export class CallingComponent implements OnInit{
+export class CallingComponent implements OnInit {
 
   private peer: Peer;
   peerIdShare!: string;
-  peerId!: string;
+  peerId!: string | null;
   private lazyStream: any;
   currentPeer: any;
   private peerList: Array<any> = [];
@@ -25,18 +29,75 @@ export class CallingComponent implements OnInit{
   ringing: boolean = false;
   private currentCall: any;
   isInCall: boolean = false;
-
-  constructor() {
+  userId: any;
+  data:any;
+  userName:any;
+  imagePath:any;
+  selectedUserId: any;
+  constructor(private route: ActivatedRoute, private connectionProfile: ConnectionProfileService,private userService:UserService) {
     this.peer = new Peer();
   }
 
   ngOnInit(): void {
+
+    this.selectedUser()
+    this.usertokenId()
+  }
+  getConnectionUserProfile(id: any) {
+    this.connectionProfile.getConnectionUser(id).subscribe(res => {
+
+      this.data = res
+      console.log("Image Path:",  this.data);
+      if (this.data && Array.isArray(this.data) && this.data.length > 0) {
+        const imagePath = this.data[0].image;
+        this.userName = this.data[0].username
+        // Access the image property from the first object
+        console.log("Image Path:", imagePath);
+
+        if (imagePath !== null) {
+          this.imagePath = this.userService.getfullImagePath(imagePath);
+          console.log(  this.imagePath );
+          
+        } else {
+          this.imagePath = this.userService.getDefaultfullImagePath();
+        }
+      }
+    })
+  }
+  selectedUser() {
+    this.route.paramMap.subscribe(params => {
+
+      this.selectedUserId = params.get('id'); // The 'id' here should match the parameter in your route definition
+      console.log('   this.username:', this.selectedUserId);
+    });
+    this.getConnectionUserProfile( this.selectedUserId)
+  }
+  usertokenId() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded = jwtDecode(token);
+       this.userId = (decoded as any).id;
+       //this.getConnectionUserProfile( this.userId)
+      console.log(this.userId);
+      this.initializePeer()
+    } else {
+      console.error('Token not found in localStorage');
+    }
+  }
+  initializePeer() {
+    this.peer = new Peer(this.userId, {
+      // Configuration options can be added here if needed
+    });
+
     this.getPeerId();
   }
 
   private getPeerId = () => {
     this.peer.on('open', (id) => {
-      this.peerId = id;
+      this.peerId = this.userId;
+      //  console.log('Peer ID:', this.peerId);
+      console.log('UserName:', this.userId);
+      //  console.log('SelectedUsername:', this.selectedUsername);
     });
 
     this.peer.on('call', (call) => {
@@ -50,10 +111,13 @@ export class CallingComponent implements OnInit{
         this.isInCall = false;
       });
     });
+    
   }
 
   connectWithPeer(): void {
-    this.callPeer(this.peerIdShare);
+    this.callPeer(this.selectedUserId);
+    console.log(this.peerIdShare);
+
   }
 
   private callPeer(id: string): void {
@@ -140,7 +204,7 @@ export class CallingComponent implements OnInit{
   private shareScreen(): void {
     navigator.mediaDevices.getDisplayMedia({
       video: {
-       // cursor: 'always'
+        // cursor: 'always'
       },
       audio: {
         echoCancellation: true,
@@ -184,6 +248,6 @@ export class CallingComponent implements OnInit{
 
     this.isInCall = false;
   }
-  }
+}
 
- 
+

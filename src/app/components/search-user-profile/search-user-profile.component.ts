@@ -15,7 +15,7 @@ import { DeleteComfimationComponent } from '../shared/delete-comfimation/delete-
 @Component({
   selector: 'app-search-user-profile',
   standalone: true,
-  imports: [HeaderComponent,MatIconModule, ModalComponent, CommonModule, ConnectionProfileComponent, RouterModule],
+  imports: [HeaderComponent, MatIconModule, ModalComponent, CommonModule, ConnectionProfileComponent, RouterModule],
   templateUrl: './search-user-profile.component.html',
   styleUrl: './search-user-profile.component.css'
 })
@@ -35,8 +35,8 @@ export class SearchUserProfileComponent {
   id: any;
   role: any;
   img: any
-  constructor(private userService: UserService, private connectionProfile: ConnectionProfileService, 
-    private route: ActivatedRoute,private postService: PostService, 
+  constructor(private userService: UserService, private connectionProfile: ConnectionProfileService,
+    private route: ActivatedRoute, private postService: PostService,
     public dialog: MatDialog, private toastr: ToastrService) {
 
   }
@@ -51,7 +51,7 @@ export class SearchUserProfileComponent {
       await this.getSearchUserProfile(this.username)
 
     }
-const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode(token);
       this.userName = (decoded as any).username;
@@ -86,9 +86,9 @@ const token = localStorage.getItem('token');
         // Access the image property from the first object
         console.log("Image Path:", imagePath);
 
-        if (imagePath!==null) {
+        if (imagePath !== null) {
           this.imagePath = this.userService.getfullImagePath(imagePath);
-        }else{
+        } else {
           this.imagePath = this.userService.getDefaultfullImagePath();
         }
       }
@@ -112,16 +112,16 @@ const token = localStorage.getItem('token');
     })
   }
 
-//========================================= load post
+  //========================================= load post
 
-loadPosts(post:any) {
+  loadPosts(post: any) {
     this.allPost = post;
-console.log( this.allPost[0]);
+    console.log(this.allPost[0]);
 
     this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; }) => {
       if (post.image) {
         console.log(post.image);
-        
+
         // Check if the image URL ends with a common image extension
         const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
         const isImage = imageExtensions.some(ext => post.image.toLowerCase().endsWith(ext));
@@ -151,27 +151,27 @@ console.log( this.allPost[0]);
         }
 
         post.imageUrl = this.loadfeedImage(post.image);
-console.log(post.imageUrl );
+        console.log(post.imageUrl);
 
       }
     });
 
-  
-}
-loadfeedImage(image: string) {
-  if (image) {
-    return this.userService.getfullImagePath(image)
-  }
-  else {
-    return this.imageUrl = this.userService.getDefaultfullImagePath()
-  }
 
-}
-// Method to convert base64 string to image URL
-base64ToImageUrl(base64String: string) {
+  }
+  loadfeedImage(image: string) {
+    if (image) {
+      return this.userService.getfullImagePath(image)
+    }
+    else {
+      return this.imageUrl = this.userService.getDefaultfullImagePath()
+    }
 
-  return base64String;
-}
+  }
+  // Method to convert base64 string to image URL
+  base64ToImageUrl(base64String: string) {
+
+    return base64String;
+  }
 
 
 }

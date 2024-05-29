@@ -16,5 +16,5 @@ export const routes: Routes = [
     {path:'dashboard/:id',component:ConnectionProfileComponent, canActivate: [AuthGuard] },
     {path:'searchUserProfile/:username',component:SearchUserProfileComponent, canActivate: [AuthGuard] },
     {path:'chat',component:ChatComponent,},
-    {path:'calling',component:CallingComponent,}
+    {path:'calling/:id',component:CallingComponent,}
 ];

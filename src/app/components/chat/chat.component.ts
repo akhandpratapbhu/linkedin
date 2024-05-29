@@ -313,9 +313,9 @@ this.Id = this.selectedUser.id;
     if(id){
       this.route.navigate([`calling/${id}`])    
     }
-    else{
-      this.route.navigate([`calling/${this.id}`])  
-    }
+    // else{
+    //   this.route.navigate([`calling/${this.id}`])  
+    // }
   }
 }
 

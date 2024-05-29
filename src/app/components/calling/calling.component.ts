@@ -19,7 +19,7 @@ import { UserService } from '../../services/user.service';
 })
 export class CallingComponent implements OnInit {
 
-  private peer: Peer;
+  private peer: Peer|null;
   peerIdShare!: string;
   peerId!: string | null;
   private lazyStream: any;
@@ -93,6 +93,7 @@ export class CallingComponent implements OnInit {
       
       console.warn('Peer is already initialized. Destroying existing Peer instance.');
       this.peer.destroy();
+      this.peer = null;
       console.log(this.peer);
     }
   
@@ -120,7 +121,7 @@ export class CallingComponent implements OnInit {
   
       this.peer.on('disconnected', () => {
         console.warn('Peer disconnected. Attempting to reconnect...');
-        this.peer.reconnect();
+        this.peer?.reconnect();
       });
   
       this.peer.on('error', (err) => {
@@ -129,6 +130,7 @@ export class CallingComponent implements OnInit {
     } catch (error) {
       console.error('Error initializing Peer:', error);
     }
+   // this.connectWithPeer()
   }
   
 
@@ -144,10 +146,10 @@ export class CallingComponent implements OnInit {
     }).then((stream) => {
       this.lazyStream = stream;
 
-      const call = this.peer.call(id, stream);
+      const call = this.peer?.call(id, stream);
       this.ringing = true;
 
-      call.on('stream', (remoteStream) => {
+      call?.on('stream', (remoteStream) => {
         this.ringing = false;
         this.isInCall = true;
         if (!this.peerList.includes(call.peer)) {
@@ -157,7 +159,7 @@ export class CallingComponent implements OnInit {
         }
       });
 
-      call.on('close', () => {
+      call?.on('close', () => {
         this.ringing = false;
         this.isInCall = false;
         this.endCall();

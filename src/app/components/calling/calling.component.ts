@@ -43,20 +43,23 @@ export class CallingComponent implements OnInit {
     this.selectedUser()
     this.usertokenId()
   }
+  ngOnDestroy(): void {
+    if (this.peer) {
+      this.peer.destroy();
+    }
+  }
+
   getConnectionUserProfile(id: any) {
     this.connectionProfile.getConnectionUser(id).subscribe(res => {
 
       this.data = res
-      console.log("Image Path:",  this.data);
       if (this.data && Array.isArray(this.data) && this.data.length > 0) {
         const imagePath = this.data[0].image;
         this.userName = this.data[0].username
         // Access the image property from the first object
-        console.log("Image Path:", imagePath);
 
         if (imagePath !== null) {
           this.imagePath = this.userService.getfullImagePath(imagePath);
-          console.log(  this.imagePath );
           
         } else {
           this.imagePath = this.userService.getDefaultfullImagePath();
@@ -85,39 +88,53 @@ export class CallingComponent implements OnInit {
     }
   }
   initializePeer() {
-    this.peer = new Peer(this.userId, {
-      // Configuration options can be added here if needed
-    });
-
-    this.getPeerId();
-  }
-
-  private getPeerId = () => {
-    this.peer.on('open', (id) => {
-      this.peerId = this.userId;
-      //  console.log('Peer ID:', this.peerId);
-      console.log('UserName:', this.userId);
-      //  console.log('SelectedUsername:', this.selectedUsername);
-    });
-
-    this.peer.on('call', (call) => {
-      this.incomingCall = true;
-      this.currentCall = call;
-      this.ringing = true;
-
-      call.on('close', () => {
-        this.incomingCall = false;
-        this.ringing = false;
-        this.isInCall = false;
+    if (this.peer) {
+      console.log(this.peer);
+      
+      console.warn('Peer is already initialized. Destroying existing Peer instance.');
+      this.peer.destroy();
+      console.log(this.peer);
+    }
+  
+    try {
+      this.peer = new Peer(this.userId, {
+        // Configuration options can be added here if needed
       });
-    });
-    
+  
+      this.peer.on('open', (id) => {
+        this.peerId = this.userId;
+        console.log('Peer ID:', this.peerId);
+      });
+  
+      this.peer.on('call', (call) => {
+        this.incomingCall = true;
+        this.currentCall = call;
+        this.ringing = true;
+  
+        call.on('close', () => {
+          this.incomingCall = false;
+          this.ringing = false;
+          this.isInCall = false;
+        });
+      });
+  
+      this.peer.on('disconnected', () => {
+        console.warn('Peer disconnected. Attempting to reconnect...');
+        this.peer.reconnect();
+      });
+  
+      this.peer.on('error', (err) => {
+        console.error('Peer error:', err);
+      });
+    } catch (error) {
+      console.error('Error initializing Peer:', error);
+    }
   }
+  
 
   connectWithPeer(): void {
     this.callPeer(this.selectedUserId);
-    console.log(this.peerIdShare);
-
+    console.log('Connecting with peer ID:', this.selectedUserId);
   }
 
   private callPeer(id: string): void {

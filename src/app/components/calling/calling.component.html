@@ -1,26 +1,48 @@
-<div>
-    <h5>Voice Call</h5>
-    
-     Video & screen share container 
+
+
+  <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div>
      
-    <div  style="width: 300px; height: 250px; border: 2px solid" id="remote-video">
-      <img [src]=" this.imagePath"
-      alt="userImage"
-      class="avatar"
- />
-   />
-   <p class="username">{{ this.userName}}</p>
-    </div> 
-    <div *ngIf="ringing">Ringing...</div>
-    <br>
-    <div style="margin-top: 20px;">
+      
+      <div style="width: 500px; height: 500px; border: 2px solid gold; display: flex; flex-direction: column; justify-content: center; align-items: center;" id="remote-video">
+        <h5 style="margin-top: 20px;font-size: 15px;">Voice Call</h5>
+        <img [src]="this.imagePath" alt="userImage" class="avatar" style="width: 300px; height: 300px; border-radius: 50%;" />
+        <p class="username"style="margin-top: 50px;font-size: 60px;">{{ this.userName }}</p>
+        <div *ngIf="ringing" style="margin-top: 30px;font-size: 12px;">Ringing...</div>
+      </div> 
+      
      
-      <button class="button" (click)="connectWithPeer()" *ngIf="!isInCall && !incomingCall && !ringing" style="color: white;background-color: green;"><mat-icon>phone</mat-icon></button>
-      <button class="button" (click)="screenShare()" *ngIf="isInCall">Screen share</button>
-      <button class="button" *ngIf="incomingCall" (click)="answerCall()" style="color: white;background-color: green;"><mat-icon>settings_phone</mat-icon></button>
-      <button class="button" *ngIf="incomingCall" (click)="declineCall()" style="color: white;background-color: red;"><mat-icon>call_end</mat-icon></button>
-      <button class="button" *ngIf="isInCall" (click)="endCall()" style="color: white;background-color: rgb(218, 144, 144);"><mat-icon> call_end</mat-icon></button>
-     
+      <br>
+      
+      <div style="margin-top: 20px; display: flex; justify-content: space-around;">
+        <button class="button" (click)="connectWithPeer()" *ngIf="!isInCall && !incomingCall && !ringing" style="color: white; background-color: green; border-radius: 50%;width: 100px;height: 100px;">
+          <mat-icon style="font-size: 40px;
+          height: fit-content;
+          width: fit-content;">phone</mat-icon>
+        </button>
+        
+        <button class="button" (click)="screenShare()" *ngIf="isInCall">
+          Screen share
+        </button>
+        
+        <button class="button" *ngIf="incomingCall" (click)="answerCall()" style="color: white; background-color: green;border-radius: 50%;width: 100px;height: 100px;">
+          <mat-icon  style="font-size: 40px;
+          height: fit-content;
+          width: fit-content;">settings_phone</mat-icon>
+        </button>
+        
+        <button class="button" *ngIf="incomingCall" (click)="declineCall()" style="color: white; background-color: red;border-radius: 50%;width: 100px;height: 100px;">
+          <mat-icon  style="font-size: 40px;
+          height: fit-content;
+          width: fit-content;">call_end</mat-icon>
+        </button>
+        
+        <button class="button" *ngIf="isInCall" (click)="endCall()" style="color: white; background-color: rgb(218, 144, 144);border-radius: 50%;width: 100px;height: 100px;">
+          <mat-icon  style="font-size: 40px;
+          height: fit-content;
+          width: fit-content;">call_end</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
   

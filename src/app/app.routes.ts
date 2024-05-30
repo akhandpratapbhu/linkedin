@@ -7,14 +7,28 @@ import { ConnectionProfileComponent } from './components/connection-profile/conn
 import { SearchUserProfileComponent } from './components/search-user-profile/search-user-profile.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { CallingComponent } from './components/calling/calling.component';
+import { HomeOrCallResolverService } from './services/home-or-call-resolver.service';
 
 
 export const routes: Routes = [
     {path:'',component:SignInComponent},
     {path:'register',component:SignUpComponent},
-    {path:'dashboard',component:HomeComponent, canActivate: [AuthGuard] },
+   
     {path:'dashboard/:id',component:ConnectionProfileComponent, canActivate: [AuthGuard] },
     {path:'searchUserProfile/:username',component:SearchUserProfileComponent, canActivate: [AuthGuard] },
     {path:'chat',component:ChatComponent,},
-    {path:'calling/:id',component:CallingComponent,}
+    {path:'calling/:id',component:CallingComponent,},
+   // {path:'dashboard',component:HomeComponent, canActivate: [AuthGuard] },
+   // {path:'dashboard',component:CallingComponent,}
+    {
+        path: 'dashboard',
+        component: HomeComponent,
+        canActivate: [AuthGuard]
+        // resolve: { showHome: HomeOrCallResolverService}
+      },
+      {
+        path: 'dashboard/call/user',
+        component: CallingComponent,
+          
+      },
 ];

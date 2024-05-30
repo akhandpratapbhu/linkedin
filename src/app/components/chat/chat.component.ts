@@ -201,6 +201,7 @@ export class ChatComponent implements OnInit {
   private storageArray:any []= [];
   public Id!:string;
   userName!:string;
+  
   constructor(private chatService: ChatService, private authService: AuthService,private route:Router) {}
 
   ngOnInit() {

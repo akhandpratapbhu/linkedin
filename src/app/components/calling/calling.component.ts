@@ -6,9 +6,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { jwtDecode } from 'jwt-decode';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConnectionProfileService } from '../../services/connection-profile.service';
 import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-calling',
@@ -19,7 +21,6 @@ import { UserService } from '../../services/user.service';
 })
 export class CallingComponent implements OnInit {
 
-  private peer: Peer|null;
   peerIdShare!: string;
   peerId!: string | null;
   private lazyStream: any;
@@ -34,22 +35,36 @@ export class CallingComponent implements OnInit {
   userName:any;
   imagePath:any;
   selectedUserId: any;
-  constructor(private route: ActivatedRoute, private connectionProfile: ConnectionProfileService,private userService:UserService) {
-    this.peer = new Peer();
+  private ringingSubscription!: Subscription;
+  constructor(private route: ActivatedRoute, private connectionProfile: ConnectionProfileService,
+    private userService:UserService,private authService:AuthService,private router:Router) {
   }
 
   ngOnInit(): void {
-
-    this.selectedUser()
+    this.ringingSubscription = this.authService.ringing$.subscribe(status => {
+      this.ringing = status;
+      console.log('Ringing status updated in CallingComponent:', this.ringing);
+    });
     this.usertokenId()
+    this.selectedUser()
+    this.incomingCall = history.state.ringing
   }
-  ngOnDestroy(): void {
-    if (this.peer) {
-      this.peer.destroy();
+  triggerRinging() {
+    this.authService.setRingingStatus(true);
+    console.log('Ringing status triggered in component');
+  }
+
+  ngOnDestroy() {
+    if (this.ringingSubscription) {
+      this.ringingSubscription.unsubscribe();
     }
   }
-
   getConnectionUserProfile(id: any) {
+    
+    if(!id){
+      id=this.userId
+    }
+    console.log("id",id,this.userId);
     this.connectionProfile.getConnectionUser(id).subscribe(res => {
 
       this.data = res
@@ -82,32 +97,34 @@ export class CallingComponent implements OnInit {
        this.userId = (decoded as any).id;
        //this.getConnectionUserProfile( this.userId)
       console.log(this.userId);
+      
       this.initializePeer()
     } else {
       console.error('Token not found in localStorage');
     }
   }
   initializePeer() {
-    if (this.peer) {
-      console.log(this.peer);
+    // if (this.peer) {
+    //   console.log(this.peer);
       
-      console.warn('Peer is already initialized. Destroying existing Peer instance.');
-      this.peer.destroy();
-      this.peer = null;
-      console.log(this.peer);
-    }
+    //   console.warn('Peer is already initialized. Destroying existing Peer instance.');
+    //   this.peer.destroy();
+    //   this.peer = null;
+    //   console.log(this.peer);
+    // }
   
     try {
-      this.peer = new Peer(this.userId, {
-        // Configuration options can be added here if needed
-      });
+      // this.peer = new Peer(this.userId, {
+      //   // Configuration options can be added here if needed
+      // });
+      if(!this.authService.peer) return
   
-      this.peer.on('open', (id) => {
+      this.authService.peer.on('open', (id) => {
         this.peerId = this.userId;
         console.log('Peer ID:', this.peerId);
       });
   
-      this.peer.on('call', (call) => {
+      this.authService.peer.on('call', (call) => {
         this.incomingCall = true;
         this.currentCall = call;
         this.ringing = true;
@@ -117,20 +134,23 @@ export class CallingComponent implements OnInit {
           this.ringing = false;
           this.isInCall = false;
         });
+      
+        
+        
       });
   
-      this.peer.on('disconnected', () => {
+      this.authService.peer.on('disconnected', () => {
         console.warn('Peer disconnected. Attempting to reconnect...');
-        this.peer?.reconnect();
+        this.authService.peer?.reconnect();
       });
   
-      this.peer.on('error', (err) => {
+      this.authService.peer.on('error', (err) => {
         console.error('Peer error:', err);
       });
     } catch (error) {
       console.error('Error initializing Peer:', error);
     }
-   // this.connectWithPeer()
+   
   }
   
 
@@ -146,9 +166,11 @@ export class CallingComponent implements OnInit {
     }).then((stream) => {
       this.lazyStream = stream;
 
-      const call = this.peer?.call(id, stream);
+      const call = this.authService.peer?.call(id, stream);
       this.ringing = true;
-
+      console.log(this.ringing);
+      
+      this.authService.setRingingStatus(this.ringing);
       call?.on('stream', (remoteStream) => {
         this.ringing = false;
         this.isInCall = true;

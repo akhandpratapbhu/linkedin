@@ -18,23 +18,35 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit, OnDestroy  {
   ringingStatus: boolean | undefined;
   private ringingSubscription: Subscription | undefined;
-
+  userIdStatus: any| undefined;
+  private userIdSubscription: Subscription | undefined;
   constructor(private authService: AuthService, private router : Router) {}
 
   ngOnInit() {
-    this.authService.ringingSubject.subscribe((val : boolean)=>{
-      console.log(val, "this is the value")
-      if(val==true) this.router.navigate(['/dashboard/call/user'], { state : {ringing : true}})
-    })
     this.ringingSubscription = this.authService.ringing$.subscribe(status => {
       this.ringingStatus = status;
+      console.log('Ringing status start in HomeComponent:', this.ringingStatus);
+
+      if(this.ringingStatus==true){
+        this.router.navigate(['/dashboard/call/user'], { state : {ringing : true}})
+        
+      }else{
+        this.router.navigate(['/dashboard'], { state : {ringing : false}})
+      } 
       console.log('Ringing status updated in HomeComponent:', this.ringingStatus);
+    });
+    this.userIdSubscription = this.authService.userId$.subscribe(id => {
+      this.userIdStatus = id;
+      console.log('userid status start in HomeComponent:', this.userIdStatus);
+
     });
   }
 
   ngOnDestroy() {
-    if (this.ringingSubscription) {
+    if (this.ringingSubscription ) {
       this.ringingSubscription.unsubscribe();
     }
   }
+
+
 }

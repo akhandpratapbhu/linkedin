@@ -30,8 +30,7 @@ export class AppComponent {
   userName:any;
   imagePath:any;
   selectedUserId: any;
-  constructor(private route: ActivatedRoute, private connectionProfile: ConnectionProfileService,
-    private userService:UserService,private authService:AuthService,private router:Router) {
+  constructor(private authService:AuthService) {
   }
   ngOnInit(): void {
     this.usertokenId()
@@ -41,7 +40,6 @@ export class AppComponent {
     if (token) {
       const decoded = jwtDecode(token);
        this.userId = (decoded as any).id;
-       //this.getConnectionUserProfile( this.userId)
       console.log(this.userId);
       
       this.initializePeer()
@@ -72,14 +70,15 @@ export class AppComponent {
       this.authService.peer.on('call', (call) => {
         this.incomingCall = true;
         this.authService.ringingSubject.next(true)
+        this.authService.userIdSubject.next(1)
         this.currentCall = call;
         this.ringing = true;
-  console.log( this.incomingCall ,this.ringing);
   
-        call.on('close', () => {
+        call.on('close', () => {  
           this.incomingCall = false;
           this.ringing = false;
           this.isInCall = false;
+          this.authService.ringingSubject.next(false)
         });
       
         

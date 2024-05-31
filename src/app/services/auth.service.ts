@@ -8,35 +8,17 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
   token: string | null;
-   peer!: Peer|null;
+  peer!: Peer | null;
   ringingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  ringing$ = this.ringingSubject.asObservable(); // Expose as Observable for other components to subscribe
+  ringing$ = this.ringingSubject.asObservable();
+  userIdSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  userId$ = this.userIdSubject.asObservable();
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     this.token = localStorage.getItem('token');
-    console.log('Initial ringing status:', this.ringingSubject.value);
-    this.setRingingStatus(false)
-  }
-  
 
-  setRingingStatus(status: boolean): boolean {
-    this.ringingSubject.next(status);
-    console.log('Ringing status set to:', status,this.ringingSubject.value);
-    this.getRingingStatus()
-    return this.ringingSubject.value;
   }
 
- getRingingStatus(): boolean {
-    console.log('Getting ringing status:', this.ringingSubject.value);
-    this.shouldShowCall()
-    return this.ringingSubject.value;
-  }
-
-  shouldShowCall(): boolean {
-    console.log(this.ringingSubject.value);
-    
-    return this.ringingSubject.value;
-  }
   isLoggedIn(): boolean {
 
     return !!localStorage.getItem('token');
@@ -55,6 +37,6 @@ export class AuthService {
 
     return this.http.get('http://localhost:3000/api/user')
   }
- 
-  
+
+
 }

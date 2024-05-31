@@ -35,43 +35,42 @@ export class CallingComponent implements OnInit {
   userName:any;
   imagePath:any;
   selectedUserId: any;
-  private ringingSubscription!: Subscription;
+  user:any
+  private userIdSubscription!: Subscription;
   constructor(private route: ActivatedRoute, private connectionProfile: ConnectionProfileService,
     private userService:UserService,private authService:AuthService,private router:Router) {
   }
 
   ngOnInit(): void {
-    this.ringingSubscription = this.authService.ringing$.subscribe(status => {
-      this.ringing = status;
-      console.log('Ringing status updated in CallingComponent:', this.ringing);
+    
+    this.userIdSubscription = this.authService.userId$.subscribe(id => {
+      this.user = id;
+      console.log('userId updated in CallingComponent:',this.user);
     });
-    this.usertokenId()
+    this.usertokenId(this.user)
     this.selectedUser()
     this.incomingCall = history.state.ringing
   }
-  triggerRinging() {
-    this.authService.setRingingStatus(true);
-    console.log('Ringing status triggered in component');
-  }
+
 
   ngOnDestroy() {
-    if (this.ringingSubscription) {
-      this.ringingSubscription.unsubscribe();
+  
+    if (this.userIdSubscription) {
+      this.userIdSubscription.unsubscribe();
     }
   }
   getConnectionUserProfile(id: any) {
-    
+    console.log("id",id,this.userId,this.user);
     if(!id){
-      id=this.userId
+      id=this.user
     }
-    console.log("id",id,this.userId);
+   
     this.connectionProfile.getConnectionUser(id).subscribe(res => {
 
       this.data = res
       if (this.data && Array.isArray(this.data) && this.data.length > 0) {
         const imagePath = this.data[0].image;
         this.userName = this.data[0].username
-        // Access the image property from the first object
 
         if (imagePath !== null) {
           this.imagePath = this.userService.getfullImagePath(imagePath);
@@ -90,14 +89,14 @@ export class CallingComponent implements OnInit {
     });
     this.getConnectionUserProfile( this.selectedUserId)
   }
-  usertokenId() {
+  usertokenId(user:any) {
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode(token);
        this.userId = (decoded as any).id;
        //this.getConnectionUserProfile( this.userId)
       console.log(this.userId);
-      
+      localStorage.setItem('caller',this.userId)
       this.initializePeer()
     } else {
       console.error('Token not found in localStorage');
@@ -168,9 +167,8 @@ export class CallingComponent implements OnInit {
 
       const call = this.authService.peer?.call(id, stream);
       this.ringing = true;
-      console.log(this.ringing);
+    
       
-      this.authService.setRingingStatus(this.ringing);
       call?.on('stream', (remoteStream) => {
         this.ringing = false;
         this.isInCall = true;
@@ -223,7 +221,9 @@ export class CallingComponent implements OnInit {
   declineCall(): void {
     this.incomingCall = false;
     this.ringing = false;
-    this.currentCall.close();
+    
+    this.currentPeer = null;
+    this.router.navigate(['dashboard'])
   }
 
   private streamRemoteVideo(stream: any): void {
@@ -288,6 +288,10 @@ export class CallingComponent implements OnInit {
     }
 
     this.isInCall = false;
+    this.ringing=false;
+    console.log("end call");
+    this.authService.ringingSubject.next(false)
+    this.router.navigate(['dashboard'])
   }
 }
 

@@ -29,7 +29,11 @@
           height: fit-content;
           width: fit-content;">phone</mat-icon>
         </button>
-        
+        <button class="button" *ngIf="ringing" (click)="endCall()" style="color: white; background-color: red;border-radius: 50%;width: 100px;height: 100px;">
+          <mat-icon  style="font-size: 40px;
+          height: fit-content;
+          width: fit-content;">call_end</mat-icon>
+        </button>
         <button class="button" (click)="screenShare()" *ngIf="isInCall">
           Screen share
         </button>
@@ -40,7 +44,7 @@
           width: fit-content;">settings_phone</mat-icon>
         </button>
         
-        <button class="button"  (click)="endCall()" style="color: white; background-color: red;border-radius: 50%;width: 100px;height: 100px;">
+        <button class="button" *ngIf="incomingCall" (click)="endCall()" style="color: white; background-color: red;border-radius: 50%;width: 100px;height: 100px;">
           <mat-icon  style="font-size: 40px;
           height: fit-content;
           width: fit-content;">call_end</mat-icon>

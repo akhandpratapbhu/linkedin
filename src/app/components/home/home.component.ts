@@ -20,6 +20,8 @@ export class HomeComponent implements OnInit, OnDestroy  {
   private ringingSubscription: Subscription | undefined;
   userIdStatus: any| undefined;
   private userIdSubscription: Subscription | undefined;
+  private audio = new Audio('assets/img/ring-tone-faf-7-12026.mp3');
+
   constructor(private authService: AuthService, private router : Router) {}
 
   ngOnInit() {
@@ -28,20 +30,30 @@ export class HomeComponent implements OnInit, OnDestroy  {
       console.log('Ringing status start in HomeComponent:', this.ringingStatus);
 
       if(this.ringingStatus==true){
+       // this.playRingtone();
         this.router.navigate(['/dashboard/call/user'], { state : {ringing : true}})
         
-      }else{
+      }else if(this.ringingStatus==false){
+        this.stopRingtone()
         this.router.navigate(['/dashboard'], { state : {ringing : false}})
       } 
-      console.log('Ringing status updated in HomeComponent:', this.ringingStatus);
     });
     this.userIdSubscription = this.authService.userId$.subscribe(id => {
       this.userIdStatus = id;
-      console.log('userid status start in HomeComponent:', this.userIdStatus);
 
     });
   }
+  private playRingtone(): void {
+    this.audio.loop = true; // Loop the audio for continuous ringing
+    this.audio.play();
+  }
 
+  private stopRingtone(): void {
+    console.log("stop ringtone");
+    
+    this.audio.pause();
+    this.audio.currentTime = 0; // Reset the audio to the beginning
+  }
   ngOnDestroy() {
     if (this.ringingSubscription ) {
       this.ringingSubscription.unsubscribe();

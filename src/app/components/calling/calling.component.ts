@@ -31,40 +31,40 @@ export class CallingComponent implements OnInit {
   private currentCall: any;
   isInCall: boolean = false;
   userId: any;
-  data:any;
-  userName:any;
-  imagePath:any;
+  data: any;
+  userName: any;
+  imagePath: any;
   selectedUserId: any;
-  user:any
+  user: any
+  private audio = new Audio('assets/img/ring-tone-faf-7-12026.mp3');
   private userIdSubscription!: Subscription;
   constructor(private route: ActivatedRoute, private connectionProfile: ConnectionProfileService,
-    private userService:UserService,private authService:AuthService,private router:Router) {
+    private userService: UserService, private authService: AuthService, private router: Router) {
   }
 
   ngOnInit(): void {
-    
+    this.usertokenId(this.user)
     this.userIdSubscription = this.authService.userId$.subscribe(id => {
       this.user = id;
-      console.log('userId updated in CallingComponent:',this.user);
     });
-    this.usertokenId(this.user)
+
     this.selectedUser()
     this.incomingCall = history.state.ringing
+    // this.connectWithPeer()
   }
 
 
   ngOnDestroy() {
-  
+
     if (this.userIdSubscription) {
       this.userIdSubscription.unsubscribe();
     }
   }
   getConnectionUserProfile(id: any) {
-    console.log("id",id,this.userId,this.user);
-    if(!id){
-      id=this.user
+    if (!id) {
+      id = this.user
     }
-   
+
     this.connectionProfile.getConnectionUser(id).subscribe(res => {
 
       this.data = res
@@ -74,7 +74,7 @@ export class CallingComponent implements OnInit {
 
         if (imagePath !== null) {
           this.imagePath = this.userService.getfullImagePath(imagePath);
-          
+
         } else {
           this.imagePath = this.userService.getDefaultfullImagePath();
         }
@@ -85,73 +85,67 @@ export class CallingComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
 
       this.selectedUserId = params.get('id'); // The 'id' here should match the parameter in your route definition
-      console.log('   this.username:', this.selectedUserId);
     });
-    this.getConnectionUserProfile( this.selectedUserId)
+    this.getConnectionUserProfile(this.selectedUserId)
   }
-  usertokenId(user:any) {
+  usertokenId(user: any) {
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode(token);
-       this.userId = (decoded as any).id;
-       //this.getConnectionUserProfile( this.userId)
-      console.log(this.userId);
-      localStorage.setItem('caller',this.userId)
+      this.userId = (decoded as any).id;
+      //this.getConnectionUserProfile( this.userId)
+      localStorage.setItem('caller', this.userId)
       this.initializePeer()
     } else {
       console.error('Token not found in localStorage');
     }
   }
   initializePeer() {
-    // if (this.peer) {
-    //   console.log(this.peer);
-      
-    //   console.warn('Peer is already initialized. Destroying existing Peer instance.');
-    //   this.peer.destroy();
-    //   this.peer = null;
-    //   console.log(this.peer);
-    // }
-  
+
     try {
-      // this.peer = new Peer(this.userId, {
-      //   // Configuration options can be added here if needed
-      // });
-      if(!this.authService.peer) return
-  
+      console.log(this.authService.peer, "uyhdfehbfibxfhur");
+
+      if (!this.authService.peer) {
+        return
+      }
       this.authService.peer.on('open', (id) => {
+        console.log(this.authService.peer, "open");
         this.peerId = this.userId;
         console.log('Peer ID:', this.peerId);
       });
-  
+
+
       this.authService.peer.on('call', (call) => {
         this.incomingCall = true;
+        console.log('Incoming call:', call);
+
         this.currentCall = call;
         this.ringing = true;
-  
+
+        console.log('After setting currentCall:', this.currentCall);
+
         call.on('close', () => {
           this.incomingCall = false;
           this.ringing = false;
           this.isInCall = false;
+          console.log('Call ended, resetting flags.');
         });
-      
-        
-        
       });
-  
+
       this.authService.peer.on('disconnected', () => {
         console.warn('Peer disconnected. Attempting to reconnect...');
         this.authService.peer?.reconnect();
       });
-  
+
       this.authService.peer.on('error', (err) => {
         console.error('Peer error:', err);
       });
     } catch (error) {
       console.error('Error initializing Peer:', error);
     }
-   
+
   }
-  
+
 
   connectWithPeer(): void {
     this.callPeer(this.selectedUserId);
@@ -167,11 +161,20 @@ export class CallingComponent implements OnInit {
 
       const call = this.authService.peer?.call(id, stream);
       this.ringing = true;
-    
-      
+      if (this.ringing) {
+        this.playRingtone();
+      } else {
+        this.stopRingtone();
+      }
+
       call?.on('stream', (remoteStream) => {
         this.ringing = false;
         this.isInCall = true;
+        if (this.ringing) {
+          this.playRingtone();
+        } else {
+          this.stopRingtone();
+        }
         if (!this.peerList.includes(call.peer)) {
           this.streamRemoteVideo(remoteStream);
           this.currentPeer = call.peerConnection;
@@ -189,9 +192,21 @@ export class CallingComponent implements OnInit {
     });
   }
 
+
   answerCall(): void {
+    console.log('Incoming call:', this.currentCall);
+
+    // Make sure `this.currentCall` is defined
+    if (!this.currentCall) {
+      console.log('currentCall is undefined');
+      return;
+    }
+
     this.incomingCall = false;
     this.ringing = false;
+    if (!this.incomingCall || !this.ringing) {
+      this.stopRingtone();
+    }
 
     navigator.mediaDevices.getUserMedia({
       video: false,
@@ -200,7 +215,14 @@ export class CallingComponent implements OnInit {
       this.lazyStream = stream;
       this.isInCall = true;
 
-      this.currentCall.answer(stream);
+      // Ensure `this.currentCall.answer` is a function
+      if (typeof this.currentCall.answer === 'function') {
+        this.currentCall.answer(stream);
+      } else {
+        console.log('currentCall.answer is not a function');
+        return;
+      }
+
       this.currentCall.on('stream', (remoteStream: any) => {
         if (!this.peerList.includes(this.currentCall.peer)) {
           this.streamRemoteVideo(remoteStream);
@@ -221,7 +243,7 @@ export class CallingComponent implements OnInit {
   declineCall(): void {
     this.incomingCall = false;
     this.ringing = false;
-    
+    this.stopRingtone();
     this.currentPeer = null;
     this.router.navigate(['dashboard'])
   }
@@ -288,11 +310,21 @@ export class CallingComponent implements OnInit {
     }
 
     this.isInCall = false;
-    this.ringing=false;
-    console.log("end call");
+    this.ringing = false;
     this.authService.ringingSubject.next(false)
+    this.stopRingtone();
     this.router.navigate(['dashboard'])
   }
+  private playRingtone(): void {
+    this.audio.loop = true; // Loop the audio for continuous ringing
+    this.audio.play();
+  }
+
+  private stopRingtone(): void {
+    this.audio.pause();
+    this.audio.currentTime = 0; // Reset the audio to the beginning
+  }
 }
+
 
 

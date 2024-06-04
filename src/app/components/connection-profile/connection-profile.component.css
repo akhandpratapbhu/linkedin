@@ -28,10 +28,59 @@
     background: url('../../../assets/img/morskie-oko-tatry_1204-510.avif') no-repeat center center;
     background-size: cover; 
 }  
-.corner-image{
+.corner-imageP{
     width: 150px;
     height: 150px;
     border-radius: 60px;
-    margin-top: 9rem;
+    margin-top: 7rem;
     margin-left: 10px;
+}
+/* user all post css */
+.bordered-image {
+    width: 30px;
+}
+.corner-image{
+  width: 50px;
+  height: 50px;
+  border-radius: 60px;
+  
+}
+
+.setText {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    margin-top: 20px;
+    padding: 2px;
+    margin-bottom: 10px;
+
+}
+
+.setText mat-icon {
+    margin-right: 5px;
+
+}
+.card{
+    margin-bottom: 15px;
+}
+.post-container {
+    height: 400px; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrollbar */
+  }
+  .icon-group {
+    display: flex;
+    align-items: center;
+}
+.setUsername{
+    margin-right:28rem;
+}
+.image-container {
+    display: flex;
+    justify-content: center; /* Centers the image horizontally */
+    width: 100%;
+    margin-top: 10px;
+  }
+.row {
+  margin-top: 7rem;
+ 
 }

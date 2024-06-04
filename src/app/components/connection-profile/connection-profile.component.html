@@ -9,7 +9,7 @@
                 <div class="image-container">
                     <div class="background-image"></div>
                     <div class="corner-image-container">
-                        <img [src]="imagePath" class="corner-image" alt="...">
+                        <img [src]="imagePath" class="corner-imageP" alt="...">
                     </div>
                 </div>
 
@@ -20,8 +20,9 @@
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                         card's content.</p>
                     <!-- <button (click)="addUser()" class="btn btn-primary"  [disabled]="friendRequestStatus">connect</button> -->
-                    <button (click)="addUser()" class="btn btn-primary" [disabled]="friendRequestStatus === 'pending'">
-                        {{ friendRequestStatus!=='Not requested' ? friendRequestStatus : 'Connect' }}
+                    <button *ngIf="friendRequestStatus !== 'accepted'" (click)="addUser()" class="btn btn-primary"
+                        [disabled]="friendRequestStatus === 'pending'">
+                        {{ friendRequestStatus !== 'Not requested' ? friendRequestStatus : 'Connect' }}
                     </button>
 
                     <button class="custom-button message-button">Message</button>
@@ -31,6 +32,64 @@
             </div>
         </div>
         <div class="col-lg-2" style="margin-top:-50px">
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" >
+        <div class="col-lg-3"style="margin-top:-50px">
+        </div>
+        <div class="col-lg-6"style="margin-top:-50px">
+            <hr>
+            <div class="post-container">
+
+                @for (post of allPost.reverse(); track post.id) {
+                <div class="card ">
+                    <div class="card-body">
+            
+                        <form class="d-flex  justify-content-between">
+                            <img [src]="imagePath" class="corner-image" alt="...">
+                            <h5 class="card-title setUsername">{{userName}}</h5>
+                            <!-- <div class="icon-group" >
+                                    @if(( post.author.role==role&& role!=='admin'&& post.author.id==id)){
+                                        <mat-icon style="color: aqua;"(click)="editPost(post.id)">edit</mat-icon>
+                                        <mat-icon style="color: brown;"(click)="deleteDialog(post.id)">delete_forever</mat-icon>
+                                    }
+                                    @if((  role=='admin')){
+                                        <mat-icon style="color: aqua;"(click)="editPost(post.id)">edit</mat-icon>
+                                        <mat-icon style="color: brown;"(click)="deleteDialog(post.id)">delete_forever</mat-icon>
+                                    }
+                                   
+                                </div> -->
+                        </form>
+                        <p class="card-text" style="margin-left: 30px;
+                            margin-top: -9px;">Full stack-developer</p>
+                        <hr>
+                        <p>{{ post.body }}</p>
+                        <div class="loadimage-container">
+                            <div *ngIf="post.imageUrl">
+                                <img *ngIf="post.isImage" [src]="post.imageUrl" alt="Post Image"
+                                    style="height: 200px; width: 400px;">
+                                <video *ngIf="post.isVideo" [src]="post.imageUrl" controls class="media"
+                                    style="height: 200px; width: 400px;"></video>
+                            </div>
+                            <div *ngIf="!post.imageUrl">
+                                <!-- Placeholder for posts without images -->
+                                <p>No image available</p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <p class="setText"><mat-icon>thumb_up</mat-icon> Like</p>
+                            <p class="setText"><mat-icon> comment</mat-icon> Comment</p>
+                            <p class="setText"><mat-icon>share</mat-icon> Share</p>
+                            <p class="setText"><mat-icon>forward_5</mat-icon> Send</p>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>        </div>
+        <div class="col-lg-3"style="margin-top:-50px">
 
         </div>
     </div>

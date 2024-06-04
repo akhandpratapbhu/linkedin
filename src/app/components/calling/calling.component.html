@@ -23,12 +23,12 @@
       <br>
       
       <div style="margin-top: 20px; display: flex; justify-content: space-around;">
-        <button class="button" (click)="connectWithPeer()" *ngIf="!isInCall && !incomingCall && !ringing" style="color: white; background-color: green; border-radius: 50%;width: 100px;height: 100px;">
+        <!-- <button class="button" (click)="connectWithPeer()" *ngIf="!isInCall && !incomingCall && !ringing" style="color: white; background-color: green; border-radius: 50%;width: 100px;height: 100px;">
           <mat-icon style="font-size: 40px;
           height: fit-content;
           width: fit-content;">phone</mat-icon>
-        </button>
-        <button class="button" *ngIf="ringing" (click)="endCall()" style="color: white; background-color: red;border-radius: 50%;width: 100px;height: 100px;">
+        </button> -->
+        <button class="button" *ngIf="ringing && !incomingCall" (click)="endCall()" style="color: white; background-color: red;border-radius: 50%;width: 100px;height: 100px;">
           <mat-icon  style="font-size: 40px;
           height: fit-content;
           width: fit-content;">call_end</mat-icon>
@@ -43,7 +43,7 @@
           width: fit-content;">settings_phone</mat-icon>
         </button>
         
-        <button class="button" *ngIf="incomingCall" (click)="endCall()" style="color: white; background-color: red;border-radius: 50%;width: 100px;height: 100px;">
+        <button class="button" *ngIf="incomingCall && ringing" (click)="endCall()" style="color: white; background-color: red;border-radius: 50%;width: 100px;height: 100px;">
           <mat-icon  style="font-size: 40px;
           height: fit-content;
           width: fit-content;">call_end</mat-icon>

@@ -50,7 +50,7 @@ export class CallingComponent implements OnInit {
 
     this.selectedUser()
     this.incomingCall = history.state.ringing
-    // this.connectWithPeer()
+     this.connectWithPeer()
   }
 
 
@@ -86,6 +86,7 @@ export class CallingComponent implements OnInit {
 
       this.selectedUserId = params.get('id'); // The 'id' here should match the parameter in your route definition
     });
+    this.connectWithPeer()
     this.getConnectionUserProfile(this.selectedUserId)
   }
   usertokenId(user: any) {
@@ -94,7 +95,7 @@ export class CallingComponent implements OnInit {
       const decoded = jwtDecode(token);
       this.userId = (decoded as any).id;
       //this.getConnectionUserProfile( this.userId)
-      localStorage.setItem('caller', this.userId)
+      //localStorage.setItem('caller', this.userId)
       this.initializePeer()
     } else {
       console.error('Token not found in localStorage');

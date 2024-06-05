@@ -12,9 +12,9 @@ export class ChatService {
     this.socket = io(this.url, {transports: ['websocket', 'polling', 'flashsocket']});
   }
 
-  joinRoom(data:any): void {
-    this.socket.emit('join', data);
-  }
+  // joinRoom(data:any): void {
+  //   this.socket.emit('join', data);
+  // }
 
   sendMessage(data:any): void {
     this.socket.emit('sendMessage', data);

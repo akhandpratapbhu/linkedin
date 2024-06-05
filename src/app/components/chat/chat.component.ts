@@ -197,9 +197,8 @@ export class ChatComponent implements OnInit {
   newMessage!: string;
   id!:string
   selectedUser:any
-  currentUser='a2'
+  currentUser:any
   private storageArray:any []= [];
-  public Id!:string;
   userName!:string;
   
   constructor(private chatService: ChatService, private authService: AuthService,private route:Router) {}
@@ -222,62 +221,81 @@ export class ChatComponent implements OnInit {
       console.log("message", message);
       this.messages.push(message);
       console.log( this.messages);
-      
-      if (this.Id) {
-                  setTimeout(() => {
-                    this.storageArray = this.chatService.getStorage();
-                    const storeIndex = this.storageArray
-                      .findIndex((storage) => storage.Id === this.Id);
-                    this.messages = this.storageArray[storeIndex].chats;
-                  }, 500);
-                }
+      this.usermessage(message)
+      // if (this.id) {
+      //   console.log( "this.storageArray",this.id);
+      //             setTimeout(() => {
+      //               this.storageArray = this.chatService.getStorage();
+      //               console.log( "this.storageArray",this.storageArray);
+
+      //               const storeIndex = this.storageArray
+      //                 .findIndex((storage) => storage.senderId === this.id);
+      //               this.messages = this.storageArray[storeIndex]?.chats;
+      //             }, 500);
+      //           }
     });
     
   }
+  usermessage(message:any){
+    this.storageArray = this.chatService.getStorage();
+    console.log("  this.storageArray",message.content,  this.storageArray,message);
+    
+    const storeIndex = this.storageArray
+      .findIndex((storage) => storage.recipientId === this.selectedUser.id && storage.senderId === this.id);
+      console.log("  this.storageArray",  this.storageArray,storeIndex);
+    
+    if (storeIndex > -1) {
+      this.storageArray[storeIndex].chats.push({
+     
+        content: message.content
+      });
+    } else {
+      const updateStorage = {
+    
+        chats: [{
+          content: message
+        }]
+      };
 
+      this.storageArray.push(updateStorage);
+    }
+
+    this.chatService.setStorage(this.storageArray);
+    this.newMessage = '';
+    
+  }
  
   findAllUsers(){
     this.authService.allUsers().subscribe(res=>{
       this.users=res;
-      //console.log( this.users[0].username);
       
     })
   }
-  // sendMessage() {
-  //   const message = {
-  //     content: this.newMessage,
-  //     senderId: this.id,
-  //     recipientId: this.selectedUser.id // Change this to dynamic recipient ID
-  //   };
-  //   console.log(message);
-    
-  //   this.chatService.sendMessage(message);
-  //   this.newMessage = '';
-  // }
+ 
   selectUserHandler(user:string){
 const userName=user
 this.selectedUser = this.users.find((user: { username: any; })=>user.username===userName);
 console.log(this.selectedUser.id);
-this.Id = this.selectedUser.id;
- 
 
 
     this.messages = [];
 
     this.storageArray = this.chatService.getStorage();
-    const storeIndex = this.storageArray
-      .findIndex((storage) => storage.Id === this.Id);
-
+    const storeIndex = this.storageArray.findIndex((storage) => storage.recipientId === this.selectedUser.id);
+    console.log(storeIndex,  this.storageArray[0],this.storageArray[0]?.recipientId, this.selectedUser.id,this.storageArray);
+    
     if (storeIndex > -1) {
       this.messages = this.storageArray[storeIndex].chats;
+      console.log("this.messages", this.messages);
     }
+    
 
-    this.join(this.userName, this.Id);
+ //   this.join(this.userName, this.id);
   }
 
-  join(username: string, Id: string): void {
-    this.chatService.joinRoom({user: username, Id: Id});
-  }
+  // join(username: string, id: string): void {
+  //   this.chatService.joinRoom({user: username, id: id});
+  // }
   sendMessage(): void {
     this.chatService.sendMessage({
       recipientId: this.selectedUser.id,
@@ -286,17 +304,23 @@ this.Id = this.selectedUser.id;
     });
    
     this.storageArray = this.chatService.getStorage();
+    console.log("  this.storageArray",  this.storageArray);
+    
     const storeIndex = this.storageArray
-      .findIndex((storage) => storage.Id === this.Id);
-
+      .findIndex((storage) => storage.recipientId === this.selectedUser.id);
+      console.log("  this.storageArray",  this.storageArray,storeIndex);
+    
     if (storeIndex > -1) {
       this.storageArray[storeIndex].chats.push({
+        senderId: this.id,
+        recipientId: this.selectedUser.id,
         user: this.userName,
         content: this.newMessage
       });
     } else {
       const updateStorage = {
-        Id: this.Id,
+        senderId: this.id,
+        recipientId: this.selectedUser.id,
         chats: [{
           user: this.userName,
           content: this.newMessage
@@ -314,9 +338,7 @@ this.Id = this.selectedUser.id;
     if(id){
       this.route.navigate([`calling/${id}`])    
     }
-    // else{
-    //   this.route.navigate([`calling/${this.id}`])  
-    // }
+   
   }
 }
 

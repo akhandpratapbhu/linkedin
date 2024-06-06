@@ -37,7 +37,7 @@
                 <div class="d-flex justify-content-center">
                     <p class="setText" *ngIf='like!=0'>{{like}} </p>
                     <p class="setText" (click)="likeButton()"  [ngClass]="{'liked': liked}"><mat-icon>thumb_up</mat-icon> Like</p>
-                    <p class="setText"><mat-icon> comment</mat-icon> Comment</p>
+                    <p class="setText" (click)="commentButton(post.author.username)"><mat-icon> comment</mat-icon> Comment</p>
                     <p class="setText"><mat-icon>share</mat-icon> Share</p>
                     <p class="setText"><mat-icon>forward_5</mat-icon> Send</p>
                 </div>

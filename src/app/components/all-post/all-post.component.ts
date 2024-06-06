@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { ConnectionProfileComponent } from '../connection-profile/connection-profile.component';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-all-post',
@@ -33,7 +33,7 @@ export class AllPostComponent implements OnInit {
   like: number = 0;
   liked: boolean = false; // Track if the user has liked the item
   constructor(private postService: PostService, private userService: UserService,
-     public dialog: MatDialog, private toastr: ToastrService) {
+    public dialog: MatDialog, private toastr: ToastrService, private router: Router) {
 
   }
   ngOnInit(): void {
@@ -174,7 +174,9 @@ export class AllPostComponent implements OnInit {
       this.like = this.like + 1;
     }
     this.liked = !this.liked;
-    console.log("like", this.like);
+  }
+  commentButton(username: any) {
+    this.router.navigate([`message/${username}`])
   }
 }
 

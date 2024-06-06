@@ -30,6 +30,8 @@ export class AllPostComponent implements OnInit {
   id: any;
   role: any;
   img: any
+  like: number = 0;
+  liked: boolean = false; // Track if the user has liked the item
   constructor(private postService: PostService, private userService: UserService,
      public dialog: MatDialog, private toastr: ToastrService) {
 
@@ -164,6 +166,15 @@ export class AllPostComponent implements OnInit {
     }).afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+  likeButton() {
+    if (this.liked) {
+      this.like = this.like - 1;
+    } else {
+      this.like = this.like + 1;
+    }
+    this.liked = !this.liked;
+    console.log("like", this.like);
   }
 }
 

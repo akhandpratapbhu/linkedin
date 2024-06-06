@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { UserService } from '../../services/user.service';
 import { ConnectionProfileService } from '../../services/connection-profile.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -23,7 +23,7 @@ export class ConnectionProfileComponent {
   getfriendRequestStatus!:any;
   allPost:any
   imageUrl!: string;
-  constructor(private userService: UserService, private connectionProfile: ConnectionProfileService, private route: ActivatedRoute) {
+  constructor(private userService: UserService, private connectionProfile: ConnectionProfileService, private route: ActivatedRoute,private router:Router) {
 
   }
   ngOnInit(): void {
@@ -117,5 +117,9 @@ export class ConnectionProfileComponent {
       this.getfriendRequestStatus=res
         this.friendRequestStatus= this.getfriendRequestStatus.status
     })
+  }
+  chatwithSelectedUser(){
+    console.log("this.authorId",this.userName);
+    this.router.navigate([`message/${this.userName}`])
   }
 }

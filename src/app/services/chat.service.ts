@@ -5,34 +5,30 @@ import { Observable, fromEvent } from 'rxjs';
   providedIn: 'root'
 })
 export class ChatService {
-  private socket: Socket;
+
+ // private socket = io('http://localhost:3000');
+private socket: Socket;
   private url = 'http://localhost:3000'; // your server local path
 
   constructor() {
     this.socket = io(this.url, {transports: ['websocket', 'polling', 'flashsocket']});
   }
-
-  // joinRoom(data:any): void {
-  //   this.socket.emit('join', data);
-  // }
-
-  sendMessage(data:any): void {
-    this.socket.emit('sendMessage', data);
+  joinRoom(roomId: string) {
+    this.socket.emit('joinRoom', { roomId });
   }
- 
 
-  getMessage(): Observable<any> {
-    return fromEvent(this.socket, 'receiveMessage');
+  sendMessage(roomId: string, message: any) {
+    this.socket.emit('sendMessage', { roomId, message });
   }
-  // getMessage() {
-  //  const data= this.socket.on('receiveMessage', (data) => {
-  //     console.log(data);
-  //   });
 
-  //   return data;
-  // }
-
-  getStorage() {
+  getMessage() {
+    return new Observable((observer) => {
+      this.socket.on('message', (message) => {
+        observer.next(message);
+      });
+    });
+  }
+   getStorage() {
     const storage = localStorage.getItem('chats');
     return storage ? JSON.parse(storage) : [];
   }
@@ -40,4 +36,39 @@ export class ChatService {
   setStorage(data: any) {
     localStorage.setItem('chats', JSON.stringify(data));
   }
+  // private socket: Socket;
+  // private url = 'http://localhost:3000'; // your server local path
+
+  // constructor() {
+  //   this.socket = io(this.url, {transports: ['websocket', 'polling', 'flashsocket']});
+  // }
+
+  // // joinRoom(data:any): void {
+  // //   this.socket.emit('join', data);
+  // // }
+
+  // sendMessage(data:any): void {
+  //   this.socket.emit('sendMessage', data);
+  // }
+ 
+
+  // getMessage(): Observable<any> {
+  //   return fromEvent(this.socket, 'receiveMessage');
+  // }
+  // // getMessage() {
+  // //  const data= this.socket.on('receiveMessage', (data) => {
+  // //     console.log(data);
+  // //   });
+
+  // //   return data;
+  // // }
+
+  // getStorage() {
+  //   const storage = localStorage.getItem('chats');
+  //   return storage ? JSON.parse(storage) : [];
+  // }
+
+  // setStorage(data: any) {
+  //   localStorage.setItem('chats', JSON.stringify(data));
+  // }
 }

@@ -7,8 +7,8 @@ import { ConnectionProfileComponent } from './components/connection-profile/conn
 import { SearchUserProfileComponent } from './components/search-user-profile/search-user-profile.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { CallingComponent } from './components/calling/calling.component';
-import { HomeOrCallResolverService } from './services/home-or-call-resolver.service';
 import { MessageComponent } from './components/message/message.component';
+import { MailComponent } from './components/mail/mail.component';
 
 
 export const routes: Routes = [
@@ -31,5 +31,6 @@ export const routes: Routes = [
         component: CallingComponent,
           
       },
-      {path:'message/:id',component:MessageComponent}
+      {path:'message/:id',component:MessageComponent},
+      {path:'mail',component:MailComponent},
 ];

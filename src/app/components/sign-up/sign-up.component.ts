@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { MailService } from '../../services/mail.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -33,7 +34,8 @@ export class SignUpComponent implements OnInit {
   constructor(
     private router: Router,
     private toastr: ToastrService,
-    private authService:AuthService
+    private authService:AuthService,
+    private mailService: MailService
    
   ) {
     this.signUpForm = new FormGroup({
@@ -60,7 +62,19 @@ export class SignUpComponent implements OnInit {
     }
   
   }
-  
+  sendMail(userData:any) {
+    console.log(userData);
+    
+    this.mailService.sendConfirmation(userData.email, userData.username, '123456').subscribe(
+      (response) => {
+        this.toastr.success('Email sent successfully', response);
+        console.log('Email sent successfully', response);
+      },
+      (error) => {
+        console.error('Error sending email', error);
+      }
+    );
+  }
   onSubmit(): void {
     this.loading = true;
     
@@ -78,10 +92,12 @@ export class SignUpComponent implements OnInit {
 
       this.authService.signUp(userData).subscribe((res: any) => {
         console.log("res",res);
-          
+       
           this.loading = false;
-          this.toastr.success(res.message);
+          this.toastr.success("sign-Up successfully");
+          this.sendMail(userData) 
           this.router.navigate([""]);
+         
         
       },
         (error:any) => {

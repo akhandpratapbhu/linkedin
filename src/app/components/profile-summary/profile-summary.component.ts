@@ -108,7 +108,7 @@ export class ProfileSummaryComponent {
         this.toastr.success("uploaded image successfully");
 
         this.loadProfileImage();
-        this.userService.update.next(true)
+       // this.userService.update.next(true)
 
       }, error: error => {
         this.toastr.error("message error occured", error.message);

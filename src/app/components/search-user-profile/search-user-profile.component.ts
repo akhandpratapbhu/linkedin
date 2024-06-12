@@ -45,12 +45,13 @@ export class SearchUserProfileComponent {
     this.route.paramMap.subscribe(params => {
 
       this.username = params.get('username'); // The 'id' here should match the parameter in your route definition
-      console.log('   this.username:', this.username, "friendRequestStatus", this.friendRequestStatus);
+      if (this.username) {
+  
+         this.getSearchUserProfile(this.username)
+  
+      }
     });
-    if (this.username) {
-      await this.getSearchUserProfile(this.username)
-
-    }
+   
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode(token);
@@ -63,12 +64,12 @@ export class SearchUserProfileComponent {
     }
   }
 
-  async getSearchUserProfile(username: string) {
+  getSearchUserProfile(username: string) {
     this.userService.getUserByUserName(username).subscribe(res => {
       if (Array.isArray(res)) {
         const users = res;
+        
         this.authorId = users[0].id
-        console.log(this.authorId);
         this.getConnectionUserProfile(this.authorId)
         this.getFriendRequestStatus(this.authorId)
         this.loadPosts(users[0].feedPosts)
@@ -84,7 +85,6 @@ export class SearchUserProfileComponent {
         const imagePath = this.data[0].image;
         this.userName = this.data[0].username
         // Access the image property from the first object
-        console.log("Image Path:", imagePath);
 
         if (imagePath !== null) {
           this.imagePath = this.userService.getfullImagePath(imagePath);
@@ -96,11 +96,9 @@ export class SearchUserProfileComponent {
   }
   getFriendRequestStatus(id: any) {
     this.connectionProfile.getFriendRequestStatus(id).subscribe(res => {
-      console.log(res);
       this.getfriendRequestStatus = res
       this.friendRequestStatus = this.getfriendRequestStatus.status
       // Access the image property from the first object
-      console.log("this.friendRequestStatus", this.friendRequestStatus);
 
     })
   }
@@ -116,11 +114,10 @@ export class SearchUserProfileComponent {
 
   loadPosts(post: any) {
     this.allPost = post;
-    console.log(this.allPost[0]);
+    console.log("all post",this.allPost[0]);
 
     this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; }) => {
       if (post.image) {
-        console.log(post.image);
 
         // Check if the image URL ends with a common image extension
         const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
@@ -151,7 +148,6 @@ export class SearchUserProfileComponent {
         }
 
         post.imageUrl = this.loadfeedImage(post.image);
-        console.log(post.imageUrl);
 
       }
     });

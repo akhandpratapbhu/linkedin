@@ -18,8 +18,8 @@ import { ChatComponent } from '../chat/chat.component';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatIconModule, FriendRequestComponent, CommonModule,RouterModule,
-    FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, AsyncPipe,ChatComponent],
+  imports: [MatIconModule, FriendRequestComponent, CommonModule, RouterModule,
+    FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, AsyncPipe, ChatComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -81,13 +81,14 @@ export class HeaderComponent implements OnInit {
 
   onSearch() {
     // Implement your search logic here using this.searchQuery
+    if(this.searchQuery){
 
     this.userService.getUserByUserName(this.searchQuery).subscribe(users => {
       if (Array.isArray(users)) {
         this.users = users;
 
       }
-      console.log("this.users",this.users);
+      console.log("this.users", this.users);
 
       this.filteredOptions = this.myControl.valueChanges.pipe(
         startWith(''),
@@ -95,14 +96,17 @@ export class HeaderComponent implements OnInit {
       );
 
     });
+  }else{
+    this.router.navigate(['/dashboard'])
+  }
+
   }
   onOptionSelected(selectedValue: string) {
-    console.log('Selected value:', selectedValue);
-    // Perform actions based on the selected value
-      this.router.navigate([`searchUserProfile/${selectedValue}`])
-    
+    // console.log('Selected value:', selectedValue);
+    this.router.navigate([`searchUserProfile/${selectedValue}`])
+
   }
-  chatDialogBox(){
+  chatDialogBox() {
     this.router.navigate(['chat'])
   }
 
@@ -122,9 +126,9 @@ export class HeaderComponent implements OnInit {
       if (Array.isArray(res)) {
         // Filter friend requests by 'pending' status (or any status you need)
         this.AllGetfriendRequest = res.filter(request => request.status === 'pending');
-        console.log("Filtered friend requests", this.AllGetfriendRequest);
+        // console.log("Filtered friend requests", this.AllGetfriendRequest);
         this.gettotalfriendRequest = this.AllGetfriendRequest.length;
-        console.log("Total friend requests", this.gettotalfriendRequest);
+        // console.log("Total friend requests", this.gettotalfriendRequest);
         this.saveFriendRequests(); // Save to localStorage after filtering
       } else {
         console.error("Received data is not an array", res);
@@ -156,8 +160,8 @@ export class HeaderComponent implements OnInit {
   SignOut() {
 
     console.log('Signing out...');
-   // localStorage.clear();
-   localStorage.removeItem('token')
+    // localStorage.clear();
+    localStorage.removeItem('token')
     this.toastr.success("user login out successfully...");
     this.router.navigate([""]);
   }

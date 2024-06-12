@@ -88,7 +88,6 @@ export class HeaderComponent implements OnInit {
         this.users = users;
 
       }
-      console.log("this.users", this.users);
 
       this.filteredOptions = this.myControl.valueChanges.pipe(
         startWith(''),
@@ -150,7 +149,6 @@ export class HeaderComponent implements OnInit {
       height: 'auto',
       data: this.AllGetfriendRequest,
     }).afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
       this.gettotalfriendRequest = result.length;
       this.AllGetfriendRequest = result
       this.saveFriendRequests();
@@ -159,7 +157,6 @@ export class HeaderComponent implements OnInit {
 
   SignOut() {
 
-    console.log('Signing out...');
     // localStorage.clear();
     localStorage.removeItem('token')
     this.toastr.success("user login out successfully...");

@@ -40,7 +40,6 @@ export class AppComponent {
     if (token) {
       const decoded = jwtDecode(token);
        this.userId = (decoded as any).id;
-      console.log(this.userId);
       
       this.initializePeer()
     } else {
@@ -64,7 +63,7 @@ export class AppComponent {
   
       this.authService.peer.on('open', (id) => {
         this.peerId = this.userId;
-        console.log('Peer ID:', this.peerId);
+      //  console.log('Peer ID:', this.peerId);
       });
   
       this.authService.peer.on('call', (call) => {

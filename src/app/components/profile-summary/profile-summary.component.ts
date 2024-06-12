@@ -46,7 +46,6 @@ export class ProfileSummaryComponent {
       // Handle the emitted imageUrl here
       if(imageUrl){
         this.imageUrl = imageUrl;
-        console.log("this.imageUrl",this.imageUrl);
       } 
         else {
           this.imageUrl = this.userService.getDefaultfullImagePath()

@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy  {
   ngOnInit() {
     this.ringingSubscription = this.authService.ringing$.subscribe(status => {
       this.ringingStatus = status;
-      console.log('Ringing status start in HomeComponent:', this.ringingStatus);
+     // console.log('Ringing status start in HomeComponent:', this.ringingStatus);
 
       if(this.ringingStatus==true){
        // this.playRingtone();
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy  {
   }
 
   private stopRingtone(): void {
-    console.log("stop ringtone");
+   // console.log("stop ringtone");
     
     this.audio.pause();
     this.audio.currentTime = 0; // Reset the audio to the beginning

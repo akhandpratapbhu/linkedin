@@ -18,7 +18,7 @@ export class StartPostComponent {
       // Handle the emitted imageUrl here
       if(imageUrl){
         this.imageUrl = imageUrl;
-        console.log("this.imageUrl",imageUrl);
+        // console.log("this.imageUrl",imageUrl);
       } 
         else {
           this.imageUrl = this.userService.getDefaultfullImagePath()

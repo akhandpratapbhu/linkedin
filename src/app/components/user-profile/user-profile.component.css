@@ -1,0 +1,69 @@
+.row {
+    margin-top: 7rem;
+   
+  }
+ 
+  .left-image {
+    width: 100px;
+    border-radius: 40px;
+    position: relative;
+}
+.card-text{
+  display: flex;
+}
+.admin-background {
+
+  background-image: url(../../../assets/img/pngtree-gold-color-award-ribbon-batch-logo-icon-vector-graphic-designing-for-png-image_7107908.png);
+  background-size: 80px 80px; /* Adjust the size as per your requirement */
+  background-repeat: no-repeat;
+  background-position: top right; 
+}
+.background-image{
+width:100%;
+height: 300px;
+}
+::ng-deep .card{
+  position: static!important;
+ }    
+
+
+ .custom-button {
+    border: 2px solid; /* General border style */
+   /* Set the border radius */
+    margin: 4px; /* Add margin to create space between buttons */
+    padding: 8px 16px; /* Add padding for better appearance */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    font-size: 16px; /* Optional: Adjust font size */
+  }
+  
+  /* Specific styles for the Message button */
+  .message-button {
+    border-color: greenyellow;
+    background-color: aqua;
+    color: white;
+    border-radius: 10px; 
+  }
+  
+  /* Specific styles for the More button */
+  .more-button {
+    border-color: aqua;
+    color: aqua;
+    border-radius: 20px; 
+  }
+  .btn-primary {
+    border-radius: 20px; 
+}
+.image-container {
+    position: relative; /* This allows the positioning of the corner image relative to the container */
+    width: 100%; /* Adjust as needed */
+    height: 35vh; /* Adjust as needed */
+    /* background: url('../../../assets/img/morskie-oko-tatry_1204-510.avif') no-repeat center center; */
+    background-size: cover; 
+}  
+.corner-image{
+    width: 150px;
+    height: 150px;
+    border-radius: 60px;
+    margin-top: -3rem;
+    margin-left: 10px;
+}

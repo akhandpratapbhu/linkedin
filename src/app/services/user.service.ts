@@ -37,6 +37,16 @@ export class UserService {
      
      return this.http.post(`http://localhost:3000/api/user/upload`,body,httpOptions)
     }
+    uploadUserbackgroundImage(body:any){
+
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': 'Bearer ' + this.token
+        })
+      };
+      
+      return this.http.post(`http://localhost:3000/api/user/uploadbackgroundimage`,body,httpOptions)
+     }
     getProfileImageUrl(){
       const httpOptions = {
         headers: new HttpHeaders({

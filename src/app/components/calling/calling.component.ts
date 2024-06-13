@@ -158,6 +158,7 @@ export class CallingComponent implements OnInit {
       video: false,
       audio: true
     }).then((stream) => {
+      console.log('Microphone access granted');
       this.lazyStream = stream;
 
       const call = this.authService.peer?.call(id, stream);

@@ -14,15 +14,25 @@ import { UserService } from '../../services/user.service';
 export class StartPostComponent {
   imageUrl!:string;
   constructor(public dialog: MatDialog,private postService:PostService,private userService: UserService) {
+    this.userService.getImageUrl().subscribe(url => {
+      this.imageUrl = url;
+      console.log(" this.imageUrl", this.imageUrl);
+      if (!this.imageUrl) {
+        this.imagewhenrefreshPage()
+      }
+    });
+   
+  }
+  imagewhenrefreshPage() {
     this.postService.imageUrl.subscribe(imageUrl => {
       // Handle the emitted imageUrl here
-      if(imageUrl){
+      if (imageUrl) {
         this.imageUrl = imageUrl;
-        // console.log("this.imageUrl",imageUrl);
-      } 
-        else {
-          this.imageUrl = this.userService.getDefaultfullImagePath()
-        
+        console.log("this.imageUrl", this.imageUrl);
+      }
+      else {
+        this.imageUrl = this.userService.getDefaultfullImagePath()
+
       }
 
     });

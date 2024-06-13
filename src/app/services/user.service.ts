@@ -1,13 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   update : BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true) 
+  image:BehaviorSubject<string>=new BehaviorSubject<string>('')
   token: string | null;
   id:any;
   constructor(private http:HttpClient,) { 
@@ -17,6 +18,12 @@ export class UserService {
       const decoded = jwtDecode(this.token);
       this.id = (decoded as any).id;
     }
+  }
+  setImageUrl(imageUrl:string){
+    this.image.next(imageUrl)
+  }
+  getImageUrl(): Observable<string> {
+    return this.image.asObservable();
   }
   getUserByUserName(name:string){
     const httpOptions = {

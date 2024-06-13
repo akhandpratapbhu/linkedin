@@ -43,6 +43,18 @@ export class ModalComponent {
       this.userName = data.username
       this.changeHeaderName = 'Update a Post'
     }
+    this.userService.getImageUrl().subscribe(url => {
+      this.imageUrl = url;
+      console.log(" this.imageUrl", this.imageUrl);
+      if (!this.imageUrl) {
+        this.imagewhenrefreshPage()
+      }
+
+    });
+
+
+  }
+  imagewhenrefreshPage() {
     this.postService.imageUrl.subscribe(imageUrl => {
       // Handle the emitted imageUrl here
       if (imageUrl) {
@@ -55,7 +67,6 @@ export class ModalComponent {
       }
 
     });
-
   }
   closePopup() {
     this.dialogRef.close();
@@ -120,7 +131,7 @@ export class ModalComponent {
     formData.append('body', this.datamessage);
     const postMessage = {
       body: this.datamessage,
-     // image: formData
+      // image: formData
     }
     console.log("form post", postMessage);
     if (!this.id) {

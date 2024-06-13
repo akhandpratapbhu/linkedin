@@ -26,6 +26,8 @@ export class UserProfileComponent {
   users: any
   backgroundimage: any;
   backgroundimageUrl: any;
+  phoneNumber:any
+  email!:string
   constructor(private fb: FormBuilder, private userService: UserService, private toastr: ToastrService,
     private postService: PostService) {
     this.form = this.fb.group({
@@ -71,6 +73,8 @@ export class UserProfileComponent {
         this.imageUrl = this.img;
         this.backgroundimage = this.users[0].backgroundimage
         this.backgroundimageUrl=this.backgroundimage
+        this.email= this.users[0]?.email
+        this.phoneNumber= this.users[0]?.phoneNumber
        this.loadProfileImage();
       }
       else {
@@ -177,6 +181,7 @@ export class UserProfileComponent {
 
     if (this.img) {
       this.imageUrl = this.userService.getfullImagePath(this.img)
+      this.userService.setImageUrl(this.imageUrl)
     }
     else {
       this.imageUrl = this.userService.getDefaultfullImagePath()

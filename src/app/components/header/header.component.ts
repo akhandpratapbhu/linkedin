@@ -54,13 +54,24 @@ export class HeaderComponent implements OnInit {
       console.error('Token not found in localStorage');
     }
 
+    this.userService.getImageUrl().subscribe(url => {
+      this.imageUrl = url;
+      console.log(" this.imageUrl", this.imageUrl);
+      if (!this.imageUrl) {
+        this.imagewhenrefreshPage()
+      }
+      
+    });
 
-
+    this.ReceiveFriendRequest();
+    this.loadFriendRequests();
+  }
+  imagewhenrefreshPage() {
     this.postService.imageUrl.subscribe(imageUrl => {
       // Handle the emitted imageUrl here
       if (imageUrl) {
         this.imageUrl = imageUrl;
-
+        console.log("this.imageUrl", this.imageUrl);
       }
       else {
         this.imageUrl = this.userService.getDefaultfullImagePath()
@@ -68,10 +79,7 @@ export class HeaderComponent implements OnInit {
       }
 
     });
-    this.ReceiveFriendRequest();
-    this.loadFriendRequests();
   }
-
   private _filterUsers(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.users

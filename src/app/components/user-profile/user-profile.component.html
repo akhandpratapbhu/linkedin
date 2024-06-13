@@ -48,33 +48,55 @@
 
 
 
-<!-- <div class="card">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2" style="margin-top:-50px">
 
-    <div class="card-body" [ngClass]="{'admin-background': role === 'admin'}">
-        <div>
-            <input type="file" #fileUpload (change)="onfileselect($event)" style="display: none;"/>
-            <img [src]="imageUrl" alt="Profile Image"  (click)="fileUpload.click()"style="cursor:pointer" class=" left-image" alt="...">
-            <div class="error">
-                {{ getErrorMessage("image") }}
-              </div>
         </div>
-        <h5 class="card-title">{{userName}}</h5>
-        <p class="card-text">Full stack-developer</p>
-        <hr>
-        <div class="card-text">
-            <div class="textfield">
-                who viewed your profile :
-            </div>
-            <div class="numberfield" style="color:blue; margin-right:5px"><span>746</span>
+        
+
+        <div class="col-lg-8" style="margin-top:50px">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title " style="margin-top: 30px;">Resources</h2>
+                    <h4 class="card-title " style="margin-top: 30px;"style="color: green;"><mat-icon>group</mat-icon>My network</h4>
+                    <p class="card-text">See and manage your connections and interests.</p>
+                    <h4 class="card-title " style="margin-top: 30px;"style="color: aqua;"><mat-icon>article</mat-icon>Saved items</h4>
+                    <p class="card-text">Keep track of your jobs, courses, and articles</p>
+                </div>
+                </div>
+        </div>
+        <div class="col-lg-2" style="margin-top:-50px">
+
+        </div>
+</div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2" style="margin-top:-50px">
+
+        </div>
+        <div class="col-lg-8" style="margin-top:50px">
+            <div class="card">
+                
+
+
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 class="card-title " style="margin-top: 30px;">About</h2>
+                    <button class=""style="border: none; background: none;"><mat-icon>edit</mat-icon></button>
+                </div>
+                    <textarea class="form-control is-invalid" id="validationTextarea" style="margin-top:10px"
+                    placeholder=" What do you want to talk about..." required [(ngModel)]="datamessage"
+                    name="datamessage"></textarea>
+
+                </div>
             </div>
         </div>
-        <div class="card-text">
-            <div class="textfield">
-                connection :
-            </div>
-            <div class="numberfield" style="color:green;margin-right:5px"><span>500</span>
-            </div> 
+        <div class="col-lg-2" style="margin-top:-50px">
+
         </div>
-        <p class="card-text">Manage your network</p>
     </div>
-</div> -->
+</div>

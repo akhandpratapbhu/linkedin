@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { jwtDecode } from 'jwt-decode';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule,MatIconModule],
+  imports: [CommonModule,MatIconModule,FormsModule],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
@@ -28,6 +28,7 @@ export class UserProfileComponent {
   backgroundimageUrl: any;
   phoneNumber:any
   email!:string
+  datamessage!:string
   constructor(private fb: FormBuilder, private userService: UserService, private toastr: ToastrService,
     private postService: PostService) {
     this.form = this.fb.group({

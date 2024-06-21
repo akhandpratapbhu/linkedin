@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class UserService {
   update : BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true) 
   image:BehaviorSubject<string>=new BehaviorSubject<string>('')
+  userId:BehaviorSubject<any>=new BehaviorSubject<any>('')
   token: string | null;
   id:any;
   constructor(private http:HttpClient,) { 
@@ -18,6 +19,14 @@ export class UserService {
       const decoded = jwtDecode(this.token);
       this.id = (decoded as any).id;
     }
+  }
+  setUserId(userId:any){
+    console.log("userId",userId);
+    
+    this.userId.next(userId)
+  }
+  getuserId(): Observable<string> {
+    return this.userId.asObservable();
   }
   setImageUrl(imageUrl:string){
     this.image.next(imageUrl)

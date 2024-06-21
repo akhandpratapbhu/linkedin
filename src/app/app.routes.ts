@@ -10,6 +10,7 @@ import { CallingComponent } from './components/calling/calling.component';
 import { MessageComponent } from './components/message/message.component';
 import { MailComponent } from './components/mail/mail.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { SocialLoginComponent } from './components/social-login/social-login.component';
 
 
 export const routes: Routes = [
@@ -19,9 +20,12 @@ export const routes: Routes = [
     {path:'searchUserProfile/:username',component:SearchUserProfileComponent, canActivate: [AuthGuard] },
     {path:'chat',component:ChatComponent,},
     {path:'calling/:id',component:CallingComponent,},
-    {path: 'dashboard', component: HomeComponent, canActivate: [AuthGuard] },
+    {path: 'dashboard', component: HomeComponent,
+        // canActivate: [AuthGuard]
+         },
     { path: 'dashboard/call/user', component: CallingComponent, },
     {path:'message/:id',component:MessageComponent},
     {path:'mail',component:MailComponent},
-    {path:'user-profile',component:UserProfileComponent}
+    {path:'user-profile',component:UserProfileComponent},
+   // {path:'',component:SocialLoginComponent}
 ];

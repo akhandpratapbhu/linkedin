@@ -1,29 +1,27 @@
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <img src="../../../assets/img/OIP.jpg" class="card-img-top bordered-image" [routerLink]="['/dashboard']"  alt="image"style="margin-left: 8px;margin-right:10px ;">
+    <img src="../../../assets/img/OIP.jpg" class="card-img-top bordered-image" [routerLink]="['/dashboard']" alt="image"
+      style="margin-left: 8px;margin-right:10px ;">
     <a class="navbar-brand" [routerLink]="['/dashboard']">Linkedin</a>
-    
-     <form class="d-flex">
+
+    <form class="d-flex">
       <mat-form-field class="example-full-width">
         <mat-label>username</mat-label>
-        <input type="text"
-               placeholder="Search..."
-               matInput
-               [formControl]="myControl"
-               [matAutocomplete]="auto"
-               [(ngModel)]="searchQuery" (input)="onSearch()">
-               <div class="search-icon-container">
-                <mat-icon>search</mat-icon>
-              </div>
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"  (optionSelected)="onOptionSelected($event.option.value)">
+        <input type="text" placeholder="Search..." matInput [formControl]="myControl" [matAutocomplete]="auto"
+          [(ngModel)]="searchQuery" (input)="onSearch()">
+        <div class="search-icon-container">
+          <mat-icon>search</mat-icon>
+        </div>
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+          (optionSelected)="onOptionSelected($event.option.value)">
           @for (user of filteredOptions | async; track user) {
-            <mat-option [value]="user">{{user}}</mat-option>
+          <mat-option [value]="user">{{user}}</mat-option>
           }
         </mat-autocomplete>
       </mat-form-field>
-    </form> 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    </form>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">`
@@ -34,41 +32,46 @@
           <a class="nav-link active" aria-current="page" href="#">Home
           </a>
         </li>
-        
+
         <li class="nav-item" (click)="checkAndOpenDialogBox()">
-          <span style="margin-bottom: -10px;margin-left: 26px;color: white;border-radius: 30px;background-color: red;padding-left: 4px;width: 20px;align-items: center;">{{gettotalfriendRequest}}</span>
+          <span
+            style="margin-bottom: -10px;margin-left: 26px;color: white;border-radius: 30px;background-color: red;padding-left: 4px;width: 20px;align-items: center;">{{gettotalfriendRequest}}</span>
           <mat-icon>group</mat-icon>
-          <h5 class="nav-link" >My Network</h5>
+          <h5 class="nav-link">My Network</h5>
         </li>
         <li class="nav-item">
-         <mat-icon>work</mat-icon>
+          <mat-icon>work</mat-icon>
           <a class="nav-link" href="#">Jobs</a>
         </li>
         <li class="nav-item" (click)="chatDialogBox()" style="cursor: pointer;">
           <mat-icon>textsms</mat-icon>
-          <a class="nav-link" >Message</a>
-      </li>
-      
+          <a class="nav-link">Message</a>
+        </li>
+
         <li class="nav-item">
-          <span style="margin-bottom: -18px;margin-left: 26px;color: white;border-radius: 30px;background-color: red;padding-left: 4px;width: 20px;align-items: center;">2</span>
+          <span
+            style="margin-bottom: -18px;margin-left: 26px;color: white;border-radius: 30px;background-color: red;padding-left: 4px;width: 20px;align-items: center;">2</span>
           <mat-icon>notifications_active</mat-icon>
           <a class="nav-link" href="#">Notification</a>
         </li>
         <li class="nav-item dropdown">
-          <img [src]="imageUrl" class="card-img-top bordered-image" alt="image">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img [src]="picture ? picture : imageUrl" class="card-img-top bordered-image" alt="image">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
             {{userName}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="#">
-              <form class="d-flex">
-                <img [src]="imageUrl" class="card-img-top bordered-image" alt="image">
-              <span> {{userName}}</span>
-                  
-            </form>
-            </a></li>
+                <form class="d-flex">
+                  <!-- social-login.component.html -->
+                  <img [src]="picture ? picture : imageUrl" class="card-img-top bordered-image" alt="image">
+                  <span> {{userName}}</span>
+
+                </form>
+              </a></li>
             <li><a class="dropdown-item" href="#">Full-stack-developer</a></li>
-            <li><button style="width: 200px;color: aqua; border-color: aquamarine;"[routerLink]="['/user-profile']">View Profile</button></li>
+            <li><button style="width: 200px;color: aqua; border-color: aquamarine;"
+                [routerLink]="['/user-profile']">View Profile</button></li>
             <li><a class="dropdown-item" href="#">Account</a></li>
             <li><a class="dropdown-item" href="#">Setting and Privacy</a></li>
             <li><a class="dropdown-item" href="#">Help</a></li>
@@ -76,16 +79,17 @@
             <li><a class="dropdown-item" href="#">Manage</a></li>
             <li><a class="dropdown-item" href="#">posts & Activities</a></li>
             <li><a class="dropdown-item" href="#">Job Posting Account</a></li>
-            <li><a class="dropdown-item" (click)="SignOut()"><mat-icon style="color: red;margin-bottom:-5px;">power_settings_new</mat-icon>Sign Out</a></li>
+            <li><a class="dropdown-item" (click)="SignOut()"><mat-icon
+                  style="color: red;margin-bottom:-5px;">power_settings_new</mat-icon>Sign Out</a></li>
           </ul>
-          
+
         </li>
         <!-- <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li> -->
       </ul>
-    
+
     </div>
-    
+
   </div>
 </nav>

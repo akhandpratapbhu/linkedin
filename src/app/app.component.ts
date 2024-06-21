@@ -30,9 +30,15 @@ export class AppComponent {
   userName:any;
   imagePath:any;
   selectedUserId: any;
-  constructor(private authService:AuthService) {
+  userId1!:any;
+  constructor(private authService:AuthService,private userService:UserService) {
   }
   ngOnInit(): void {
+    this.userService.getImageUrl().subscribe(url => {
+      this.userId1 = url;
+      console.log(" this.uuserId1", this.userId1);
+      
+    });
     this.usertokenId()
   }
   usertokenId() {

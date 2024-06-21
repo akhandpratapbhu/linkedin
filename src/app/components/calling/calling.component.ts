@@ -95,7 +95,7 @@ export class CallingComponent implements OnInit {
       const decoded = jwtDecode(token);
       this.userId = (decoded as any).id;
       //this.getConnectionUserProfile( this.userId)
-      //localStorage.setItem('caller', this.userId)
+      this.userService.setUserId( this.userId)
       this.initializePeer()
     } else {
       console.error('Token not found in localStorage');
@@ -105,7 +105,7 @@ export class CallingComponent implements OnInit {
 
     try {
       console.log(this.authService.peer, "uyhdfehbfibxfhur");
-
+      this.userService.setUserId( this.userId)
       if (!this.authService.peer) {
         return
       }
@@ -149,6 +149,7 @@ export class CallingComponent implements OnInit {
 
 
   connectWithPeer(): void {
+    this.userService.setUserId( this.userId)
     this.callPeer(this.selectedUserId);
     console.log('Connecting with peer ID:', this.selectedUserId);
   }

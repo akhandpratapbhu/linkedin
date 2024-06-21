@@ -6,7 +6,9 @@ import { AuthService } from '../../services/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { GoogleApiLoaderService } from '../../services/google-api-loader.service.service';
 
+declare const google: any;
 @Component({
   selector: 'app-sign-in',
   standalone: true,
@@ -35,8 +37,8 @@ export class SignInComponent implements OnInit {
   constructor(
     private router: Router,
     private toastr: ToastrService,
-    private authService: AuthService
-
+    private authService: AuthService,
+     private googleApiLoader: GoogleApiLoaderService
   ) {
     this.loginForm = new FormGroup({
       email: new FormControl('', [
@@ -49,6 +51,7 @@ export class SignInComponent implements OnInit {
 
   recaptchaWidgetId: number | undefined;
   ngOnInit(): void {
+    this.signInWithGoogle();
     this.recaptchaWidgetId = grecaptcha.render('your-recaptcha-container-id', {
       'sitekey': '6LfZJs4pAAAAADyW-fE1-nomT3WPIjNDF9ZMReWp'
     });
@@ -58,6 +61,27 @@ export class SignInComponent implements OnInit {
 
     }
     this.generateCaptcha()
+  }
+  signInWithGoogle(){
+    this.googleApiLoader.loadScript().then(() => {
+      google.accounts.id.initialize({
+        client_id: '619580621696-evh90so3evttspdgna3go72qittoa8tn.apps.googleusercontent.com',
+        callback: this.handleCredentialResponse.bind(this)
+      });
+      google.accounts.id.renderButton(
+        document.getElementById('g_id_signin'),
+        {
+          theme: 'outline',
+          size: 'large',
+          text: 'sign_in_with',
+          shape: 'rectangular',
+          logo_alignment: 'left'
+        }
+      );
+      google.accounts.id.prompt();
+    }).catch((error:any)=> {
+      console.error('Error loading Google API script:', error);
+    });
   }
   reloadRecaptcha() {
     // Reset reCAPTCHA widget
@@ -132,4 +156,16 @@ export class SignInComponent implements OnInit {
 
     this.captcha = captcha
   }
+  handleCredentialResponse(response: any) {
+    console.log('Encoded JWT ID token: ' + response.credential);
+    localStorage.setItem('loginWithGoogle', response.credential)
+    // Handle the credential response here (e.g., send to backend for verification)
+    this.router.navigate(['/dashboard']);
+  }
+  // handleLogout(): void {
+  //   google.accounts.id.disableAutoSelect();
+  //   console.log('User signed out.',google.accounts.id.disableAutoSelect());
+  //   // Optionally, redirect the user to the login page or perform other actions
+  //   this.router.navigate(['/dashboard']);
+  // }
 }

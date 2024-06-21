@@ -15,6 +15,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ChatComponent } from '../chat/chat.component';
+import { GoogleApiLoaderService } from '../../services/google-api-loader.service.service';
+
+declare const google: any;
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -25,6 +28,7 @@ import { ChatComponent } from '../chat/chat.component';
 })
 export class HeaderComponent implements OnInit {
   imageUrl!: string;
+  picture!:string
   token: string = '';
   userName: string = '';
   users: any = [];
@@ -40,6 +44,7 @@ export class HeaderComponent implements OnInit {
     private postService: PostService,
     private connectionProfileService: ConnectionProfileService,
     public dialog: MatDialog,
+    private googleApiLoader: GoogleApiLoaderService,
   ) {
 
   }
@@ -47,13 +52,24 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
 
     const token = localStorage.getItem('token');
+    const loginWithGoogle = localStorage.getItem('loginWithGoogle');
     if (token) {
       const decoded = jwtDecode(token);
       this.userName = (decoded as any).username;
+    }else if(loginWithGoogle){
+      const decoded = jwtDecode(loginWithGoogle);
+      this.userName = (decoded as any).name;
+      this.picture=(decoded as any).picture
+      console.log(  this.userName,  this.picture);
+      
     } else {
       console.error('Token not found in localStorage');
     }
-
+    this.googleApiLoader.loadScript().then(() => {
+      // Other initialization code if needed
+    }).catch((error: any) => {
+      console.error('Error loading Google API script:', error);
+    });
     this.userService.getImageUrl().subscribe(url => {
       this.imageUrl = url;
       console.log(" this.imageUrl", this.imageUrl);
@@ -163,11 +179,16 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  SignOut() {
-
-    // localStorage.clear();
-    localStorage.removeItem('token')
-    this.toastr.success("user login out successfully...");
-    this.router.navigate([""]);
+  SignOut(): void {
+    this.googleApiLoader.loadScript().then(() => {
+      google.accounts.id.disableAutoSelect();
+      console.log('User signed out.');
+      localStorage.removeItem('token');
+      localStorage.removeItem('loginWithGoogle');
+      this.toastr.success("User logged out successfully...");
+      this.router.navigate([""]);
+    }).catch((error: any) => {
+      console.error('Error signing out:', error);
+    });
   }
 }

@@ -20,8 +20,12 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-
-    return !!localStorage.getItem('token');
+    if (localStorage.getItem('token') || localStorage.getItem('loginWithGoogle')) {
+      return true
+    } else {
+      return false;
+    }
+    //  return !!localStorage.getItem('token')||localStorage.getItem('loginWithGoogle');
   }
   signIn(payload: any) {
     console.log("payload", payload);

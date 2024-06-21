@@ -4,6 +4,7 @@ import {MatIconModule} from '@angular/material/icon'
 import { MatDialog } from '@angular/material/dialog';
 import { PostService } from '../../services/post.service';
 import { UserService } from '../../services/user.service';
+import { jwtDecode } from 'jwt-decode';
 @Component({
   selector: 'app-start-post',
   standalone: true,
@@ -13,7 +14,15 @@ import { UserService } from '../../services/user.service';
 })
 export class StartPostComponent {
   imageUrl!:string;
+  picture!:string;
   constructor(public dialog: MatDialog,private postService:PostService,private userService: UserService) {
+    const loginWithGoogle = localStorage.getItem('loginWithGoogle');
+    if(loginWithGoogle){
+      const decoded = jwtDecode(loginWithGoogle);
+      this.picture=(decoded as any).picture
+      console.log(   this.picture);
+      
+    }
     this.userService.getImageUrl().subscribe(url => {
       this.imageUrl = url;
       console.log(" this.imageUrl", this.imageUrl);

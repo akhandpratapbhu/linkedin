@@ -24,17 +24,24 @@ export class ModalComponent {
   imageUrl!: string;
   selectedVideo: string | null = null;
   isVideo: boolean = false;
+  picture!:string
   changeHeaderName = 'Create a Post'
   constructor(private postService: PostService, private toastr: ToastrService, private userService: UserService,
     public dialogRef: MatDialogRef<ModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     const token = localStorage.getItem('token');
+    const loginWithGoogle = localStorage.getItem('loginWithGoogle');
     if (token) {
       const decoded = jwtDecode(token);
       this.userName = (decoded as any).username;
-
-    } else {
+    }else if(loginWithGoogle){
+      const decoded = jwtDecode(loginWithGoogle);
+      this.userName = (decoded as any).name;
+      this.picture=(decoded as any).picture
+      console.log(  this.userName,  this.picture);
+      
+    }else {
       console.error('Token not found in localStorage');
     }
     if (data) {

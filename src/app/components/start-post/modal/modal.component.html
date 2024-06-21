@@ -11,7 +11,7 @@
             <form class="was-validated">
                 <div class="mb-3">
                     <div class="d-flex">
-                        <img [src]="imageUrl" class="card-img-top bordered-image" alt="image">
+                        <img [src]="picture ? picture : imageUrl" class="card-img-top bordered-image" alt="image">
                         <div>
                             <p style="margin-left: 20px;">{{userName}}</p>
                             <div class="form-control "

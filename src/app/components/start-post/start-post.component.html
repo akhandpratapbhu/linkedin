@@ -2,7 +2,7 @@
     <div class="card-body">
        
         <form class="d-flex">
-            <img [src]="imageUrl" class="card-img-top bordered-image" alt="image">
+            <img [src]="picture ? picture : imageUrl" class="card-img-top bordered-image" alt="image">
             <input class="form-control me-2 " type="search" placeholder="Start the Post ..."  (click)="openDialogBox()"
                 style="border-radius: 20px;" aria-label="Search">
               

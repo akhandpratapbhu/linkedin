@@ -10,10 +10,12 @@ import { UserService } from './user.service';
 export class PostService {
   update: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
   token: string | null;
+  loginWithGoogle:string | null;
   image: any;
   imageUrl: BehaviorSubject<string> = new BehaviorSubject<string>('')
   constructor(private http: HttpClient, private userService: UserService) {
     this.token = localStorage.getItem('token');
+     this.loginWithGoogle = localStorage.getItem('loginWithGoogle');
     this.userService.getProfileImageName().subscribe(res => {
 
       this.image = res;
@@ -30,10 +32,18 @@ export class PostService {
     return this.http.get('http://localhost:3000/api/feed')
   }
   feedPost(payload: any) {
-    console.log(payload, this.token);
+  let authtoken :any
+    if(this.token){
+       authtoken=this.token;
+
+    }else if(this.loginWithGoogle){
+       authtoken=this.loginWithGoogle;
+    }
+    console.log(authtoken);
+
     const httpOptions = {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + this.token
+        'Authorization': 'Bearer ' + authtoken
       })
     };
 

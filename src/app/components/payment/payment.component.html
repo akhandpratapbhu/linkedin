@@ -1,0 +1,18 @@
+<p>payment works!</p>
+<div class="container">
+    <form (ngSubmit)="handlePayment()" id="payment-form">
+      <div class="form-group">
+        <label for="card-element">
+          Credit or Debit Card
+        </label>
+        <div id="card-element">
+          <!-- Stripe.js will inject the Card Element here -->
+        </div>
+        <div id="card-errors" role="alert"></div>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        Pay
+      </button>
+    </form>
+  </div>
+  

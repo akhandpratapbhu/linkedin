@@ -44,12 +44,15 @@
         </div> -->
       <div id="your-recaptcha-container-id" class="g-recaptcha captcha"
         data-sitekey="6LfZJs4pAAAAADyW-fE1-nomT3WPIjNDF9ZMReWp"></div><br>
+        <span style="color: rgb(0, 60, 255);">forgot password ?</span>
       <button class="submit" mat-raised-button color="warn" (click)="onSubmit()" [disabled]="loading">
         <span *ngIf="loading">Logging in...</span>
 
         <span *ngIf="!loading">Login</span>
       </button>
     </form>
+    <p (click)="NavigateToRegister()" style="cursor: pointer; color: rgb(0, 60, 255);">Register new user to LinkedIn</p>
+<span>OR</span>
     <!-- <div class="g-signin2" data-width="300" data-height="200" data-longtitle="true"></div>
 <div id="g-signin2"></div> -->
 
@@ -63,7 +66,6 @@
     </div>
 
     <!-- <button (click)="handleLogout()">Logout</button> -->
-    <p (click)="NavigateToRegister()" style="cursor: pointer; color: rgb(0, 60, 255);">Register new user to LinkedIn</p>
-
+  
   </div>
 </div>

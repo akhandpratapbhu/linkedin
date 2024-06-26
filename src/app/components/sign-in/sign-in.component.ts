@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { GoogleApiLoaderService } from '../../services/google-api-loader.service.service';
+import { jwtDecode } from 'jwt-decode';
 
 declare const google: any;
 @Component({
@@ -159,8 +160,40 @@ export class SignInComponent implements OnInit {
   handleCredentialResponse(response: any) {
     console.log('Encoded JWT ID token: ' + response.credential);
     localStorage.setItem('loginWithGoogle', response.credential)
+    const loginWithGoogle = localStorage.getItem('loginWithGoogle');
+    if(loginWithGoogle){
+      const decoded = jwtDecode(loginWithGoogle);
+       const userName = (decoded as any).name;
+      const picture=(decoded as any).picture;
+      const email=(decoded as any).email
+      console.log(  userName, picture);
+      const userData = {
+        email:email,
+        image: picture,
+        username:userName,
+        phoneNumber:"",
+        password:""
+      }
+      
+
+      this.authService.signUp(userData).subscribe((res: any) => {
+        console.log("res", res);
+        this.loading = false;
+        this.toastr.success("login successfully");
+        this.router.navigate(["dashboard"]);
+
+      },
+        (error: any) => {
+          console.log("error", error);
+
+          this.toastr.error(error.message);
+          this.loading = false;
+
+        },
+      )
+    }
     // Handle the credential response here (e.g., send to backend for verification)
-    this.router.navigate(['/dashboard']);
+ //   this.router.navigate(['/dashboard']);
   }
   // handleLogout(): void {
   //   google.accounts.id.disableAutoSelect();

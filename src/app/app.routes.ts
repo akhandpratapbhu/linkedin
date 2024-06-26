@@ -11,25 +11,30 @@ import { MessageComponent } from './components/message/message.component';
 import { MailComponent } from './components/mail/mail.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { SocialLoginComponent } from './components/social-login/social-login.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 
 export const routes: Routes = [
-    {path:'',component:SignInComponent},
-    {path:'register',component:SignUpComponent},
-    {path:'dashboard/:id',component:ConnectionProfileComponent,
-         canActivate: [AuthGuard] 
-        },
-    {path:'searchUserProfile/:username',component:SearchUserProfileComponent, 
+    { path: '', component: SignInComponent },
+    { path: 'register', component: SignUpComponent },
+    {
+        path: 'dashboard/:id', component: ConnectionProfileComponent,
         canActivate: [AuthGuard]
-         },
-    {path:'chat',component:ChatComponent,},
-    {path:'calling/:id',component:CallingComponent,},
-    {path: 'dashboard', component: HomeComponent,
-         canActivate: [AuthGuard]
-         },
+    },
+    {
+        path: 'searchUserProfile/:username', component: SearchUserProfileComponent,
+        canActivate: [AuthGuard]
+    },
+    { path: 'chat', component: ChatComponent, },
+    { path: 'calling/:id', component: CallingComponent, },
+    {
+        path: 'dashboard', component: HomeComponent,
+        canActivate: [AuthGuard]
+    },
     { path: 'dashboard/call/user', component: CallingComponent, },
-    {path:'message/:id',component:MessageComponent},
-    {path:'mail',component:MailComponent},
-    {path:'user-profile',component:UserProfileComponent},
-    {path:'',component:SocialLoginComponent}
+    { path: 'message/:id', component: MessageComponent },
+    { path: 'mail', component: MailComponent },
+    { path: 'user-profile', component: UserProfileComponent },
+    { path: '', component: SocialLoginComponent },
+    { path: 'payment-stripe', component: PaymentComponent }
 ];

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalComponent } from './modal/modal.component';
-import {MatIconModule} from '@angular/material/icon'
+import { MatIconModule } from '@angular/material/icon'
 import { MatDialog } from '@angular/material/dialog';
 import { PostService } from '../../services/post.service';
 import { UserService } from '../../services/user.service';
@@ -8,20 +8,23 @@ import { jwtDecode } from 'jwt-decode';
 @Component({
   selector: 'app-start-post',
   standalone: true,
-  imports: [ModalComponent,MatIconModule],
+  imports: [ModalComponent, MatIconModule],
   templateUrl: './start-post.component.html',
   styleUrl: './start-post.component.css'
 })
 export class StartPostComponent {
-  imageUrl!:string;
-  picture!:string;
-  constructor(public dialog: MatDialog,private postService:PostService,private userService: UserService) {
-    const loginWithGoogle = localStorage.getItem('loginWithGoogle');
-    if(loginWithGoogle){
-      const decoded = jwtDecode(loginWithGoogle);
-      this.picture=(decoded as any).picture
-      console.log(   this.picture);
-      
+  imageUrl!: string;
+  picture!: string;
+  constructor(public dialog: MatDialog, private postService: PostService, private userService: UserService) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded = jwtDecode(token);
+      const image = (decoded as any).image
+      if (image) {
+        this.picture = image
+      }
+      console.log(this.picture);
+
     }
     this.userService.getImageUrl().subscribe(url => {
       this.imageUrl = url;
@@ -30,7 +33,7 @@ export class StartPostComponent {
         this.imagewhenrefreshPage()
       }
     });
-   
+
   }
   imagewhenrefreshPage() {
     this.postService.imageUrl.subscribe(imageUrl => {
@@ -46,10 +49,10 @@ export class StartPostComponent {
 
     });
   }
-  openDialogBox(): void { 
-     this.dialog.open(ModalComponent, {
+  openDialogBox(): void {
+    this.dialog.open(ModalComponent, {
       width: '350px',
-      height:'250px'
+      height: '250px'
     }).afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });

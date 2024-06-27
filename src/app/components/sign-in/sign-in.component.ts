@@ -159,8 +159,9 @@ export class SignInComponent implements OnInit {
   }
   handleCredentialResponse(response: any) {
     console.log('Encoded JWT ID token: ' + response.credential);
-    localStorage.setItem('loginWithGoogle', response.credential)
-    const loginWithGoogle = localStorage.getItem('loginWithGoogle');
+   // localStorage.setItem('loginWithGoogle', response.credential)
+   // const loginWithGoogle = localStorage.getItem('loginWithGoogle');
+   const loginWithGoogle=response.credential;
     if(loginWithGoogle){
       const decoded = jwtDecode(loginWithGoogle);
        const userName = (decoded as any).name;
@@ -175,30 +176,16 @@ export class SignInComponent implements OnInit {
         password:""
       }
       
-
-      this.authService.signUp(userData).subscribe((res: any) => {
+      this.authService.loginWithGoogle(userData).subscribe((res: any) => {
         console.log("res", res);
+         localStorage.setItem('token',res.token)
         this.loading = false;
         this.toastr.success("login successfully");
         this.router.navigate(["dashboard"]);
 
-      },
-        (error: any) => {
-          console.log("error", error);
+      })
 
-          this.toastr.error(error.message);
-          this.loading = false;
-
-        },
-      )
     }
-    // Handle the credential response here (e.g., send to backend for verification)
- //   this.router.navigate(['/dashboard']);
+  
   }
-  // handleLogout(): void {
-  //   google.accounts.id.disableAutoSelect();
-  //   console.log('User signed out.',google.accounts.id.disableAutoSelect());
-  //   // Optionally, redirect the user to the login page or perform other actions
-  //   this.router.navigate(['/dashboard']);
-  // }
 }

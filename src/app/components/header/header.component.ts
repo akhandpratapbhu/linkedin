@@ -52,17 +52,17 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
 
     const token = localStorage.getItem('token');
-    const loginWithGoogle = localStorage.getItem('loginWithGoogle');
     if (token) {
       const decoded = jwtDecode(token);
-      this.userName = (decoded as any).username;
-    }else if(loginWithGoogle){
-      const decoded = jwtDecode(loginWithGoogle);
-      this.userName = (decoded as any).name;
-      this.picture=(decoded as any).picture
-      console.log(  this.userName,  this.picture);
-      
-    } else {
+      const image = (decoded as any).image
+      if (image) {
+        this.picture = image
+      }
+      console.log(this.picture);
+
+    }
+    
+     else {
       console.error('Token not found in localStorage');
     }
     this.googleApiLoader.loadScript().then(() => {

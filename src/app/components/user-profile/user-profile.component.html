@@ -17,7 +17,7 @@
                     <div class="corner-image-container" [ngClass]="{'admin-background': role === 'admin'}">
                         <div  class="corner-image">
                             <input type="file" #fileUpload (change)="onfileselect($event)" style="display: none;"/>
-                            <img [src]="imageUrl" alt="Profile Image"(click)="fileUpload.click()"style="cursor:pointer" class=" left-image" alt="...">
+                            <img [src]="picture ? picture : imageUrl" alt="Profile Image"(click)="fileUpload.click()"style="cursor:pointer" class=" left-image" alt="...">
                             <div class="error">
                                 {{ getErrorMessage("image") }}
                               </div>

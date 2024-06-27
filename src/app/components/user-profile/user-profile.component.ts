@@ -29,6 +29,7 @@ export class UserProfileComponent {
   phoneNumber:any
   email!:string
   datamessage!:string
+  picture:any
   constructor(private fb: FormBuilder, private userService: UserService, private toastr: ToastrService,
     private postService: PostService) {
     this.form = this.fb.group({
@@ -38,28 +39,22 @@ export class UserProfileComponent {
     })
   }
   ngOnInit(): void {
+ 
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode(token);
       this.role = (decoded as any).role;
       this.userName = (decoded as any).username;
+      const image = (decoded as any).image
+      if (image) {
+        this.picture = image
+      }
       this.findUser(this.userName)
     } else {
       console.error('Token not found in localStorage');
     }
-    //  this.profilePicture();
     this.loadProfileImage();
-    // this.postService.imageUrl.subscribe(imageUrl => {
-    //   // Handle the emitted imageUrl here
-    //   if(imageUrl){
-    //     this.imageUrl = imageUrl;
-    //   } 
-    //     else {
-    //       this.imageUrl = this.userService.getDefaultfullImagePath()
-
-    //   }
-
-    // });
+   
 
   }
   findUser(username: string) {

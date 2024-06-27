@@ -69,6 +69,7 @@ export class AllPostComponent implements OnInit {
   loadPosts() {
     this.postService.getPost().subscribe(res => {
       this.allPost = res;
+console.log("this.allPost",this.allPost);
 
       this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; }) => {
         if (post.image) {

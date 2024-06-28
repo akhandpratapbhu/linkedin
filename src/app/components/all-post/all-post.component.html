@@ -6,7 +6,9 @@
             <div class="card-body">
 
                 <form class="d-flex  justify-content-between" [routerLink]="['/dashboard', post.author.id]">
-                    <img [src]="post.author.image ? 'http://localhost:3000/api/feed/image/' + post.author.image : 'http://localhost:3000/api/feed/image/user.png'" class="card-img-top bordered-image" alt="image">
+                    <!-- <img [src]="post.author.image ? 'http://localhost:3000/api/feed/image/' + post.author.image : 'http://localhost:3000/api/feed/image/user.png'" class="card-img-top bordered-image" alt="image"> -->
+                    <img [src]="post.author.image" class="card-img-top bordered-image" alt="image">
+
                     <h5 class="card-title setUsername">{{post.author.username}}</h5>
                     <div class="icon-group" >
                         @if(( post.author.role==role&& role!=='admin'&& post.author.id==id)){

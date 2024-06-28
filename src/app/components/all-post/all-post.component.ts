@@ -27,6 +27,7 @@ export class AllPostComponent implements OnInit {
   allPost: any = [];
   message: any;
   imageUrl: any;
+  authorImg!: {}
   id: any;
   role: any;
   img: any
@@ -50,6 +51,7 @@ export class AllPostComponent implements OnInit {
     }
     this.postService.imageUrl.subscribe(imageUrl => {
       // Handle the emitted imageUrl here
+
       if (imageUrl) {
         this.imageUrl = imageUrl;
 
@@ -66,12 +68,27 @@ export class AllPostComponent implements OnInit {
       }
     })
   }
+  getImageUrl(authorImg: any): string {
+
+    if (authorImg && authorImg.startsWith('http')) {
+      return authorImg;
+    }
+
+    return 'http://localhost:3000/api/feed/image/' + (authorImg || 'user.png');
+  }
   loadPosts() {
     this.postService.getPost().subscribe(res => {
       this.allPost = res;
-console.log("this.allPost",this.allPost);
+      console.log("this.allPost", this.allPost);
 
-      this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; }) => {
+      this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; author: { image: string } }) => {
+
+        if (post.author.image) {
+          post.author.image = this.getImageUrl(post.author.image)
+        }
+        else {
+          post.author.image = 'http://localhost:3000/api/feed/image/' + 'user.png'
+        }
         if (post.image) {
           // Check if the image URL ends with a common image extension
           const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
@@ -109,6 +126,7 @@ console.log("this.allPost",this.allPost);
     });
   }
   loadfeedImage(image: string) {
+
     if (image) {
       return this.userService.getfullImagePath(image)
     }

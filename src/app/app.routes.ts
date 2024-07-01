@@ -11,7 +11,7 @@ import { MessageComponent } from './components/message/message.component';
 import { MailComponent } from './components/mail/mail.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { SocialLoginComponent } from './components/social-login/social-login.component';
-import { PaymentComponent } from './components/payment/payment.component';
+import { StripePaymentComponent } from './components/stripe-payment/stripe-payment.component';
 
 
 export const routes: Routes = [
@@ -36,5 +36,5 @@ export const routes: Routes = [
     { path: 'mail', component: MailComponent },
     { path: 'user-profile', component: UserProfileComponent },
     { path: '', component: SocialLoginComponent },
-    { path: 'payment-stripe', component: PaymentComponent }
+    { path: 'payment-stripe', component: StripePaymentComponent }
 ];

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaymentComponent } from './payment.component';
+import { StripeCheckoutComponent } from './stripe-checkout.component';
 
-describe('PaymentComponent', () => {
-  let component: PaymentComponent;
-  let fixture: ComponentFixture<PaymentComponent>;
+describe('StripeCheckoutComponent', () => {
+  let component: StripeCheckoutComponent;
+  let fixture: ComponentFixture<StripeCheckoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaymentComponent]
+      imports: [StripeCheckoutComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(PaymentComponent);
+    fixture = TestBed.createComponent(StripeCheckoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

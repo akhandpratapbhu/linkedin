@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { GoogleApiLoaderService } from '../../services/google-api-loader.service.service';
 import { jwtDecode } from 'jwt-decode';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 
 declare const google: any;
 @Component({
@@ -39,7 +40,7 @@ export class SignInComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private authService: AuthService,
-    private googleApiLoader: GoogleApiLoaderService
+     private googleApiLoader: GoogleApiLoaderService
   ) {
     this.loginForm = new FormGroup({
       email: new FormControl('', [
@@ -63,7 +64,7 @@ export class SignInComponent implements OnInit {
     }
     this.generateCaptcha()
   }
-  signInWithGoogle() {
+  signInWithGoogle(){
     this.googleApiLoader.loadScript().then(() => {
       google.accounts.id.initialize({
         client_id: '619580621696-evh90so3evttspdgna3go72qittoa8tn.apps.googleusercontent.com',
@@ -80,7 +81,7 @@ export class SignInComponent implements OnInit {
         }
       );
       google.accounts.id.prompt();
-    }).catch((error: any) => {
+    }).catch((error:any)=> {
       console.error('Error loading Google API script:', error);
     });
   }
@@ -112,18 +113,20 @@ export class SignInComponent implements OnInit {
       const userData = {
         email: (this.loginForm.value.email),
         password: (this.loginForm.value.password),
-        captcha: reCaptchaResponse
+        captcha:reCaptchaResponse
       }
 
 
       this.authService.signIn(userData).subscribe((res: any) => {
-        localStorage.setItem('token', res.token)
+        console.log("res", res);
+         localStorage.setItem('token',res.token)
         this.loading = false;
         this.toastr.success("login successfully");
         this.router.navigate(["dashboard"]);
 
       },
         (error: any) => {
+          console.log("error", error);
 
           this.toastr.error(error.message);
           this.loading = false;
@@ -156,23 +159,27 @@ export class SignInComponent implements OnInit {
     this.captcha = captcha
   }
   handleCredentialResponse(response: any) {
-
-    const loginWithGoogle = response.credential;
-    if (loginWithGoogle) {
+    console.log('Encoded JWT ID token: ' + response.credential);
+   // localStorage.setItem('loginWithGoogle', response.credential)
+   // const loginWithGoogle = localStorage.getItem('loginWithGoogle');
+   const loginWithGoogle=response.credential;
+    if(loginWithGoogle){
       const decoded = jwtDecode(loginWithGoogle);
-      const userName = (decoded as any).name;
-      const picture = (decoded as any).picture;
-      const email = (decoded as any).email
+       const userName = (decoded as any).name;
+      const picture=(decoded as any).picture;
+      const email=(decoded as any).email
+      console.log(  userName, picture);
       const userData = {
-        email: email,
+        email:email,
         image: picture,
-        username: userName,
-        phoneNumber: "",
-        password: ""
+        username:userName,
+        phoneNumber:"",
+        password:""
       }
-
+      
       this.authService.loginWithGoogle(userData).subscribe((res: any) => {
-        localStorage.setItem('token', res.token)
+        console.log("res", res);
+         localStorage.setItem('token',res.token)
         this.loading = false;
         this.toastr.success("login successfully");
         this.router.navigate(["dashboard"]);
@@ -180,6 +187,6 @@ export class SignInComponent implements OnInit {
       })
 
     }
-
+  
   }
 }

@@ -58,7 +58,6 @@ export class HeaderComponent implements OnInit {
       if (image) {
         this.picture = image
       }
-      console.log(this.picture);
 
     }
     
@@ -72,7 +71,6 @@ export class HeaderComponent implements OnInit {
     });
     this.userService.getImageUrl().subscribe(url => {
       this.imageUrl = url;
-      console.log(" this.imageUrl", this.imageUrl);
       if (!this.imageUrl) {
         this.imagewhenrefreshPage()
       }
@@ -87,7 +85,6 @@ export class HeaderComponent implements OnInit {
       // Handle the emitted imageUrl here
       if (imageUrl) {
         this.imageUrl = imageUrl;
-        console.log("this.imageUrl", this.imageUrl);
       }
       else {
         this.imageUrl = this.userService.getDefaultfullImagePath()
@@ -125,7 +122,6 @@ export class HeaderComponent implements OnInit {
 
   }
   onOptionSelected(selectedValue: string) {
-    // console.log('Selected value:', selectedValue);
     this.router.navigate([`searchUserProfile/${selectedValue}`])
 
   }
@@ -149,9 +145,7 @@ export class HeaderComponent implements OnInit {
       if (Array.isArray(res)) {
         // Filter friend requests by 'pending' status (or any status you need)
         this.AllGetfriendRequest = res.filter(request => request.status === 'pending');
-        // console.log("Filtered friend requests", this.AllGetfriendRequest);
         this.gettotalfriendRequest = this.AllGetfriendRequest.length;
-        // console.log("Total friend requests", this.gettotalfriendRequest);
         this.saveFriendRequests(); // Save to localStorage after filtering
       } else {
         console.error("Received data is not an array", res);
@@ -182,7 +176,6 @@ export class HeaderComponent implements OnInit {
   SignOut(): void {
     this.googleApiLoader.loadScript().then(() => {
       google.accounts.id.disableAutoSelect();
-      console.log('User signed out.');
       localStorage.removeItem('token');
       localStorage.removeItem('loginWithGoogle');
       this.toastr.success("User logged out successfully...");

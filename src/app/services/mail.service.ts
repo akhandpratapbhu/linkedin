@@ -14,7 +14,6 @@ export class MailService {
   sendConfirmation(email: string, name: string, token: string): Observable<any> {
     
     const body = { email, name, token };
-    console.log("body",body);
 
     return this.http.post<any>(this.apiUrl, body);
   }

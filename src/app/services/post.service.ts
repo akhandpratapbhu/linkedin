@@ -39,7 +39,6 @@ export class PostService {
     }else if(this.loginWithGoogle){
        authtoken=this.loginWithGoogle;
     }
-    console.log(authtoken);
 
     const httpOptions = {
       headers: new HttpHeaders({

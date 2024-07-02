@@ -29,7 +29,6 @@ export class ConnectionProfileComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.authorId = params.get('id'); // The 'id' here should match the parameter in your route definition
-      console.log('Author ID:', this.authorId,"friendRequestStatus",this.friendRequestStatus);
     });
     this.getConnectionUserProfile(this.authorId)
     this.getFriendRequestStatus(this.authorId)
@@ -38,14 +37,12 @@ export class ConnectionProfileComponent {
     this.connectionProfile.getConnectionUser(id).subscribe(res => {
 
       this.data = res
-      console.log("this.data",res);
       
       if (this.data && Array.isArray(this.data) && this.data.length > 0) {
         const imagePath = this.data[0].image; 
         this.userName=this.data[0].username
         this.allPost=this.data[0].feedPosts
         this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; }) => {
-          console.log("post.image",post.image);
           
           if (post.image) {
             // Check if the image URL ends with a common image extension
@@ -77,12 +74,10 @@ export class ConnectionProfileComponent {
             }
   
             post.imageUrl = this.loadfeedImage(post.image);
-  console.log(" post.imageUrl", post.imageUrl);
   
           }
         });
         // Access the image property from the first object
-        console.log("Image Path:", this.allPost);
 
         if (imagePath) {
           this.imagePath = this.userService.getfullImagePath(imagePath);
@@ -91,7 +86,6 @@ export class ConnectionProfileComponent {
     })
   }
   loadfeedImage(image: string) {
-    console.log("image",image);
     
     if (image) {
       return this.userService.getfullImagePath(image)
@@ -103,23 +97,19 @@ export class ConnectionProfileComponent {
   }
   getFriendRequestStatus(id:any){
     this.connectionProfile.getFriendRequestStatus(id).subscribe(res=>{
-      console.log(res);
       this.getfriendRequestStatus=res
         this.friendRequestStatus= this.getfriendRequestStatus.status
         // Access the image property from the first object
-        console.log("this.friendRequestStatus", this.friendRequestStatus);
         
     })
   }
   addUser(){
     this.connectionProfile.addConnectionUser(this.authorId).subscribe(res=>{
-      console.log(res);
       this.getfriendRequestStatus=res
         this.friendRequestStatus= this.getfriendRequestStatus.status
     })
   }
   chatwithSelectedUser(){
-    console.log("this.authorId",this.userName);
     this.router.navigate([`message/${this.userName}`])
   }
 }

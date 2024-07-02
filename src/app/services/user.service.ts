@@ -21,7 +21,6 @@ export class UserService {
     }
   }
   setUserId(userId:any){
-    console.log("userId",userId);
     
     this.userId.next(userId)
   }

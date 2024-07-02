@@ -61,7 +61,6 @@ export class UserProfileComponent {
     
     this.userService.getUserByUserName(username).subscribe((res) => {
       this.users = res;
-      console.log(this.users);
       
       if (this.users) {
         

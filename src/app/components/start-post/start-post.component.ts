@@ -23,12 +23,10 @@ export class StartPostComponent {
       if (image) {
         this.picture = image
       }
-      console.log(this.picture);
 
     }
     this.userService.getImageUrl().subscribe(url => {
       this.imageUrl = url;
-      console.log(" this.imageUrl", this.imageUrl);
       if (!this.imageUrl) {
         this.imagewhenrefreshPage()
       }
@@ -40,7 +38,6 @@ export class StartPostComponent {
       // Handle the emitted imageUrl here
       if (imageUrl) {
         this.imageUrl = imageUrl;
-        console.log("this.imageUrl", this.imageUrl);
       }
       else {
         this.imageUrl = this.userService.getDefaultfullImagePath()

@@ -63,12 +63,10 @@ export class SignUpComponent implements OnInit {
   
   }
   sendMail(userData:any) {
-    console.log(userData);
     
     this.mailService.sendConfirmation(userData.email, userData.username, '123456').subscribe(
       (response) => {
         this.toastr.success('Email sent successfully', response);
-        console.log('Email sent successfully', response);
       },
       (error) => {
         console.error('Error sending email', error);
@@ -91,7 +89,6 @@ export class SignUpComponent implements OnInit {
 
 
       this.authService.signUp(userData).subscribe((res: any) => {
-        console.log("res",res);
        
           this.loading = false;
           this.toastr.success("sign-Up successfully");
@@ -101,7 +98,6 @@ export class SignUpComponent implements OnInit {
         
       },
         (error:any) => {
-          console.log("error",error);
           
           this.toastr.error(error.error);
           this.loading = false;

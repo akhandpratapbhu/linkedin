@@ -34,7 +34,6 @@ export class MessageComponent {
     this.route.paramMap.subscribe(params => {
      
       this.authorId = params.get('id'); // The 'id' here should match the parameter in your route definition
-      console.log('Author ID:', this.authorId);
       if(this.authorId){
         this.findUser(this.authorId);
       }
@@ -45,22 +44,15 @@ export class MessageComponent {
       const decoded = jwtDecode(token);
       this.id = (decoded as any).id;
       this.userName = (decoded as any).username;
-      console.log(this.id, this.userName);
     } else {
       console.error('Token not found in localStorage');
     }
    
     
     this.chatService.getMessage().subscribe((message) => {
-      console.log('message', message);
-     // this.chatService.setStorage(message);
       this.messages.push(message);
-    //  this.chatService.setStorage( this.messages);
-      console.log(this.messages);
       this.storageArray = this.chatService.getStorage();
-      console.log(this.storageArray);
     const storeIndex = this.storageArray.findIndex((storage) => storage.roomId === this.roomId);
-    console.log(this.storageArray,storeIndex);
     this.roomId = [this.id, this.users[0]?.id].sort().join('_');
     if (storeIndex > -1) {
       this.storageArray[storeIndex].chats.push(message);
@@ -80,21 +72,18 @@ export class MessageComponent {
     this.userService.getUserByUserName(username).subscribe((res) => {
       this.users = res;
       this.img=this.users[0].image
-      console.log("this.users",this.users[0].id,this.users);
       this. selectUserHandler(this.users[0].id)
     });
   }
 
   selectUserHandler(selectedUserid:string) {
     const userName = this.authorId;
-    console.log("userName",userName);
     
     this.selectedUser =userName
     // this.users.find((user: { username: any }) => user.username === userName);
    
 
     this.roomId = [this.id, selectedUserid].sort().join('_');
-    console.log(this.selectedUser, this.roomId );
     this.chatService.joinRoom(this.roomId);
 
     this.messages = [];
@@ -102,10 +91,8 @@ export class MessageComponent {
    
     
     const storeIndex = this.storageArray.findIndex((storage) => storage.roomId === this.roomId);
-    console.log("    this.storageArray", storeIndex, this.roomId,  this.storageArray);
     if (storeIndex > -1) {
       this.messages = this.storageArray[storeIndex].chats;
-      console.log('this.messages', this.messages);
     }
   }
 
@@ -135,7 +122,6 @@ export class MessageComponent {
   }
 
   NavigateToCalling(id: string) {
-    console.log(id);
     if (id) {
       this.router.navigate([`calling/${id}`]);
     }

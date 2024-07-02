@@ -104,32 +104,26 @@ export class CallingComponent implements OnInit {
   initializePeer() {
 
     try {
-      console.log(this.authService.peer, "uyhdfehbfibxfhur");
       this.userService.setUserId( this.userId)
       if (!this.authService.peer) {
         return
       }
       this.authService.peer.on('open', (id) => {
-        console.log(this.authService.peer, "open");
         this.peerId = this.userId;
-        console.log('Peer ID:', this.peerId);
       });
 
 
       this.authService.peer.on('call', (call) => {
         this.incomingCall = true;
-        console.log('Incoming call:', call);
 
         this.currentCall = call;
         this.ringing = true;
 
-        console.log('After setting currentCall:', this.currentCall);
 
         call.on('close', () => {
           this.incomingCall = false;
           this.ringing = false;
           this.isInCall = false;
-          console.log('Call ended, resetting flags.');
         });
       });
 
@@ -151,7 +145,6 @@ export class CallingComponent implements OnInit {
   connectWithPeer(): void {
     this.userService.setUserId( this.userId)
     this.callPeer(this.selectedUserId);
-    console.log('Connecting with peer ID:', this.selectedUserId);
   }
 
   private callPeer(id: string): void {
@@ -197,7 +190,6 @@ export class CallingComponent implements OnInit {
 
 
   answerCall(): void {
-    console.log('Incoming call:', this.currentCall);
 
     // Make sure `this.currentCall` is defined
     if (!this.currentCall) {

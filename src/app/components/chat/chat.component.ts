@@ -37,21 +37,16 @@ export class ChatComponent implements OnInit {
       const decoded = jwtDecode(token);
       this.id = (decoded as any).id;
       this.userName = (decoded as any).username;
-      console.log(this.id, this.userName);
     } else {
       console.error('Token not found in localStorage');
     }
     this.findAllUsers();
     this.chatService.getMessage().subscribe((message) => {
-      console.log('message', message);
      // this.chatService.setStorage(message);
       this.messages.push(message);
     //  this.chatService.setStorage( this.messages);
-      console.log(this.messages);
       this.storageArray = this.chatService.getStorage();
-      console.log(this.storageArray);
     const storeIndex = this.storageArray.findIndex((storage) => storage.roomId === this.roomId);
-    console.log(this.storageArray,storeIndex);
 
     if (storeIndex > -1) {
       this.storageArray[storeIndex].chats.push(message);
@@ -75,7 +70,6 @@ export class ChatComponent implements OnInit {
   selectUserHandler(user: string) {
     const userName = user;
     this.selectedUser = this.users.find((user: { username: any }) => user.username === userName);
-    console.log(this.selectedUser.id);
 
     this.roomId = [this.id, this.selectedUser.id].sort().join('_');
    
@@ -83,12 +77,10 @@ export class ChatComponent implements OnInit {
 
     this.messages = [];
     this.storageArray = this.chatService.getStorage();
-    console.log("    this.storageArray",    this.storageArray);
     
     const storeIndex = this.storageArray.findIndex((storage) => storage.roomId === this.roomId);
     if (storeIndex > -1) {
       this.messages = this.storageArray[storeIndex].chats;
-      console.log('this.messages', this.messages);
     }
   }
 
@@ -118,7 +110,6 @@ export class ChatComponent implements OnInit {
   }
 
   NavigateToCalling(id: string) {
-    console.log(id);
     if (id) {
       this.route.navigate([`calling/${id}`]);
     }

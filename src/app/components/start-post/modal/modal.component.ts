@@ -40,13 +40,7 @@ export class ModalComponent {
         this.picture = image
       }
     }
-    //else if(loginWithGoogle){
-    //   const decoded = jwtDecode(loginWithGoogle);
-    //   this.userName = (decoded as any).name;
-    //   this.picture=(decoded as any).picture
-    //   console.log(  this.userName,  this.picture);
-
-    // }
+   
     else {
       console.error('Token not found in localStorage');
     }
@@ -58,7 +52,6 @@ export class ModalComponent {
     }
     this.userService.getImageUrl().subscribe(url => {
       this.imageUrl = url;
-      console.log(" this.imageUrl", this.imageUrl);
       if (!this.imageUrl) {
         this.imagewhenrefreshPage()
       }
@@ -72,7 +65,6 @@ export class ModalComponent {
       // Handle the emitted imageUrl here
       if (imageUrl) {
         this.imageUrl = imageUrl;
-        console.log("this.imageUrl", this.imageUrl);
       }
       else {
         this.imageUrl = this.userService.getDefaultfullImagePath()
@@ -84,36 +76,7 @@ export class ModalComponent {
   closePopup() {
     this.dialogRef.close();
   }
-  // onfileselect(event: Event) {
-  //   // const file:File=(event.target as HTMLInputElement).files;
-  //   const file = (event.target as HTMLInputElement).files?.[0];
-  //   // console.log(file);
-
-  //   if (file) {
-  //     // Check file type
-  //     const fileType = file.type;
-  //     if (!fileType.match(/image\/(png|jpg|jpeg|gif|tiff|bpg)/)) {
-  //      // this.form.get('image')?.setErrors({ 'image': true });
-  //       return;
-  //     }
-
-  //     // Check file size
-  //     const fileSize = file.size;
-  //     const maxSizeInBytes = 20 * 1024 * 1024; // 20 MB
-
-  //     if (fileSize > maxSizeInBytes) {
-  //       //this.form.get('image')?.setErrors({ 'size': true });
-  //       return;
-  //     }
-
-  //     this.selectedImage= file
-  //    console.log("this.selectedImage",this.selectedImage);
-
-
-  //   }
-
-  // }
-
+ 
   onFileSelect(event: any) {
     const file = event.target.files[0];
     this.selectImage = file;
@@ -146,7 +109,6 @@ export class ModalComponent {
       body: this.datamessage,
       // image: formData
     }
-    console.log("form post", postMessage);
     if (!this.id) {
       this.postService.feedPost(formData).subscribe({
         next: (res) => {

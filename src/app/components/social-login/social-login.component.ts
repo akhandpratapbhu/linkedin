@@ -37,13 +37,11 @@ export class SocialLoginComponent implements OnInit {
   }
 
   handleCredentialResponse(response: any) {
-    console.log('Encoded JWT ID token: ' + response.credential);
     // Handle the credential response here (e.g., send to backend for verification)
     this.router.navigate(['/dashboard']);
   }
   handleLogout(): void {
     google.accounts.id.disableAutoSelect();
-    console.log('User signed out.',google.accounts.id.disableAutoSelect());
     // Optionally, redirect the user to the login page or perform other actions
     this.router.navigate(['/register']);
   }

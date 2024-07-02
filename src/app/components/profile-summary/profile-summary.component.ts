@@ -55,22 +55,10 @@ export class ProfileSummaryComponent {
     });
 
   }
-  // profilePicture() {
-  //   this.userService.getProfileImageName().subscribe(res => {
-  //     if (res) {
-  //       this.image = res;
-  //       this.imageUrl = this.userService.getfullImagePath(this.image.image)
 
-  //     } else {
-  //       const defaultImgPath = 'user.png'
-  //       this.userService.uploadUserImage(defaultImgPath).subscribe()
-  //     }
-  //   })
-  // }
   onfileselect(event: Event) {
     // const file:File=(event.target as HTMLInputElement).files;
     const file = (event.target as HTMLInputElement).files?.[0];
-    // console.log(file);
 
     if (file) {
       // Check file type
@@ -96,10 +84,8 @@ export class ProfileSummaryComponent {
     this.updateProfileImage()
   }
   updateProfileImage() {
-    // console.log(this.form.value);
     const formData = new FormData();
     formData.append('file', this.form.get('image')?.value);
-    console.log(this.form.get('image')?.value);
 
     this.userService.uploadUserImage(formData).subscribe({
       next: (res: any) => {

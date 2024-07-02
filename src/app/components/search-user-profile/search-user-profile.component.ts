@@ -104,7 +104,6 @@ export class SearchUserProfileComponent {
   }
   addUser() {
     this.connectionProfile.addConnectionUser(this.authorId).subscribe(res => {
-      console.log(res);
       this.getfriendRequestStatus = res
       this.friendRequestStatus = this.getfriendRequestStatus.status
     })
@@ -114,7 +113,6 @@ export class SearchUserProfileComponent {
 
   loadPosts(post: any) {
     this.allPost = post;
-    console.log("all post",this.allPost[0]);
 
     this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; }) => {
       if (post.image) {

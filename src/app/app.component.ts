@@ -36,7 +36,6 @@ export class AppComponent {
   ngOnInit(): void {
     this.userService.getImageUrl().subscribe(url => {
       this.userId1 = url;
-      console.log(" this.uuserId1", this.userId1);
       
     });
     this.usertokenId()
@@ -54,12 +53,10 @@ export class AppComponent {
   }
   initializePeer() {
     if (this.authService.peer) {
-      console.log(this.authService.peer);
       
       console.warn('Peer is already initialized. Destroying existing Peer instance.');
       this.authService.peer.destroy();
       this.authService.peer = null;
-      console.log(this.authService.peer);
     }
   
     try {
@@ -69,7 +66,6 @@ export class AppComponent {
   
       this.authService.peer.on('open', (id) => {
         this.peerId = this.userId;
-      //  console.log('Peer ID:', this.peerId);
       });
   
       this.authService.peer.on('call', (call) => {

@@ -25,20 +25,16 @@ export class AuthService {
     } else {
       return false;
     }
-    //  return !!localStorage.getItem('token')||localStorage.getItem('loginWithGoogle');
   }
   loginWithGoogle(payload: any) {
-    console.log("loginWithGooglepayload", payload);
 
     return this.http.post('http://localhost:3000/api/auth/loginWithGoogle', payload)
   }
   signIn(payload: any) {
-    console.log("payload", payload);
 
     return this.http.post('http://localhost:3000/api/auth/login', payload)
   }
   signUp(payload: any) {
-    console.log("payload", payload);
 
     return this.http.post('http://localhost:3000/api/auth/register', payload)
   }

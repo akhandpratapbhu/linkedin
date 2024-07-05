@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  # Our NestJS Api
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: ./Linkedinbackend
+      target: development
+    volumes:
+      - ./Linkedinbackend:/akhand/backend
+      - /akhand/backend/node_modules/
+    command: npm run start
+    depends_on: 
+      - postgres
+    environment:
+      DATABASE_URL: postgres://postgres:Admin@127.0.0.1:5432/linkedin
+      NODE_ENV: development
+      JWT_SECRET: jwtsecret
+      PORT: 3000
+    ports:
+      - 3000:3000
+      - 9229:9229
+  
+  # Our Angular Frontend
+  frontend:
+    build:
+      dockerfile: Dockerfile
+      context: ./linkedin
+      target: development
+    command: npm run start
+    volumes:
+      - ./linkedin:/akhand/linkedin/src/app
+      - /akhand/linkedin/src/app/node_modules
+    ports:
+      - 4200:4200
+    links:
+      - api
+
+  # Our Postgres Database for NestJS to connect to
+  postgres:
+    image: postgres:10.4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Admin
+      POSTGRES_DB: linkedin
+    ports:
+      - 35000:5432

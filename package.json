@@ -32,6 +32,7 @@
     "gapi-script": "^1.2.0",
     "jwt-decode": "^4.0.0",
     "ng-recaptcha": "^13.2.1",
+    "ngx-paypal": "^11.0.0",
     "ngx-socket-io": "^4.6.1",
     "ngx-toastr": "^18.0.0",
     "peerjs": "^1.5.4",

@@ -29,7 +29,7 @@ export class PaypalPaymentComponent {
 
     this.payPalConfig = {
       currency: currency,
-       clientId: '',
+       clientId: 'ASIobk8ZjRoxLcj5NX4RF8YhVEdR_r_PxuLrsvf2iYeqU4_iki0RWwKChFWAidtIH4RDTaqdVm-QHJk8',
       createOrderOnClient: (data) => <ICreateOrderRequest>{
         intent: 'CAPTURE',
         purchase_units: [

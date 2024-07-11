@@ -30,13 +30,13 @@ export const routes: Routes = [
     { path: 'calling/:id', component: CallingComponent, },
     {
         path: 'dashboard', component: HomeComponent,
-        canActivate: [AuthGuard]
+       // canActivate: [AuthGuard]
     },
     { path: 'dashboard/call/user', component: CallingComponent, },
     { path: 'message/:id', component: MessageComponent },
     { path: 'mail', component: MailComponent },
     { path: 'user-profile', component: UserProfileComponent },
-    { path: '', component: SocialLoginComponent },
+    // { path: '', component: SocialLoginComponent },
     { path: 'payment-stripe', component: StripePaymentComponent },
     { path: 'payment-paypal', component: PaypalPaymentComponent }
 

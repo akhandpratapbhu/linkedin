@@ -9,12 +9,13 @@ import { CommonModule } from '@angular/common';
 import { GoogleApiLoaderService } from '../../services/google-api-loader.service.service';
 import { jwtDecode } from 'jwt-decode';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { SocialLoginComponent } from '../social-login/social-login.component';
 
 declare const google: any;
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [ToastrModule, MatIconModule, ReactiveFormsModule, FormsModule, MatProgressSpinnerModule, CommonModule],
+  imports: [ToastrModule, MatIconModule, ReactiveFormsModule, FormsModule, MatProgressSpinnerModule, CommonModule,SocialLoginComponent],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
   providers: [
@@ -53,7 +54,7 @@ export class SignInComponent implements OnInit {
 
   recaptchaWidgetId: number | undefined;
   ngOnInit(): void {
-    this.signInWithGoogle();
+    //this.signInWithGoogle();
     this.recaptchaWidgetId = grecaptcha.render('your-recaptcha-container-id', {
       'sitekey': '6LfZJs4pAAAAADyW-fE1-nomT3WPIjNDF9ZMReWp'
     });
@@ -64,27 +65,27 @@ export class SignInComponent implements OnInit {
     }
     this.generateCaptcha()
   }
-  signInWithGoogle(){
-    this.googleApiLoader.loadScript().then(() => {
-      google.accounts.id.initialize({
-        client_id: '619580621696-evh90so3evttspdgna3go72qittoa8tn.apps.googleusercontent.com',
-        callback: this.handleCredentialResponse.bind(this)
-      });
-      google.accounts.id.renderButton(
-        document.getElementById('g_id_signin'),
-        {
-          theme: 'outline',
-          size: 'large',
-          text: 'sign_in_with',
-          shape: 'rectangular',
-          logo_alignment: 'left'
-        }
-      );
-      google.accounts.id.prompt();
-    }).catch((error:any)=> {
-      console.error('Error loading Google API script:', error);
-    });
-  }
+  // signInWithGoogle(){
+  //   this.googleApiLoader.loadScript().then(() => {
+  //     google.accounts.id.initialize({
+  //       client_id: '619580621696-evh90so3evttspdgna3go72qittoa8tn.apps.googleusercontent.com',
+  //       callback: this.handleCredentialResponse.bind(this)
+  //     });
+  //     google.accounts.id.renderButton(
+  //       document.getElementById('g_id_signin'),
+  //       {
+  //         theme: 'outline',
+  //         size: 'large',
+  //         text: 'sign_in_with',
+  //         shape: 'rectangular',
+  //         logo_alignment: 'left'
+  //       }
+  //     );
+  //     google.accounts.id.prompt();
+  //   }).catch((error:any)=> {
+  //     console.error('Error loading Google API script:', error);
+  //   });
+  // }
   reloadRecaptcha() {
     // Reset reCAPTCHA widget
     grecaptcha.reset(this.recaptchaWidgetId);
@@ -158,35 +159,35 @@ export class SignInComponent implements OnInit {
 
     this.captcha = captcha
   }
-  handleCredentialResponse(response: any) {
-    console.log('Encoded JWT ID token: ' + response.credential);
-   // localStorage.setItem('loginWithGoogle', response.credential)
-   // const loginWithGoogle = localStorage.getItem('loginWithGoogle');
-   const loginWithGoogle=response.credential;
-    if(loginWithGoogle){
-      const decoded = jwtDecode(loginWithGoogle);
-       const userName = (decoded as any).name;
-      const picture=(decoded as any).picture;
-      const email=(decoded as any).email
-      console.log(  userName, picture);
-      const userData = {
-        email:email,
-        image: picture,
-        username:userName,
-        phoneNumber:"",
-        password:""
-      }
+  // handleCredentialResponse(response: any) {
+  //   console.log('Encoded JWT ID token: ' + response.credential);
+  //  // localStorage.setItem('loginWithGoogle', response.credential)
+  //  // const loginWithGoogle = localStorage.getItem('loginWithGoogle');
+  //  const loginWithGoogle=response.credential;
+  //   if(loginWithGoogle){
+  //     const decoded = jwtDecode(loginWithGoogle);
+  //      const userName = (decoded as any).name;
+  //     const picture=(decoded as any).picture;
+  //     const email=(decoded as any).email
+  //     console.log(  userName, picture);
+  //     const userData = {
+  //       email:email,
+  //       image: picture,
+  //       username:userName,
+  //       phoneNumber:"",
+  //       password:""
+  //     }
       
-      this.authService.loginWithGoogle(userData).subscribe((res: any) => {
-        console.log("res", res);
-         localStorage.setItem('token',res.token)
-        this.loading = false;
-        this.toastr.success("login successfully");
-        this.router.navigate(["dashboard"]);
+  //     this.authService.loginWithGoogle(userData).subscribe((res: any) => {
+  //       console.log("res", res);
+  //        localStorage.setItem('token',res.token)
+  //       this.loading = false;
+  //       this.toastr.success("login successfully");
+  //       this.router.navigate(["dashboard"]);
 
-      })
+  //     })
 
-    }
+  //   }
   
-  }
+  // }
 }

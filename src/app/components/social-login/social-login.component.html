@@ -1,19 +1,14 @@
-<!-- <div class="g-signin2" data-width="300" data-height="200" data-longtitle="true"></div>
-<div id="g-signin2"></div> -->
 
-<!-- social-login.component.html -->
-<div id="g_id_onload"
-     data-client_id="619580621696-evh90so3evttspdgna3go72qittoa8tn.apps.googleusercontent.com"
-     data-login_uri="http://localhost:3000/api/auth/loginWithGoogle"
-     data-auto_prompt="false">
-</div>
-<div id="g_id_signin"
-     data-type="standard"
-     data-size="large"
-     data-theme="outline"
-     data-text="sign_in_with"
-     data-shape="rectangular"
-     data-logo_alignment="left">
-</div>
+<div class="d-flex align-items-center">
+     <asl-google-signin-button type="icon" size="large" class="me-3"></asl-google-signin-button>
+     <img src="../../../assets/img/facebook.png" width="40px" height="40px" (click)="signInWithFB()">
+   </div>
+   
 
-<!-- <button (click)="handleLogout()">Logout</button> -->
+<!-- @if(user){
+<img src="{{ user.photoUrl }}" referrerpolicy="no-referrer">
+<div>
+     <h4>{{ user.name }}</h4>
+     <p>{{ user.email }}</p>
+</div>
+} -->

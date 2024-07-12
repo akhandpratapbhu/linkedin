@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ChatComponent } from '../chat/chat.component';
 import { GoogleApiLoaderService } from '../../services/google-api-loader.service.service';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 
 declare const google: any;
 @Component({
@@ -28,7 +29,8 @@ declare const google: any;
 })
 export class HeaderComponent implements OnInit {
   imageUrl!: string;
-  picture!:string
+  picture!: string
+  user!:any;
   token: string = '';
   userName: string = '';
   users: any = [];
@@ -45,6 +47,7 @@ export class HeaderComponent implements OnInit {
     private connectionProfileService: ConnectionProfileService,
     public dialog: MatDialog,
     private googleApiLoader: GoogleApiLoaderService,
+    private authService: SocialAuthService
   ) {
 
   }
@@ -60,8 +63,8 @@ export class HeaderComponent implements OnInit {
       }
 
     }
-    
-     else {
+
+    else {
       console.error('Token not found in localStorage');
     }
     this.googleApiLoader.loadScript().then(() => {
@@ -74,7 +77,7 @@ export class HeaderComponent implements OnInit {
       if (!this.imageUrl) {
         this.imagewhenrefreshPage()
       }
-      
+
     });
 
     this.ReceiveFriendRequest();
@@ -102,23 +105,23 @@ export class HeaderComponent implements OnInit {
 
   onSearch() {
     // Implement your search logic here using this.searchQuery
-    if(this.searchQuery){
+    if (this.searchQuery) {
 
-    this.userService.getUserByUserName(this.searchQuery).subscribe(users => {
-      if (Array.isArray(users)) {
-        this.users = users;
+      this.userService.getUserByUserName(this.searchQuery).subscribe(users => {
+        if (Array.isArray(users)) {
+          this.users = users;
 
-      }
+        }
 
-      this.filteredOptions = this.myControl.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filterUsers(value || '')),
-      );
+        this.filteredOptions = this.myControl.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterUsers(value || '')),
+        );
 
-    });
-  }else{
-    this.router.navigate(['/dashboard'])
-  }
+      });
+    } else {
+      this.router.navigate(['/dashboard'])
+    }
 
   }
   onOptionSelected(selectedValue: string) {
@@ -173,15 +176,22 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  SignOut(): void {
-    this.googleApiLoader.loadScript().then(() => {
-      google.accounts.id.disableAutoSelect();
-      localStorage.removeItem('token');
-      localStorage.removeItem('loginWithGoogle');
-      this.toastr.success("User logged out successfully...");
-      this.router.navigate([""]);
-    }).catch((error: any) => {
-      console.error('Error signing out:', error);
-    });
+  // SignOut(): void {
+  //   this.googleApiLoader.loadScript().then(() => {
+  //     google.accounts.id.disableAutoSelect();
+  //     localStorage.removeItem('token');
+  //     localStorage.removeItem('loginWithGoogle');
+  //     this.toastr.success("User logged out successfully...");
+  //     this.router.navigate([""]);
+  //   }).catch((error: any) => {
+  //     console.error('Error signing out:', error);
+  //   });
+  // }
+ 
+  signOut(): void {
+    this.authService.signOut();
+   // localStorage.removeItem('token');
+    this.toastr.success("User logged out successfully...");
+    this.router.navigate([""]);
   }
 }

@@ -32,7 +32,6 @@ export class SocialLoginComponent implements OnInit, OnDestroy {
     this.subscription = this.authService.authState.subscribe((user) => {
       this.user = user;
       this.loggedIn = (user != null);
-console.log(      this.user);
 
       if (this.user) {
         this.sendUserData(this.user)
@@ -44,10 +43,8 @@ console.log(      this.user);
 
 
   signInWithFB(): void {
-    console.log("facebook");
 
-    const f = this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
-    console.log("facebook", f);
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
   }
 
 
@@ -61,7 +58,7 @@ console.log(      this.user);
       password: ""
     }
 
-    this.authServices.loginWithGoogle(userData).subscribe((res: any) => {
+    this.authServices.loginWithSocialSignIn(userData).subscribe((res: any) => {
       localStorage.setItem('token', res.token)
       this.loading = false;
       this.toastr.success("login successfully");

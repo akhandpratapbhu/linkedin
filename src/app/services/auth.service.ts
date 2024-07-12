@@ -26,9 +26,9 @@ export class AuthService {
       return false;
     }
   }
-  loginWithGoogle(payload: any) {
+  loginWithSocialSignIn(payload: any) {
 
-    return this.http.post('http://localhost:3000/api/auth/loginWithGoogle', payload)
+    return this.http.post('http://localhost:3000/api/auth/loginWithSocialSignIn', payload)
   }
   signIn(payload: any) {
 

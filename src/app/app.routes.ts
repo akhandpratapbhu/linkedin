@@ -13,6 +13,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { SocialLoginComponent } from './components/social-login/social-login.component';
 import { StripePaymentComponent } from './components/stripe-payment/stripe-payment.component';
 import { PaypalPaymentComponent } from './components/paypal-payment/paypal-payment.component';
+import { LinkedinCallbackComponent } from './components/linkedin-callback/linkedin-callback.component';
 
 
 export const routes: Routes = [
@@ -36,8 +37,6 @@ export const routes: Routes = [
     { path: 'message/:id', component: MessageComponent },
     { path: 'mail', component: MailComponent },
     { path: 'user-profile', component: UserProfileComponent },
-    // { path: '', component: SocialLoginComponent },
     { path: 'payment-stripe', component: StripePaymentComponent },
-    { path: 'payment-paypal', component: PaypalPaymentComponent }
-
+    { path: 'payment-paypal', component: PaypalPaymentComponent },
 ];

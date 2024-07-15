@@ -10,7 +10,7 @@
           *ngFor="let user of users"
                (click)="selectUserHandler(user.username)"
           >
-          <img [src]="user.image ? 'http://localhost:3000/api/feed/image/' + user.image : 'http://localhost:3000/api/feed/image/user.png'"
+          <img [src]="user.image ? user.image : 'http://localhost:3000/api/feed/image/user.png'"
                  [alt]="user"
                  class="avatar"
             />
@@ -26,7 +26,7 @@
           <ng-container *ngIf="selectedUser">
             <div class="chat-header">
               <div class="user-info">
-                <img [src]="selectedUser.image ? 'http://localhost:3000/api/feed/image/' + selectedUser.image : 'http://localhost:3000/api/feed/image/user.png'"
+                <img [src]="selectedUser.image ? selectedUser.image : 'http://localhost:3000/api/feed/image/user.png'"
                      [alt]="selectedUser.username"
                      class="avatar"
                 />

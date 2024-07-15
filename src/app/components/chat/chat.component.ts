@@ -60,16 +60,31 @@ export class ChatComponent implements OnInit {
     this.chatService.setStorage(this.storageArray);
     });
   }
-
+  getImageUrl(authorImg: any): string {
+    if (authorImg && authorImg.startsWith('http')) {
+      return authorImg; 
+    }
+   else if (!authorImg.startsWith('http')) {
+      return 'http://localhost:3000/api/feed/image/' + (authorImg);;
+    }
+    return ''
+  }
   findAllUsers() {
     this.authService.allUsers().subscribe((res) => {
       this.users = res;
+      this.users.forEach((user :{image:string})=>{
+       
+        if(user.image){
+          user.image=this.getImageUrl(user.image)
+        }
+      })
     });
   }
 
   selectUserHandler(user: string) {
     const userName = user;
     this.selectedUser = this.users.find((user: { username: any }) => user.username === userName);
+console.log(" this.selectedUser", this.selectedUser);
 
     this.roomId = [this.id, this.selectedUser.id].sort().join('_');
    

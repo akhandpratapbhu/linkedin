@@ -7,12 +7,13 @@ import { SocialLoginModule } from '@abacritt/angularx-social-login';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+import { LinkedinCallbackComponent } from '../linkedin-callback/linkedin-callback.component';
 
 
 @Component({
   selector: 'app-social-login',
   standalone: true,
-  imports: [SocialLoginModule],
+  imports: [SocialLoginModule,LinkedinCallbackComponent],
   templateUrl: './social-login.component.html',
   styleUrls: ['./social-login.component.css']
 })
@@ -40,9 +41,10 @@ export class SocialLoginComponent implements OnInit, OnDestroy {
 
     });
   }
-
+ 
 
   signInWithFB(): void {
+    console.log("facebook");
 
     this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
   }

@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { ConnectionProfileComponent } from '../connection-profile/connection-profile.component';
 import { Router, RouterModule } from '@angular/router';
 
+
 @Component({
   selector: 'app-all-post',
   standalone: true,
@@ -22,6 +23,7 @@ import { Router, RouterModule } from '@angular/router';
 
 })
 export class AllPostComponent implements OnInit {
+  url = 'http://jasonwatmore.com';
   token: string = '';
   userName: string = '';
   allPost: any = [];

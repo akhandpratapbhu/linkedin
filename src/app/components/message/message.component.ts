@@ -1,130 +1,98 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { CallingComponent } from '../calling/calling.component';
-import { MatIconModule } from '@angular/material/icon';
-import { ChatService } from '../../services/chat.service';
+import { Component, Inject, Input } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon'
+import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { jwtDecode } from 'jwt-decode';
+import { PostService } from '../../services/post.service';
 import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-message',
   standalone: true,
-  imports: [RouterOutlet,CommonModule,FormsModule,CallingComponent,MatIconModule ],
+  imports: [CommonModule, FormsModule, MatIconModule, MatDialogModule],
   templateUrl: './message.component.html',
   styleUrl: './message.component.css'
 })
 export class MessageComponent {
-
-  messages: any[] = [];
-  users: any;
-  newMessage!: string;
-  id!: string;
-  selectedUser: any;
-  currentUser: any;
-  private storageArray: any[] = [];
-  userName!: string;
-  roomId!: string;
-  authorId!: string | null;
-  img!:string;
-  constructor(private chatService: ChatService, private userService: UserService, private router: Router,private route: ActivatedRoute) {}
-
-  ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-     
-      this.authorId = params.get('id'); // The 'id' here should match the parameter in your route definition
-      if(this.authorId){
-        this.findUser(this.authorId);
-      }
-   
-    });
-    const token = localStorage.getItem('token');                                                                                 
+  datamessage: string = "";
+  selectImage!: File;
+  selectedImage: string | undefined | ArrayBuffer | null = '';
+  id: any
+  userName!: string
+  imageUrl!: string;
+  selectedVideo: string | null = null;
+  isVideo: boolean = false;
+  picture!: string
+  changeHeaderName = 'Create a Post'
+  constructor(private postService: PostService, private toastr: ToastrService, private userService: UserService,
+    public dialogRef: MatDialogRef<MessageComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    const token = localStorage.getItem('token');
+    //  const loginWithGoogle = localStorage.getItem('loginWithGoogle');
     if (token) {
       const decoded = jwtDecode(token);
-      this.id = (decoded as any).id;
       this.userName = (decoded as any).username;
-    } else {
+      const image = (decoded as any).image
+      if (image) {
+        this.picture = image
+      }
+    }
+   
+    else {
       console.error('Token not found in localStorage');
     }
+    if (data) {
+      this.datamessage = data.message;
+         }
    
-    
-    this.chatService.getMessage().subscribe((message) => {
-      this.messages.push(message);
-      this.storageArray = this.chatService.getStorage();
-    const storeIndex = this.storageArray.findIndex((storage) => storage.roomId === this.roomId);
-    this.roomId = [this.id, this.users[0]?.id].sort().join('_');
-    if (storeIndex > -1) {
-      this.storageArray[storeIndex].chats.push(message);
+
+
+  }
+
+  closePopup() {
+    this.dialogRef.close();
+  }
+ 
+ 
+  onPost() {
+    const formData = new FormData();
+    formData.append('file', this.selectImage);
+    formData.append('body', this.datamessage);
+    const postMessage = {
+      body: this.datamessage,
+      // image: formData
+    }
+    if (!this.id) {
+      this.postService.feedPost(formData).subscribe({
+        next: (res) => {
+          // Success case
+          this.toastr.success("Message posted successfully");
+          this.postService.update.next(true);
+          this.dialogRef.close();
+        },
+        error: (error) => {
+          // Error case
+          console.error("An error occurred while posting the message:", error);
+          this.toastr.error("Failed to post message. Please try again later.", error.message);
+        }
+      });
+
     } else {
-      const updateStorage = {
-        roomId: this.roomId,
-        chats: [message]
-      };
-      this.storageArray.push(updateStorage);
+      this.postService.editPost(this.id, postMessage).subscribe({
+        next: res => {
+          this.toastr.success("message updated successfully");
+          this.postService.update.next(true)
+          this.dialogRef.close();
+        }, error: error => {
+          console.error("An error occurred while updating the message:", error);
+          this.toastr.error("Failed to update message. Please try again later.", error.message);
+        }
+      });
     }
-    this.chatService.setStorage(this.storageArray);
-    });
-     
-  }
 
-  findUser(username:string) {
-    this.userService.getUserByUserName(username).subscribe((res) => {
-      this.users = res;
-      this.img=this.users[0].image
-      this. selectUserHandler(this.users[0].id)
-    });
   }
-
-  selectUserHandler(selectedUserid:string) {
-    const userName = this.authorId;
-    
-    this.selectedUser =userName
-    // this.users.find((user: { username: any }) => user.username === userName);
    
-
-    this.roomId = [this.id, selectedUserid].sort().join('_');
-    this.chatService.joinRoom(this.roomId);
-
-    this.messages = [];
-    this.storageArray = this.chatService.getStorage();
-   
-    
-    const storeIndex = this.storageArray.findIndex((storage) => storage.roomId === this.roomId);
-    if (storeIndex > -1) {
-      this.messages = this.storageArray[storeIndex].chats;
-    }
-  }
-
-  sendMessage(): void {
-    const message = {
-      senderId: this.id,
-      recipientId: this.selectedUser.id,
-      user: this.userName,
-      content: this.newMessage
-    };
-    this.chatService.sendMessage(this.roomId, message);
-   // this.messages.push(message);
-
-    this.storageArray = this.chatService.getStorage();
-    const storeIndex = this.storageArray.findIndex((storage) => storage.roomId === this.roomId);
-    if (storeIndex > -1) {
-      this.storageArray[storeIndex].chats.push(message);
-    } else {
-      const updateStorage = {
-        roomId: this.roomId,
-        chats: [message]
-      };
-      this.storageArray.push(updateStorage);
-    }
-  //  this.chatService.setStorage(this.storageArray);
-    this.newMessage = '';
-  }
-
-  NavigateToCalling(id: string) {
-    if (id) {
-      this.router.navigate([`calling/${id}`]);
-    }
-  }
-
 }

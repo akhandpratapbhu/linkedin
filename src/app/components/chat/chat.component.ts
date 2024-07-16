@@ -60,12 +60,12 @@ export class ChatComponent implements OnInit {
     this.chatService.setStorage(this.storageArray);
     });
   }
-  getImageUrl(authorImg: any): string {
-    if (authorImg && authorImg.startsWith('http')) {
-      return authorImg; 
+  getImageUrl(userImg: any): string {
+    if (userImg && userImg.startsWith('http')) {
+      return userImg; 
     }
-   else if (!authorImg.startsWith('http')) {
-      return 'http://localhost:3000/api/feed/image/' + (authorImg);;
+   else if (!userImg.startsWith('http')) {
+      return 'http://localhost:3000/api/feed/image/' + (userImg);;
     }
     return ''
   }

@@ -5,13 +5,13 @@
         <div class="card ">
             <div class="card-body">
 
-                <form class="d-flex  justify-content-between" [routerLink]="['/dashboard', post.author.id]">
-                    <!-- <img [src]="post.author.image ? 'http://localhost:3000/api/feed/image/' + post.author.image : 'http://localhost:3000/api/feed/image/user.png'" class="card-img-top bordered-image" alt="image"> -->
-                    <img [src]="post.author.image" class="card-img-top bordered-image" alt="image">
+                <form class="d-flex  justify-content-between" [routerLink]="['/dashboard', post.user.id]">
+                    <!-- <img [src]="post.user.image ? 'http://localhost:3000/api/feed/image/' + post.user.image : 'http://localhost:3000/api/feed/image/user.png'" class="card-img-top bordered-image" alt="image"> -->
+                    <img [src]="post.user.image" class="card-img-top bordered-image" alt="image">
 
-                    <h5 class="card-title setUsername">{{post.author.username}}</h5>
+                    <h5 class="card-title setUsername">{{post.user.username}}</h5>
                     <div class="icon-group" >
-                        @if(( post.author.role==role&& role!=='admin'&& post.author.id==id)){
+                        @if(( post.user.role==role&& role!=='admin'&& post.user.id==id)){
                             <mat-icon style="color: aqua;"(click)="editPost(post.id)">edit</mat-icon>
                             <mat-icon style="color: brown;"(click)="deleteDialog(post.id)">delete_forever</mat-icon>
                         }
@@ -39,7 +39,7 @@
                 <div class="d-flex justify-content-center">
                     <p class="setText" *ngIf='like!=0'>{{like}} </p>
                     <p class="setText" (click)="likeButton()"  [ngClass]="{'liked': liked}"><mat-icon>thumb_up</mat-icon> Like</p>
-                    <p class="setText" (click)="commentButton(post.author.username)"><mat-icon> comment</mat-icon> Comment</p>
+                    <p class="setText" (click)="commentButton(post.user.username)"><mat-icon> comment</mat-icon> Comment</p>
                     <p class="setText"><mat-icon>share</mat-icon> Share </p>
                     <p class="setText"><mat-icon>forward_5</mat-icon> Send</p>
                 </div>

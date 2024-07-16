@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class ConnectionProfileComponent {
 
-  authorId!: string | null;
+  userId!: string | null;
   data = {}
   imagePath!: string
   userName!:string
@@ -28,10 +28,10 @@ export class ConnectionProfileComponent {
   }
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.authorId = params.get('id'); // The 'id' here should match the parameter in your route definition
+      this.userId = params.get('id'); // The 'id' here should match the parameter in your route definition
     });
-    this.getConnectionUserProfile(this.authorId)
-    this.getFriendRequestStatus(this.authorId)
+    this.getConnectionUserProfile(this.userId)
+    this.getFriendRequestStatus(this.userId)
   }
   getConnectionUserProfile(id: any) {
     this.connectionProfile.getConnectionUser(id).subscribe(res => {
@@ -104,7 +104,7 @@ export class ConnectionProfileComponent {
     })
   }
   addUser(){
-    this.connectionProfile.addConnectionUser(this.authorId).subscribe(res=>{
+    this.connectionProfile.addConnectionUser(this.userId).subscribe(res=>{
       this.getfriendRequestStatus=res
         this.friendRequestStatus= this.getfriendRequestStatus.status
     })

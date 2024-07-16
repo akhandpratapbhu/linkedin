@@ -21,7 +21,7 @@ import { DeleteComfimationComponent } from '../shared/delete-comfimation/delete-
 })
 export class SearchUserProfileComponent {
 
-  authorId!: string | null;
+  userId!: string | null;
   username!: string | null;
   data = {}
   imagePath!: string
@@ -69,9 +69,9 @@ export class SearchUserProfileComponent {
       if (Array.isArray(res)) {
         const users = res;
         
-        this.authorId = users[0].id
-        this.getConnectionUserProfile(this.authorId)
-        this.getFriendRequestStatus(this.authorId)
+        this.userId = users[0].id
+        this.getConnectionUserProfile(this.userId)
+        this.getFriendRequestStatus(this.userId)
         this.loadPosts(users[0].feedPosts)
       }
 
@@ -103,7 +103,7 @@ export class SearchUserProfileComponent {
     })
   }
   addUser() {
-    this.connectionProfile.addConnectionUser(this.authorId).subscribe(res => {
+    this.connectionProfile.addConnectionUser(this.userId).subscribe(res => {
       this.getfriendRequestStatus = res
       this.friendRequestStatus = this.getfriendRequestStatus.status
     })

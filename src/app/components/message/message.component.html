@@ -1,81 +1,37 @@
-<p>message works!</p>
-<p>Now chat to users</p>
-<div class="container-fluid">
+<div class="popup-overlay">
+  <div class="popup">
 
-    <div class="row">
-  
-      <div class="col-2">
-  
-        <!-- <div class="user-list-card">
-          <div class="user-card"
-          *ngFor="let user of users"
-               (click)="selectUserHandler(user.username)"
-          >
-          <img [src]="user.image ? 'http://localhost:3000/api/feed/image/' + user.image : 'http://localhost:3000/api/feed/image/user.png'"
-                 [alt]="user"
-                 class="avatar"
-            />
-            <p class="username">{{user.username}}</p>
-  
-          </div>
-        </div>
-   -->
+    <div class="popup-content">
+      <!-- Add your popup content here -->
+      <div class="d-flex">
+        <h5>{{changeHeaderName}}</h5>
+        <button (click)="closePopup()" class="close-btn right-side">&times;</button>
       </div>
-      <div class="col-8">
-  
-        <div class="chat-container">
-          <ng-container *ngIf="selectedUser">
-            <div class="chat-header">
-              <div class="user-info">
-                <img [src]="img ? 'http://localhost:3000/api/feed/image/' + img : 'http://localhost:3000/api/feed/image/user.png'"
-                     [alt]="selectedUser"
-                     class="avatar"
-                />
-                <p class="username">{{selectedUser}}</p>
-              </div>
-              <div class="same-user">
-              <div  style="color: aqua;"(click)="NavigateToCalling(users[0]?.id)"><mat-icon>phone</mat-icon>
-              </div>
-              <div style="color: aqua;"><mat-icon>video_call</mat-icon>
-              </div>
+      <hr>
+      <form class="was-validated">
+        <div class="mb-3">
+          <div class="d-flex">
+            <img [src]="picture ? picture : imageUrl" class="card-img-top bordered-image" alt="image">
+            <div>
+              <!-- <p style="margin-left: 20px;">{{userName}}</p> -->
+              <input 
+              type="text" 
+              id="validationTextarea" 
+              style="margin-top:10px" 
+              placeholder="Write a comment..." 
+              required 
+              [(ngModel)]="datamessage" 
+              name="datamessage">
             </div>
+            <button class="setText" (click)="onPost()"
+            style="background-color: rgb(0, 119, 255);height: 40px;width: 70px; margin-left: 20px;color: aliceblue;"><mat-icon>send</mat-icon></button>
+        
+       
           </div>
-            <div class="chat-body">
-              <div *ngFor="let item of messages"
-              [ngClass]="{'same-user': item?.user === userName, '': true}"
 
-              >
-                <p class="message-container">{{ item.content }}</p>
-              </div>
-            </div>
-  
-            <div class="chat-footer">
-  
-              <div class="row">
-                <div class="col-md-10">
-                  <div class="form-group mb-0">
-                    <input type="text"
-                           placeholder="Type a message"
-                           class="form-control"
-                           [(ngModel)]="newMessage"
-                           (keyup)="$event.keyCode === 13 && sendMessage()"
-                    />
-                  </div>
-                </div>
-  
-                <div class="col-md-2 text-center align-self-center">
-                  <button class="btn btn-primary btn-sm px-3"
-                          (click)="sendMessage()">Send
-                  </button>
-                </div>
-              </div>
-  
-            </div>
-          </ng-container>
+            
         </div>
-  
-      </div>
-  
+      </form>
     </div>
-  
   </div>
+</div>

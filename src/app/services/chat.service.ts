@@ -23,6 +23,8 @@ private socket: Socket;
   getMessage() {
     return new Observable((observer) => {
       this.socket.on('message', (message) => {
+        console.log("message",message);
+        
         observer.next(message);
       });
     });

@@ -12,6 +12,7 @@ import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { ConnectionProfileComponent } from '../connection-profile/connection-profile.component';
 import { Router, RouterModule } from '@angular/router';
+import { MessageComponent } from '../message/message.component';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class AllPostComponent implements OnInit {
   allPost: any = [];
   message: any;
   imageUrl: any;
-  authorImg!: {}
+  userImg!: {}
   id: any;
   role: any;
   img: any
@@ -70,24 +71,24 @@ export class AllPostComponent implements OnInit {
       }
     })
   }
-  getImageUrl(authorImg: any): string {
+  getImageUrl(userImg: any): string {
 
-    if (authorImg && authorImg.startsWith('http')) {
-      return authorImg;
+    if (userImg && userImg.startsWith('http')) {
+      return userImg;
     }
 
-    return 'http://localhost:3000/api/feed/image/' + (authorImg || 'user.png');
+    return 'http://localhost:3000/api/feed/image/' + (userImg || 'user.png');
   }
   loadPosts() {
     this.postService.getPost().subscribe(res => {
       this.allPost = res;
 
-      this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; author: { image: string } }) => {
-        if (post.author.image) {
-          post.author.image = this.getImageUrl(post.author.image)
+      this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; user: { image: string } }) => {
+        if (post.user.image) {
+          post.user.image = this.getImageUrl(post.user.image)
         }
         else {
-          post.author.image = 'http://localhost:3000/api/feed/image/' + 'user.png'
+          post.user.image = 'http://localhost:3000/api/feed/image/' + 'user.png'
         }
         if (post.image) {
           // Check if the image URL ends with a common image extension
@@ -194,8 +195,19 @@ export class AllPostComponent implements OnInit {
     }
     this.liked = !this.liked;
   }
-  commentButton(username: any) {
-    this.router.navigate([`message/${username}`])
+  // commentButton(username: any) {
+  //   this.router.navigate([`message/${username}`])
+  // }
+  commentButton(username: string) {
+
+
+    this.dialog.open(MessageComponent, {
+      data: {  username: username },
+      width: '350px',
+      height: '250px'
+    }).afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 }
 

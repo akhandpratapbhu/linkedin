@@ -39,7 +39,9 @@ export class ConnectionProfileComponent {
       this.data = res
       
       if (this.data && Array.isArray(this.data) && this.data.length > 0) {
-        const imagePath = this.data[0].image; 
+        this.imagePath = this.data[0].image; 
+       console.log(this.imagePath);
+       
         this.userName=this.data[0].username
         this.allPost=this.data[0].feedPosts
         this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; }) => {
@@ -79,8 +81,8 @@ export class ConnectionProfileComponent {
         });
         // Access the image property from the first object
 
-        if (imagePath) {
-          this.imagePath = this.userService.getfullImagePath(imagePath);
+        if (this.imagePath && ! this.imagePath.startsWith('http')) {
+          this.imagePath = this.userService.getfullImagePath(this.imagePath);
         }
       }
     })

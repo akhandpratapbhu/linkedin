@@ -1,37 +1,11 @@
-<div class="popup-overlay">
-  <div class="popup">
-
-    <div class="popup-content">
-      <!-- Add your popup content here -->
-      <div class="d-flex">
-        <h5>{{changeHeaderName}}</h5>
-        <button (click)="closePopup()" class="close-btn right-side">&times;</button>
-      </div>
-      <hr>
-      <form class="was-validated">
-        <div class="mb-3">
-          <div class="d-flex">
-            <img [src]="picture ? picture : imageUrl" class="card-img-top bordered-image" alt="image">
-            <div>
-              <!-- <p style="margin-left: 20px;">{{userName}}</p> -->
-              <input 
-              type="text" 
-              id="validationTextarea" 
-              style="margin-top:10px" 
-              placeholder="Write a comment..." 
-              required 
-              [(ngModel)]="datamessage" 
-              name="datamessage">
-            </div>
-            <button class="setText" (click)="onPost()"
-            style="background-color: rgb(0, 119, 255);height: 40px;width: 70px; margin-left: 20px;color: aliceblue;"><mat-icon>send</mat-icon></button>
-        
-       
-          </div>
-
-            
-        </div>
-      </form>
-    </div>
+<h2 mat-dialog-title>Comments</h2>
+<mat-dialog-content>
+  <div *ngFor="let comment of comments">
+    <p>{{ comment.user.username }}: {{ comment.content }}</p>
   </div>
-</div>
+  <input matInput [(ngModel)]="newComment" placeholder="Write a comment...">
+  <button mat-button (click)="addComment()">Comment</button>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

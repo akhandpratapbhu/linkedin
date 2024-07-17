@@ -29,7 +29,7 @@
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
           <mat-icon>account_balance</mat-icon>
-          <a class="nav-link active" aria-current="page" href="#">Home
+          <a class="nav-link active" aria-current="page"  [routerLink]="['/dashboard']">Home
           </a>
         </li>
 
@@ -41,7 +41,7 @@
         </li>
         <li class="nav-item">
           <mat-icon>work</mat-icon>
-          <a class="nav-link" href="#">Jobs</a>
+          <a class="nav-link">Jobs</a>
         </li>
         <li class="nav-item" (click)="chatDialogBox()" style="cursor: pointer;">
           <mat-icon>textsms</mat-icon>
@@ -52,7 +52,7 @@
           <span
             style="margin-bottom: -18px;margin-left: 26px;color: white;border-radius: 30px;background-color: red;padding-left: 4px;width: 20px;align-items: center;">2</span>
           <mat-icon>notifications_active</mat-icon>
-          <a class="nav-link" href="#">Notification</a>
+          <a class="nav-link" >Notification</a>
         </li>
         <li class="nav-item dropdown">
           <img [src]="picture ? picture : imageUrl" class="card-img-top bordered-image" alt="image">

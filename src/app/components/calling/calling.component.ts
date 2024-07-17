@@ -69,12 +69,16 @@ export class CallingComponent implements OnInit {
 
       this.data = res
       if (this.data && Array.isArray(this.data) && this.data.length > 0) {
-        const imagePath = this.data[0].image;
+        this.imagePath = this.data[0].image;
+        console.log(this.imagePath);
+        
         this.userName = this.data[0].username
 
-        if (imagePath !== null) {
-          this.imagePath = this.userService.getfullImagePath(imagePath);
+        if (this.imagePath && ! this.imagePath.startsWith('https')) {
+          this.imagePath = this.userService.getfullImagePath(this.imagePath);
 
+        }else if(this.imagePath &&  this.imagePath.startsWith('https')){
+          this.imagePath=this.imagePath
         } else {
           this.imagePath = this.userService.getDefaultfullImagePath();
         }

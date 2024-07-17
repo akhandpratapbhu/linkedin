@@ -35,6 +35,9 @@ export class AllPostComponent implements OnInit {
   role: any;
   img: any
   like: number = 0;
+  likes: any;
+  likesLength!: number;
+  commentLength!: number
   liked: boolean = false; // Track if the user has liked the item
   constructor(private postService: PostService, private userService: UserService,
     public dialog: MatDialog, private toastr: ToastrService, private router: Router) {
@@ -187,28 +190,66 @@ export class AllPostComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
-  likeButton() {
-    if (this.liked) {
-      this.like = this.like - 1;
-    } else {
-      this.like = this.like + 1;
-    }
-    this.liked = !this.liked;
+  likeButton(postId: any) {
+    console.log("postId", postId);
+    this.postService.postLike(postId).subscribe(res => {
+              this.getLike(postId)
+    })
+    // if (this.liked) {
+    //   this.like = this.like - 1;
+    // } else {
+    //   this.like = this.like + 1;
+    // }
+    // this.liked = !this.liked;
+  }
+  getLike(postId: any) {
+    this.postService.getLikes(postId).subscribe(likes => {
+      this.likes = likes
+      if (this.likes) {
+
+        this.likesLength = this.likes.length
+        const likes = {
+          likes: this.likes.length
+        }
+        this.postService.editPost(postId, likes).subscribe(res => {
+          console.log(res);
+          this.loadPosts()
+        })
+      }
+
+    })
   }
   // commentButton(username: any) {
   //   this.router.navigate([`message/${username}`])
   // }
-  commentButton(username: string) {
 
+  commentButton(post: any): void {
+    console.log("commentButton", post);
 
-    this.dialog.open(MessageComponent, {
-      data: {  username: username },
-      width: '350px',
-      height: '250px'
-    }).afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    const dialogRef = this.dialog.open(MessageComponent, {
+      width: '400px',
+      data: {
+        postId: post.id,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+
+      if (result !== undefined) {
+        post.comments = result;
+        const comments = {
+          comments: post.comments.length
+        }
+        this.postService.editPost(post.id, comments).subscribe(res => {
+          console.log(res);
+          this.loadPosts();
+        })
+         // Reload posts to update comments count
+      }
     });
   }
+
+
 }
 
 

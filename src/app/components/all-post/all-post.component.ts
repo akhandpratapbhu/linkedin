@@ -85,6 +85,7 @@ export class AllPostComponent implements OnInit {
   loadPosts() {
     this.postService.getPost().subscribe(res => {
       this.allPost = res;
+      console.log(this.allPost, typeof (this.allPost));
 
       this.allPost.forEach((post: { image: string; imageUrl: string; isImage: boolean; isVideo: boolean; user: { image: string } }) => {
         if (post.user.image) {
@@ -193,7 +194,7 @@ export class AllPostComponent implements OnInit {
   likeButton(postId: any) {
     console.log("postId", postId);
     this.postService.postLike(postId).subscribe(res => {
-              this.getLike(postId)
+      this.getLike(postId)
     })
     // if (this.liked) {
     //   this.like = this.like - 1;
@@ -234,6 +235,7 @@ export class AllPostComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
 
       if (result !== undefined) {
         post.comments = result;
@@ -244,7 +246,7 @@ export class AllPostComponent implements OnInit {
           console.log(res);
           this.loadPosts();
         })
-         // Reload posts to update comments count
+        // Reload posts to update comments count
       }
     });
   }

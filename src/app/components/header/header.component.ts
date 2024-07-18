@@ -17,12 +17,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ChatComponent } from '../chat/chat.component';
 import { GoogleApiLoaderService } from '../../services/google-api-loader.service.service';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { NotificationComponent } from '../notification/notification.component';
 
 declare const google: any;
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatIconModule, FriendRequestComponent, CommonModule, RouterModule,
+  imports: [MatIconModule, FriendRequestComponent, CommonModule, RouterModule,NotificationComponent,
     FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, AsyncPipe, ChatComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'

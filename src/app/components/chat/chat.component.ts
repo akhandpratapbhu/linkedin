@@ -10,26 +10,26 @@ import { FormsModule } from '@angular/forms';
 import { CallingComponent } from '../calling/calling.component';
 import { MatIconModule } from '@angular/material/icon';
 
- @Component({
-    selector: 'app-chat',
-    standalone: true,
-    imports: [RouterOutlet,CommonModule,FormsModule,CallingComponent,MatIconModule ],
-    templateUrl: './chat.component.html',
-    styleUrl: './chat.component.css'
-  })
+@Component({
+  selector: 'app-chat',
+  standalone: true,
+  imports: [RouterOutlet, CommonModule, FormsModule, CallingComponent, MatIconModule],
+  templateUrl: './chat.component.html',
+  styleUrl: './chat.component.css'
+})
 export class ChatComponent implements OnInit {
 
-  messages: any[] = [];
+  messages: any = [];
+  getAllmsgRoomById: any = []
   users: any;
   newMessage!: string;
   id!: string;
   selectedUser: any;
   currentUser: any;
-  private storageArray: any[] = [];
   userName!: string;
   roomId!: string;
 
-  constructor(private chatService: ChatService, private authService: AuthService, private route: Router) {}
+  constructor(private chatService: ChatService, private authService: AuthService, private route: Router) { }
 
   ngOnInit() {
     const token = localStorage.getItem('token');
@@ -40,31 +40,20 @@ export class ChatComponent implements OnInit {
     } else {
       console.error('Token not found in localStorage');
     }
-    this.findAllUsers();
     this.chatService.getMessage().subscribe((message) => {
-     // this.chatService.setStorage(message);
-      this.messages.push(message);
-    //  this.chatService.setStorage( this.messages);
-      this.storageArray = this.chatService.getStorage();
-    const storeIndex = this.storageArray.findIndex((storage) => storage.roomId === this.roomId);
+      console.log(message);
 
-    if (storeIndex > -1) {
-      this.storageArray[storeIndex].chats.push(message);
-    } else {
-      const updateStorage = {
-        roomId: this.roomId,
-        chats: [message]
-      };
-      this.storageArray.push(updateStorage);
-    }
-    this.chatService.setStorage(this.storageArray);
+      this.messages.push(message);
+
     });
+    this.findAllUsers();
+
   }
   getImageUrl(userImg: any): string {
     if (userImg && userImg.startsWith('http')) {
-      return userImg; 
+      return userImg;
     }
-   else if (!userImg.startsWith('http')) {
+    else if (!userImg.startsWith('http')) {
       return 'http://localhost:3000/api/feed/image/' + (userImg);;
     }
     return ''
@@ -72,10 +61,10 @@ export class ChatComponent implements OnInit {
   findAllUsers() {
     this.authService.allUsers().subscribe((res) => {
       this.users = res;
-      this.users.forEach((user :{image:string})=>{
-       
-        if(user.image){
-          user.image=this.getImageUrl(user.image)
+      this.users.forEach((user: { image: string }) => {
+
+        if (user.image) {
+          user.image = this.getImageUrl(user.image)
         }
       })
     });
@@ -84,19 +73,24 @@ export class ChatComponent implements OnInit {
   selectUserHandler(user: string) {
     const userName = user;
     this.selectedUser = this.users.find((user: { username: any }) => user.username === userName);
-console.log(" this.selectedUser", this.selectedUser);
+    console.log(" this.selectedUser", this.selectedUser);
 
     this.roomId = [this.id, this.selectedUser.id].sort().join('_');
-   
+
     this.chatService.joinRoom(this.roomId);
 
-    this.messages = [];
-    this.storageArray = this.chatService.getStorage();
-    
-    const storeIndex = this.storageArray.findIndex((storage) => storage.roomId === this.roomId);
-    if (storeIndex > -1) {
-      this.messages = this.storageArray[storeIndex].chats;
-    }
+    this.chatService.getAllmsgRoomById(this.roomId).subscribe(res => {
+      console.log(res, typeof (res),);
+      this.getAllmsgRoomById = res
+      if (this.getAllmsgRoomById) {
+        this.messages = this.getAllmsgRoomById
+      }
+
+console.log(  this.messages[1].sender.username ,this.userName);
+
+    })
+
+
   }
 
   sendMessage(): void {
@@ -107,20 +101,7 @@ console.log(" this.selectedUser", this.selectedUser);
       content: this.newMessage
     };
     this.chatService.sendMessage(this.roomId, message);
-   // this.messages.push(message);
 
-    this.storageArray = this.chatService.getStorage();
-    const storeIndex = this.storageArray.findIndex((storage) => storage.roomId === this.roomId);
-    if (storeIndex > -1) {
-      this.storageArray[storeIndex].chats.push(message);
-    } else {
-      const updateStorage = {
-        roomId: this.roomId,
-        chats: [message]
-      };
-      this.storageArray.push(updateStorage);
-    }
-  //  this.chatService.setStorage(this.storageArray);
     this.newMessage = '';
   }
 

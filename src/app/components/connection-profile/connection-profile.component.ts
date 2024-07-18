@@ -81,11 +81,25 @@ export class ConnectionProfileComponent {
         });
         // Access the image property from the first object
 
-        if (this.imagePath && ! this.imagePath.startsWith('http')) {
-          this.imagePath = this.userService.getfullImagePath(this.imagePath);
+        if (this.imagePath &&  this.imagePath.startsWith('http')) {
+          this.imagePath = this.imagePath
         }
+       else{
+        this.loadprofileImage( this.imagePath)
+       }
       }
     })
+  }
+  loadprofileImage(imagePath:string){
+    
+    if (imagePath) {
+      this.imagePath = this.userService.getfullImagePath(imagePath)
+
+    }
+    else {
+    this.imagePath = this.userService.getDefaultfullImagePath()
+
+    }
   }
   loadfeedImage(image: string) {
     

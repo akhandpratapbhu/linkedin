@@ -14,6 +14,7 @@ import { SocialLoginComponent } from './components/social-login/social-login.com
 import { StripePaymentComponent } from './components/stripe-payment/stripe-payment.component';
 import { PaypalPaymentComponent } from './components/paypal-payment/paypal-payment.component';
 import { LinkedinCallbackComponent } from './components/linkedin-callback/linkedin-callback.component';
+import { NotificationComponent } from './components/notification/notification.component';
 
 
 export const routes: Routes = [
@@ -39,4 +40,6 @@ export const routes: Routes = [
     { path: 'user-profile', component: UserProfileComponent },
     { path: 'payment-stripe', component: StripePaymentComponent },
     { path: 'payment-paypal', component: PaypalPaymentComponent },
+    { path: 'notification', component: NotificationComponent },
+
 ];

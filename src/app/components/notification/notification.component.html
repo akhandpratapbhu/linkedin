@@ -1,0 +1,6 @@
+<p>notification works!</p>
+<div *ngFor="let notification of notifications">
+    <p [class.read]="notification.isRead">{{ notification.message }}</p>
+    <button *ngIf="!notification.isRead" (click)="markAsRead(notification.id)">Mark as Read</button>
+  </div>
+  

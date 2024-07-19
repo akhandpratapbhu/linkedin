@@ -86,4 +86,7 @@ export class UserService {
       
       return `http://localhost:3000/api/feed/image/${imageName}`
     }
+    getUserById(userId:string){
+      return  this.http.get(`http://localhost:3000/api/user/${userId}`)
+    }
 }

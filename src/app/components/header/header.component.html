@@ -29,7 +29,7 @@
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
           <mat-icon>account_balance</mat-icon>
-          <a class="nav-link active" aria-current="page"  [routerLink]="['/dashboard']">Home
+          <a class="nav-link active" aria-current="page" [routerLink]="['/dashboard']">Home
           </a>
         </li>
 
@@ -48,10 +48,11 @@
           <a class="nav-link">Message</a>
         </li>
 
-        <li class="nav-item"  [routerLink]="['/notification']">
-          <span  style="margin-bottom: -18px;margin-left: 26px;color: white;border-radius: 30px;background-color: red;padding-left: 4px;width: 20px;align-items: center;">2</span>
+        <li class="nav-item" [routerLink]="['/notification']">
+          <span
+            style="margin-bottom: -18px;margin-left: 26px;color: white;border-radius: 30px;background-color: red;padding-left: 4px;width: 20px;align-items: center;">2</span>
           <mat-icon>notifications_active</mat-icon>
-          <a class="nav-link" >Notification</a>
+          <a class="nav-link">Notification</a>
         </li>
         <li class="nav-item dropdown">
           <img [src]="picture ? picture : imageUrl" class="card-img-top bordered-image" alt="image">
@@ -71,13 +72,14 @@
             <li><a class="dropdown-item" href="#">Full-stack-developer</a></li>
             <li><button style="width: 200px;color: aqua; border-color: aquamarine;"
                 [routerLink]="['/user-profile']">View Profile</button></li>
-            <li><a class="dropdown-item" href="#">Account</a></li>
-            <li><a class="dropdown-item" href="#">Setting and Privacy</a></li>
-            <li><a class="dropdown-item" href="#">Help</a></li>
-            <li><a class="dropdown-item" href="#">Language</a></li>
-            <li><a class="dropdown-item" href="#">Manage</a></li>
-            <li><a class="dropdown-item" href="#">posts & Activities</a></li>
-            <li><a class="dropdown-item" href="#">Job Posting Account</a></li>
+            <li><a class="dropdown-item">Account</a></li>
+            <li><a class="dropdown-item">Setting and Privacy</a></li>
+            <li><a class="dropdown-item">Help</a></li>
+            <li><a class="dropdown-item">Language</a></li>
+            <li><a class="dropdown-item">Manage</a></li>
+            <li><a class="dropdown-item">posts & Activities</a></li>
+            <li><a class="dropdown-item">Job Posting Account</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/payment-paypal']">Buy Goods</a></li>
             <li><a class="dropdown-item" (click)="signOut()"><mat-icon
                   style="color: red;margin-bottom:-5px;">power_settings_new</mat-icon>Sign Out</a></li>
           </ul>

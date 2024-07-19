@@ -5,6 +5,7 @@ import { ConnectionProfileService } from '../../services/connection-profile.serv
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-connection-profile',
@@ -17,19 +18,29 @@ export class ConnectionProfileComponent {
 
   userId!: string | null;
   data = {}
+  id!:string
   imagePath!: string
   userName!:string
   friendRequestStatus!:any;
   getfriendRequestStatus!:any;
   allPost:any
   imageUrl!: string;
-  constructor(private userService: UserService, private connectionProfile: ConnectionProfileService, private route: ActivatedRoute,private router:Router) {
+  constructor(private userService: UserService, 
+    private connectionProfile: ConnectionProfileService, private route: ActivatedRoute,private router:Router) {
 
   }
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.userId = params.get('id'); // The 'id' here should match the parameter in your route definition
     });
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded = jwtDecode(token);
+      this.id = (decoded as any).id
+
+    } else {
+      console.error('Token not found in localStorage');
+    }
     this.getConnectionUserProfile(this.userId)
     this.getFriendRequestStatus(this.userId)
   }
@@ -126,6 +137,11 @@ export class ConnectionProfileComponent {
     })
   }
   chatwithSelectedUser(){
-    this.router.navigate([`message/${this.userName}`])
+    if(this.id!=this.userId){
+      this.router.navigate([`chat/${this.userId}`])
+    }else{
+      console.log("do not message with yourself..please send message another user");
+      
+    }
   }
 }

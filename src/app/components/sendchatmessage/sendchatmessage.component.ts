@@ -1,24 +1,23 @@
-
-
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
-import { AuthService } from '../../services/auth.service';
 import { jwtDecode } from 'jwt-decode';
-import { Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CallingComponent } from '../calling/calling.component';
 import { MatIconModule } from '@angular/material/icon';
+import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-chat',
+  selector: 'app-sendchatmessage',
   standalone: true,
   imports: [RouterOutlet, CommonModule, FormsModule, CallingComponent, MatIconModule],
-  templateUrl: './chat.component.html',
-  styleUrl: './chat.component.css'
+  templateUrl: './sendchatmessage.component.html',
+  styleUrl: './sendchatmessage.component.css'
 })
-export class ChatComponent implements OnInit {
+export class SendchatmessageComponent {
 
+  
   messages: any = [];
   getAllmsgRoomById: any = []
   users: any;
@@ -28,10 +27,18 @@ export class ChatComponent implements OnInit {
   currentUser: any;
   userName!: string;
   roomId!: string;
-
-  constructor(private chatService: ChatService, private authService: AuthService, private route: Router) { }
+  selecteduserId!:string |null
+  constructor(private chatService: ChatService, private userService: UserService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      this.selecteduserId = params.get('userId'); // The 'id' here should match the parameter in your route definition
+    console.log(this.selecteduserId);
+    
+    });
+    if(this.selecteduserId){
+     this.getSelectedUser(this.selecteduserId)
+    }
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode(token);
@@ -46,7 +53,6 @@ export class ChatComponent implements OnInit {
       this.messages.push(message);
 
     });
-    this.findAllUsers();
 
   }
   getImageUrl(userImg: any): string {
@@ -58,23 +64,16 @@ export class ChatComponent implements OnInit {
     }
     return ''
   }
-  findAllUsers() {
-    this.authService.allUsers().subscribe((res) => {
-      this.users = res;
-      this.users = this.users.filter((user: { username: string }) => user.username !== this.userName);
+ 
+  getSelectedUser(userId:string){
+   this.userService.getUserById(userId).subscribe(res=>{
+    this.selectUserHandler(res) 
 
-      this.users.forEach((user: { image: string }) => {
-
-        if (user.image) {
-          user.image = this.getImageUrl(user.image)
-        }
-      })
-    });
+   })
+   
   }
-
-  selectUserHandler(user: string) {
-    const userName = user;
-    this.selectedUser = this.users.find((user: { username: any }) => user.username === userName);
+  selectUserHandler(user: any) {
+    this.selectedUser = user
     console.log(" this.selectedUser", this.selectedUser);
 
     this.roomId = [this.id, this.selectedUser.id].sort().join('_');
@@ -109,10 +108,8 @@ console.log(  this.messages[1].sender.username ,this.userName);
 
   NavigateToCalling(id: string) {
     if (id) {
-      this.route.navigate([`calling/${id}`]);
+      this.router.navigate([`calling/${id}`]);
     }
   }
 
 }
-
-

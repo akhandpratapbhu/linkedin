@@ -12,24 +12,29 @@ import { ICreateOrderRequest, IPayPalConfig, ITransactionItem, NgxPayPalModule }
 })
 export class PaypalPaymentComponent {
   public payPalConfig?: IPayPalConfig;
+  selectedQuantity:any
   purchaseItems = [
-    { name: 'Waterproof Mobile Phone', quantity: 2, price: 450 },
-    { name: 'Smartphone Dual Camera', quantity: 3, price: 240 },
-    { name: 'Black Colour Smartphone', quantity: 1, price: 950 }
+    { name: 'Waterproof Mobile Phone', quantity: 2, price: 150 },
+    { name: 'Smartphone Dual Camera', quantity: 3, price: 50 },
+    { name: 'Black Colour Smartphone', quantity: 1, price: 100 }
   ]
   total!: string;
 
   ngOnInit(): void {
     this.initConfig();
   }
-
+  onQuantityChange(event: any) {
+    this.selectedQuantity = event.target.value;
+    const x=this.purchaseItems.map(x=>x.quantity= this.selectedQuantity)
+    // Additional logic can be added here
+  }
   private initConfig(): void {
     this.total = this.purchaseItems.map(x => x.quantity * x.price).reduce((a, b) => a + b, 0).toString();
     const currency = 'USD';
 
     this.payPalConfig = {
       currency: currency,
-       clientId: 'ASIobk8ZjRoxLcj5NX4RF8YhVEdR_r_PxuLrsvf2iYeqU4_iki0RWwKChFWAidtIH4RDTaqdVm-QHJk8',
+       clientId: 'AY_mUptgPGV-ozPdwl-vfV9ZSsukh92-UBCM09xKmaESeY-veR1meFNAVudsDlOJq5635txOCWqsQXnK',
       createOrderOnClient: (data) => <ICreateOrderRequest>{
         intent: 'CAPTURE',
         purchase_units: [

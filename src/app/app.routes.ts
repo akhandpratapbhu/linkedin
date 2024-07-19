@@ -15,6 +15,7 @@ import { StripePaymentComponent } from './components/stripe-payment/stripe-payme
 import { PaypalPaymentComponent } from './components/paypal-payment/paypal-payment.component';
 import { LinkedinCallbackComponent } from './components/linkedin-callback/linkedin-callback.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import { SendchatmessageComponent } from './components/sendchatmessage/sendchatmessage.component';
 
 
 export const routes: Routes = [
@@ -41,5 +42,7 @@ export const routes: Routes = [
     { path: 'payment-stripe', component: StripePaymentComponent },
     { path: 'payment-paypal', component: PaypalPaymentComponent },
     { path: 'notification', component: NotificationComponent },
+    { path: 'chat/:userId', component: SendchatmessageComponent, },
+
 
 ];

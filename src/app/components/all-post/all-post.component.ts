@@ -204,8 +204,8 @@ export class AllPostComponent implements OnInit {
     // this.liked = !this.liked;
   }
   getLike(postId: any) {
-    this.postService.getLikes(postId).subscribe(likes => {
-      this.likes = likes
+    this.postService.getLikes(postId).subscribe(like => {
+      this.likes = like
       if (this.likes) {
 
         this.likesLength = this.likes.length
@@ -217,7 +217,6 @@ export class AllPostComponent implements OnInit {
           this.loadPosts()
         })
       }
-
     })
   }
   // commentButton(username: any) {

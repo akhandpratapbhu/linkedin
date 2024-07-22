@@ -21,7 +21,9 @@ export class StartPostComponent {
       const decoded = jwtDecode(token);
       const image = (decoded as any).image
       if (image) {
-        this.picture = image
+        this.picture = this.getImageUrl(image)
+        console.log(this.picture);
+        
       }
 
     }
@@ -32,6 +34,14 @@ export class StartPostComponent {
       }
     });
 
+  }
+  getImageUrl(userImg: any): string {
+
+    if (userImg && userImg.startsWith('http')) {
+      return userImg;
+    }
+
+    return 'http://localhost:3000/api/feed/image/' + (userImg || 'user.png');
   }
   imagewhenrefreshPage() {
     this.postService.imageUrl.subscribe(imageUrl => {

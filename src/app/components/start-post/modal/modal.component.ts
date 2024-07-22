@@ -37,7 +37,7 @@ export class ModalComponent {
       this.userName = (decoded as any).username;
       const image = (decoded as any).image
       if (image) {
-        this.picture = image
+        this.picture = this.getImageUrl(image)
       }
     }
    
@@ -59,6 +59,14 @@ export class ModalComponent {
     });
 
 
+  }
+  getImageUrl(userImg: any): string {
+
+    if (userImg && userImg.startsWith('http')) {
+      return userImg;
+    }
+
+    return 'http://localhost:3000/api/feed/image/' + (userImg || 'user.png');
   }
   imagewhenrefreshPage() {
     this.postService.imageUrl.subscribe(imageUrl => {

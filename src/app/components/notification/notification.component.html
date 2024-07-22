@@ -1,6 +1,56 @@
-<p>notification works!</p>
-<div *ngFor="let notification of notifications">
+<!-- <p>notification works!</p>
+<div *ngFor="let notifications of notifications">
     <p [class.read]="notification.isRead">{{ notification.message }}</p>
     <button *ngIf="!notification.isRead" (click)="markAsRead(notification.id)">Mark as Read</button>
   </div>
+  <button (click)="check()"> notify</button> -->
+
+  <div class="container ">
+    @if(notifications){
+      <div class="row mt-4" >
+        <div class="col-lg-2">
+        </div>
+        <div class="col-lg-8">
+          <div  class="post-container">
+
+            @for (notification of notifications?.slice()?.reverse(); track notification?.id) {
+                <div class="card mt-2">
+                    <div class="card-body">
+          
+                        <form class="d-flex  justify-content-between" >
+                            <img src="post.user.image" class="card-img-top bordered-image" alt="image">
+                                   
+                        </form>
+                        
+                        <hr>
+                        <p [class.read]="notification.isRead">{{ notification.message }}</p>
+                        <button *ngIf="!notification.isRead" (click)="markAsRead(notification.id)">Mark as Read</button>              
+                        <div  class="image-container">
+                   
+                        
+                        </div>
+                        
+                    </div>
+                </div>
+            }
+          </div>
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+    </div>
+    }
+    <div class="emptyNotification">
+      <p>We'll notify you when there's something new.?</p>
+      <img src="../../../assets/img/notification.gif"/>
+     
+    </div>
+    <div class="NotificationButton">
+      <button  [routerLink]="['/dashboard']" >Return to home page</button>
+
+    </div>
+</div>
+
   
+
+

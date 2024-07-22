@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { ConnectionProfileComponent } from '../connection-profile/connection-profile.component';
 import { Router, RouterModule } from '@angular/router';
 import { MessageComponent } from '../message/message.component';
+import { NotificationService } from '../../services/notification.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ import { MessageComponent } from '../message/message.component';
 
 })
 export class AllPostComponent implements OnInit {
+  userId!:any
   url = 'http://jasonwatmore.com';
   token: string = '';
   userName: string = '';
@@ -39,7 +41,7 @@ export class AllPostComponent implements OnInit {
   likesLength!: number;
   commentLength!: number
   liked: boolean = false; // Track if the user has liked the item
-  constructor(private postService: PostService, private userService: UserService,
+  constructor(private postService: PostService, private userService: UserService,private notificationService:NotificationService,
     public dialog: MatDialog, private toastr: ToastrService, private router: Router) {
 
   }
@@ -215,6 +217,7 @@ export class AllPostComponent implements OnInit {
         this.postService.editPost(postId, likes).subscribe(res => {
           console.log(res);
           this.loadPosts()
+          this.sendNotification(postId,'like')
         })
       }
     })
@@ -244,12 +247,32 @@ export class AllPostComponent implements OnInit {
         this.postService.editPost(post.id, comments).subscribe(res => {
           console.log(res);
           this.loadPosts();
+          this.sendNotification( post.id,'comment')
         })
         // Reload posts to update comments count
       }
     });
   }
+  sendNotification(postId:string,checkLikeOrComment:string){
+this.postService.findPostById(postId).subscribe(res=>{
+ 
+  if(res){
+    this.userId=res
+    console.log(this.userId[0].user.id);
+    const payload={
+      userId: this.userId[0].user.id,
+      message:`${this.userName} ${checkLikeOrComment} ${this.userId[0].user.username} post ${this.userId[0].image}`,
+      postId:postId
+    }
+    this.notificationService.postNotifications(postId,payload).subscribe(res=>{
+      console.log(res);
+      
+    })
 
+  }
+})
+   
+  }
 
 }
 

@@ -18,6 +18,7 @@ import { ChatComponent } from '../chat/chat.component';
 import { GoogleApiLoaderService } from '../../services/google-api-loader.service.service';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { NotificationComponent } from '../notification/notification.component';
+import { NotificationService } from '../../services/notification.service';
 
 declare const google: any;
 @Component({
@@ -29,6 +30,8 @@ declare const google: any;
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
+  userId!:any
+  notifications!:any
   imageUrl!: string;
   picture!: string
   user!:any;
@@ -48,7 +51,8 @@ export class HeaderComponent implements OnInit {
     private connectionProfileService: ConnectionProfileService,
     public dialog: MatDialog,
     private googleApiLoader: GoogleApiLoaderService,
-    private authService: SocialAuthService
+    private authService: SocialAuthService,
+    private notificationService:NotificationService
   ) {
 
   }
@@ -59,6 +63,7 @@ export class HeaderComponent implements OnInit {
     if (token) {
       const decoded = jwtDecode(token);
       const image = (decoded as any).image
+      this.userId=(decoded as any).id
       if (image) {
         this.picture = this.getImageUrl(image)
       }
@@ -83,6 +88,7 @@ export class HeaderComponent implements OnInit {
 
     this.ReceiveFriendRequest();
     this.loadFriendRequests();
+    this.loadNotifications()
   }
   getImageUrl(userImg: any): string {
 
@@ -198,8 +204,20 @@ export class HeaderComponent implements OnInit {
  
   signOut(): void {
     this.authService.signOut();
-   // localStorage.removeItem('token');
+    localStorage.removeItem('token');
     this.toastr.success("User logged out successfully...");
     this.router.navigate([""]);
+  }
+  loadNotifications(): void {
+    this.notificationService.getNotifications(this.userId).subscribe(
+      (data) => {
+        this.notifications = data;
+        console.log("  this.notifications", this.notifications);
+
+      },
+      (error) => {
+        console.error('Failed to load notifications', error);
+      }
+    );
   }
 }

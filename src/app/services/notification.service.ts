@@ -14,7 +14,9 @@ export class NotificationService {
   getNotifications(userId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${userId}`);
   }
-
+  postNotifications(postId: string,payload:any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}`,payload);
+  }
   markAsRead(notificationId: number): Observable<void> {
     return this.http.patch<void>(`${this.apiUrl}/${notificationId}/read`, {});
   }

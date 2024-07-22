@@ -45,8 +45,9 @@ export class AppComponent {
     if (token) {
       const decoded = jwtDecode(token);
        this.userId = (decoded as any).id;
-      
-      this.initializePeer()
+      if( this.userId){
+        this.initializePeer()
+      }
     } else {
       console.error('Token not found in localStorage');
     }

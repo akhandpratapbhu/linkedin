@@ -5,8 +5,9 @@
   </div>
   <button (click)="check()"> notify</button> -->
 
-  <div class="container ">
-    @if(notifications){
+  <div class="container " >
+    <div *ngIf="notifications && notifications.length > 0; else noNotifications">
+ 
       <div class="row mt-4" >
         <div class="col-lg-2">
         </div>
@@ -39,18 +40,14 @@
 
         </div>
     </div>
-    }
-    <div class="emptyNotification">
-      <p>We'll notify you when there's something new.?</p>
-      <img src="../../../assets/img/notification.gif"/>
-     
-    </div>
-    <div class="NotificationButton">
-      <button  [routerLink]="['/dashboard']" >Return to home page</button>
-
-    </div>
+       </div>                
+       <ng-template #noNotifications>
+        <div class="emptyNotification">
+          <p>We'll notify you when there's something new.</p>
+          <img src="../../../assets/img/notification.gif"/>
+        </div>
+        <div class="NotificationButton">
+          <button [routerLink]="['/dashboard']">Return to home page</button>
+        </div>
+      </ng-template>
 </div>
-
-  
-
-

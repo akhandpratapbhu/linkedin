@@ -29,8 +29,8 @@ export class SignInComponent implements OnInit {
   hide = true;
   loginForm: FormGroup;
   loading = false;
-  captcha = ''
-  captchaInp = ''
+  otp = ''
+  otpInp = ''
   user = '';
   userId!: string;
   captchaToken!: string;
@@ -67,7 +67,7 @@ export class SignInComponent implements OnInit {
       this.router.navigate(['/dashboard']);
 
     }
-    this.generateCaptcha()
+    //this.generateCaptcha()
   }
   // signInWithGoogle(){
   //   this.googleApiLoader.loadScript().then(() => {
@@ -135,7 +135,7 @@ export class SignInComponent implements OnInit {
 
           this.toastr.error(error.message);
           this.loading = false;
-          this.generateCaptcha()
+         // this.generateCaptcha()
 
         },
       )
@@ -163,28 +163,28 @@ export class SignInComponent implements OnInit {
     );
   }
   verifyOtp(){
-    this.generateCaptcha()
+    this.generateOtp()
 
     const userData = {
       email: (this.loginForm.value.email),
-      otp:(this.captcha),
+      otp:(this.otp),
       
      }
-   this.mailService.setOtpInVerify(this.loginForm.value.email,this.captcha);
+   this.mailService.setOtpInVerify(this.loginForm.value.email,this.otp);
     this.sendMail(userData) 
     this.router.navigate(['/verifyOtp'])
   }
-  generateCaptcha(length = 6) {
-    this.captchaInp = ''
+  generateOtp(length = 6) {
+    this.otpInp = ''
     const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
-    let captcha = '';
+    let otp = '';
     for (let i = 0; i < length; i++) {
       const randomIndex: number = Math.floor(Math.random() * characters.length);
-      captcha += characters.charAt(randomIndex);
+      otp += characters.charAt(randomIndex);
     }
 
-    this.captcha = captcha
+    this.otp = otp
   }
   // handleCredentialResponse(response: any) {
   //   console.log('Encoded JWT ID token: ' + response.credential);

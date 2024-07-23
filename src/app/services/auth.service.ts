@@ -42,6 +42,12 @@ export class AuthService {
 
     return this.http.get('http://localhost:3000/api/user')
   }
-
+  changePassword(mail:string,newPassword:string){
+ const payload={
+  email:mail,
+  password:newPassword
+ }
+ return this.http.post('http://localhost:3000/api/auth/changePassword', payload)
+  }
 
 }

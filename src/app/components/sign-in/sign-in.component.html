@@ -43,7 +43,7 @@
         </div> -->
       <div id="your-recaptcha-container-id" class="g-recaptcha captcha"
         data-sitekey="6LfZJs4pAAAAADyW-fE1-nomT3WPIjNDF9ZMReWp"></div><br>
-        <span style="color: rgb(0, 60, 255);">forgot password ?</span>
+        <span style="color: rgb(0, 60, 255); cursor: pointer;"(click)="verifyOtp()"  >forgot password ?</span>
       <button class="submit" mat-raised-button color="warn" (click)="onSubmit()" [disabled]="loading">
         <span *ngIf="loading">Logging in...</span>
 

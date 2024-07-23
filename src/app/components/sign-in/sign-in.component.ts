@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,12 +10,14 @@ import { GoogleApiLoaderService } from '../../services/google-api-loader.service
 import { jwtDecode } from 'jwt-decode';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { SocialLoginComponent } from '../social-login/social-login.component';
+import { VerificationOtpComponent } from '../verification-otp/verification-otp.component';
+import { MailService } from '../../services/mail.service';
 
 declare const google: any;
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [ToastrModule, MatIconModule, ReactiveFormsModule, FormsModule, MatProgressSpinnerModule, CommonModule,SocialLoginComponent],
+  imports: [ToastrModule, MatIconModule, ReactiveFormsModule, FormsModule, RouterModule,MatProgressSpinnerModule, CommonModule,SocialLoginComponent,VerificationOtpComponent],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
   providers: [
@@ -41,7 +43,9 @@ export class SignInComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private authService: AuthService,
-     private googleApiLoader: GoogleApiLoaderService
+     private googleApiLoader: GoogleApiLoaderService,
+     private mailService: MailService
+
   ) {
     this.loginForm = new FormGroup({
       email: new FormControl('', [
@@ -146,6 +150,29 @@ export class SignInComponent implements OnInit {
   }
   NavigateToRegister() {
     this.router.navigate(["/register"]);
+  }
+  sendMail(userData:any) {
+    
+    this.mailService.sendConfirmationOtp(userData.email, userData.otp).subscribe(
+      (response) => {
+        this.toastr.success('otp sent successfully', response);
+      },
+      (error) => {
+        console.error('Error sending email', error);
+      }
+    );
+  }
+  verifyOtp(){
+    this.generateCaptcha()
+
+    const userData = {
+      email: (this.loginForm.value.email),
+      otp:(this.captcha),
+      
+     }
+   this.mailService.setOtpInVerify(this.loginForm.value.email,this.captcha);
+    this.sendMail(userData) 
+    this.router.navigate(['/verifyOtp'])
   }
   generateCaptcha(length = 6) {
     this.captchaInp = ''

@@ -1,0 +1,17 @@
+<!-- <p>verification-otp works!</p>
+<input type="text" #inputotp/>
+<button (click)="checkVerifyOtp(inputotp.value)">verify</button> -->
+
+<div class="body">
+    <div class="container">
+        <form class="password-reset-form">
+            <h2>OTP Verification for setting new Password</h2>
+            <div class="form-group">
+                <label for="new-otp">New Otp</label>
+                <input type="text" id="new-otp" name="new-otp" #inputotp required>
+            </div>
+        
+            <button type="button" (click)="checkVerifyOtp(inputotp.value)">Verify</button>
+        </form>
+    </div>
+    </div>

@@ -2,8 +2,8 @@
 <div *ngFor="let notifications of notifications">
     <p [class.read]="notification.isRead">{{ notification.message }}</p>
     <button *ngIf="!notification.isRead" (click)="markAsRead(notification.id)">Mark as Read</button>
-  </div>
-  <button (click)="check()"> notify</button> -->
+  </div> -->
+  <!-- <button (click)="check()"> notify</button> -->
 
   <div class="container " >
     <div *ngIf="notifications && notifications.length > 0; else noNotifications">

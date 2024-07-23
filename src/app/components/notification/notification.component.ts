@@ -46,7 +46,6 @@ export class NotificationComponent {
   }
 
   check() {
-    alert("Hi i am ap")
     Notification.requestPermission().then(perm => {
       alert(perm)
       if (perm === 'granted') {

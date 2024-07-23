@@ -16,6 +16,8 @@ import { PaypalPaymentComponent } from './components/paypal-payment/paypal-payme
 import { LinkedinCallbackComponent } from './components/linkedin-callback/linkedin-callback.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { SendchatmessageComponent } from './components/sendchatmessage/sendchatmessage.component';
+import { VerificationOtpComponent } from './components/verification-otp/verification-otp.component';
+import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 
 
 export const routes: Routes = [
@@ -43,6 +45,7 @@ export const routes: Routes = [
     { path: 'payment-paypal', component: PaypalPaymentComponent },
     { path: 'notification', component: NotificationComponent },
     { path: 'chat/:userId', component: SendchatmessageComponent, },
-
+    { path: 'verifyOtp', component: VerificationOtpComponent, },
+    { path: 'forget-password', component: ForgetPasswordComponent, },
 
 ];

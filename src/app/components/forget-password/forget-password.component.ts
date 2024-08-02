@@ -36,6 +36,8 @@ export class ForgetPasswordComponent {
     console.log(mail, newPassword);
     this.authService.changePassword(mail,newPassword).subscribe(res=>{
       console.log(res);
+      this.toastr.success("Password changed successfully..")
+      this.router.navigate([''])
       
     })
   }

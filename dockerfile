@@ -2,15 +2,13 @@
 # Stage 1: Build
 FROM node:20.13.1 AS development
 
-WORKDIR /akhand/linkedin/src/app
+WORKDIR /app
 # Copy package.json and package-lock.json
-COPY package*.json ./
+COPY package.json .
 
+COPY package-lock.json .
 # Install dependencies
 RUN npm install
-
-# Install Angular CLI version 17
-RUN npm install -g @angular/cli@17.0.0
 
 # Copy the rest of the application code
 COPY . .

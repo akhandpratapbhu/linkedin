@@ -10,8 +10,8 @@ services:
       target: development
     command: npm run start
     volumes:
-      - ./linkedin:/akhand/linkedin/src/app
-      - /akhand/linkedin/src/app/node_modules
+      - ./linkedin:/app
+      - /app/node_modules
     ports:
       - 4200:4200
     links:
@@ -33,15 +33,23 @@ services:
       context: ./Linkedinbackend
       target: development
     volumes:
-      - ./Linkedinbackend:/akhand/src/app
-      # - /akhand/src/app/node_modules/
-    command: npm run start
+      - ./Linkedinbackend:/app
+      - /app/node_modules/
+    command: bash -c "sleep 20 && npm run start"
     depends_on: 
-      - postgres
+      - postgres 
     environment:
-      DATABASE_URL: postgres://postgres:Admin@postgres:5432/linkedin
-      NODE_ENV: development
-      JWT_SECRET: jwtsecret
-      PORT: 3000
-    
+     - POSTGRES_HOST=postgres
+     - POSTGRES_PORT=5432
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=Admin
+     - POSTGRES_DATABASE=linkedin
+     - JWT_SECRET=jwtsecret
+     - PORT=3000
+
+      # DATABASE_URL: postgres://postgres:Admin@postgres:5432/linkedin
+      # NODE_ENV: development
+      # JWT_SECRET: jwtsecret
+      # PORT: 3000
+     
     

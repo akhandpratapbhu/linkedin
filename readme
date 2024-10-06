@@ -45,3 +45,4 @@ docker rm -vf $(docker ps -a -q)
 
 Start Command docker-compose up
 Sometimes the package-lock.json can cause issues, then just delete it and let docker do everything
+new

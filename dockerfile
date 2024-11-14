@@ -1,23 +1,17 @@
+# Step 1: Specify a base image
+FROM node:18-alpine
 
-# Stage 1: Build
-FROM node:20.13.1 AS development
-
+# Step 2: Set the working directory
 WORKDIR /app
-# Copy package.json and package-lock.json
-COPY package.json .
 
-COPY package-lock.json .
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code
+# Step 3: Copy all necessary files into the container
 COPY . .
 
-# Build the Angular application
-RUN npm run build
+# Step 4: Install dependencies
+RUN npm install
 
-# Expose port 4200
+# Step 5: Expose the port that Angular will serve on
 EXPOSE 4200
 
-# Start the application
-CMD ["ng", "serve"]
+# Step 6: Start the application
+CMD ["npm", "run", "start"]

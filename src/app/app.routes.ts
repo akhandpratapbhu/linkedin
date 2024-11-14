@@ -25,11 +25,11 @@ export const routes: Routes = [
     { path: 'register', component: SignUpComponent },
     {
         path: 'dashboard/:id', component: ConnectionProfileComponent,
-        canActivate: [AuthGuard]
+      //  canActivate: [AuthGuard]
     },
     {
         path: 'searchUserProfile/:username', component: SearchUserProfileComponent,
-        canActivate: [AuthGuard]
+      //  canActivate: [AuthGuard]
     },
     { path: 'chat', component: ChatComponent, },
     { path: 'calling/:id', component: CallingComponent, },

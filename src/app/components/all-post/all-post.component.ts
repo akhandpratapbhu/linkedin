@@ -31,6 +31,7 @@ export class AllPostComponent implements OnInit {
   userName: string = '';
   allPost: any = [];
   message: any;
+  getUpdateImage:any;
   imageUrl: any;
   userImg!: {}
   id: any;
@@ -98,7 +99,7 @@ export class AllPostComponent implements OnInit {
         }
         if (post.image) {
           // Check if the image URL ends with a common image extension
-          const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+          const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp','jfif'];
           const isImage = imageExtensions.some(ext => post.image.toLowerCase().endsWith(ext));
 
           // Check if the image URL ends with a common video extension
@@ -150,7 +151,11 @@ export class AllPostComponent implements OnInit {
   editPost(id: string) {
 
     this.postService.findPostById(id).subscribe((res: any) => {
+      console.log("res",res);
+      
       this.message = res[0]?.body;
+      this.getUpdateImage=res[0]?.image;
+      console.log("res", this.getUpdateImage);
       this.openDialog(id);
     })
 
@@ -186,7 +191,7 @@ export class AllPostComponent implements OnInit {
 
 
     this.dialog.open(ModalComponent, {
-      data: { message: this.message, id: id, username: this.userName },
+      data: { message: this.message,getUpdateImage:this.getUpdateImage, id: id, username: this.userName },
       width: '350px',
       height: '250px'
     }).afterClosed().subscribe(result => {

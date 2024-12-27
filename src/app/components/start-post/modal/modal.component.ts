@@ -45,11 +45,15 @@ export class ModalComponent {
       console.error('Token not found in localStorage');
     }
     if (data) {
+      
       this.datamessage = data.message;
       this.id = data.id;
       this.userName = data.username
+      this.selectImage=data.getUpdateImage
       this.changeHeaderName = 'Update a Post'
     }
+    console.log(this.selectImage);
+    
     this.userService.getImageUrl().subscribe(url => {
       this.imageUrl = url;
       if (!this.imageUrl) {
@@ -94,7 +98,7 @@ export class ModalComponent {
       const mediaType = file.type.split('/')[0]; // Get the type of media selected (image or video)
 
       if (mediaType === 'image') {
-        this.selectedImage = e.target.result;
+        this.selectedImage = e.target.result;        
         this.selectedVideo = null;
         this.isVideo = false;
       } else if (mediaType === 'video') {
@@ -113,10 +117,13 @@ export class ModalComponent {
     const formData = new FormData();
     formData.append('file', this.selectImage);
     formData.append('body', this.datamessage);
-    const postMessage = {
+    console.log("this.selectImage",this.selectImage);
+    
+    const updatePostMessage = {
       body: this.datamessage,
-      // image: formData
+      image:  this.selectImage
     }
+    console.log("this.updatePostMessage",updatePostMessage);
     if (!this.id) {
       this.postService.feedPost(formData).subscribe({
         next: (res) => {
@@ -133,7 +140,7 @@ export class ModalComponent {
       });
 
     } else {
-      this.postService.editPost(this.id, postMessage).subscribe({
+      this.postService.editPost(this.id, formData).subscribe({
         next: res => {
           this.toastr.success("message updated successfully");
           this.postService.update.next(true)

@@ -43,10 +43,15 @@
                         <div class="error"></div>
                     </div> -->
                     <div class="image-container">
-                        <input type="file" #fileUpload (change)="onFileSelect($event)" accept="image/*, video/*" style="display: none;" />
+                        <input type="file" #fileUpload (change)="onFileSelect($event)" accept="image/*, video/*" style="display: none;" 
+                        />
                         <img *ngIf="selectedImage && !isVideo" [src]="selectedImage" alt="" (click)="fileUpload.click()" style="cursor: pointer;" class="left-image">
                         <video *ngIf="selectedVideo && isVideo" [src]="selectedVideo" controls (click)="fileUpload.click()" style="cursor: pointer;" class="left-image"></video>
                         <div class="error"></div>
+                        <div>
+                     <img *ngIf="selectImage && !selectedImage && !selectedVideo " [src]=" 'http://localhost:3000/api/feed/image/' + selectImage " class="left-image" alt="image">
+
+                        </div>
                     </div>
                     
                     <div class="invalid-feedback">

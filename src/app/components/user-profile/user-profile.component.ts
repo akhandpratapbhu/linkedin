@@ -47,7 +47,10 @@ export class UserProfileComponent {
       this.userName = (decoded as any).username;
       const image = (decoded as any).image
       if (image) {
-        this.picture = image
+      //  this.picture = image
+        this.picture = this.userService.getfullImagePath(image)
+        console.log( this.picture);
+        
       }
       this.findUser(this.userName)
     } else {
@@ -61,6 +64,7 @@ export class UserProfileComponent {
     
     this.userService.getUserByUserName(username).subscribe((res) => {
       this.users = res;
+      console.log("this.users",this.users);
       
       if (this.users) {
         
@@ -86,7 +90,7 @@ export class UserProfileComponent {
     if (file) {
       // Check file type
       const fileType = file.type;
-      if (!fileType.match(/image\/(png|jpg|jpeg|gif|tiff|bpg)/)) {
+      if (!fileType.match(/image\/(png|jpg|jpeg|gif|tiff|bpg|jfif)/)) {
         this.form.get('image')?.setErrors({ 'image': true });
         return;
       }
@@ -113,7 +117,7 @@ export class UserProfileComponent {
     if (file) {
       // Check file type
       const fileType = file.type;
-      if (!fileType.match(/image\/(png|jpg|jpeg|gif|tiff|bpg)/)) {
+      if (!fileType.match(/image\/(png|jpg|jpeg|gif|tiff|bpg|jfif)/)) {
         this.form.get('backgroundimage')?.setErrors({ 'backgroundimage': true });
         return;
       }
@@ -159,6 +163,7 @@ export class UserProfileComponent {
     this.userService.uploadUserImage(formData).subscribe({
       next: (res: any) => {
         this.img = res.img;
+console.log( this.img);
 
         this.toastr.success("uploaded image successfully");
 
@@ -176,6 +181,8 @@ export class UserProfileComponent {
 
     if (this.img) {
       this.imageUrl = this.userService.getfullImagePath(this.img)
+      console.log(this.img, this.imageUrl);
+      
       this.userService.setImageUrl(this.imageUrl)
     }
     else {
